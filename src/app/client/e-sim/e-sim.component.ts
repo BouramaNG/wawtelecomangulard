@@ -20,6 +20,13 @@ export class ESimComponent  implements OnInit{
   constructor(private route:ActivatedRoute, private esimService:EsimService, private router:Router){}
   pays=[
     {
+      "id": 0,
+      "nom": "PeleriConnect",
+      "drapeau": "https://flagcdn.com/w320/va.png",
+      "continent": "Europe",
+      "code": "PC"
+    },
+    {
       "id": 1,
       "nom": "France",
       "drapeau": "https://flagcdn.com/w320/fr.png",
@@ -1422,16 +1429,33 @@ export class ESimComponent  implements OnInit{
     console.log(this.paysChoisi)
   }
   getPack(){
-    if (!this.paysChoisi) return;
-    console.log('[FRONT] getPack appelé avec code pays:', this.paysChoisi.code);
-    this.esimService.getEsimPackagesWithPrice(this.paysChoisi.code).subscribe((response:any)=>{
-      console.log('[FRONT] Réponse API getEsimPackagesWithPrice:', response);
-      if (response && response.success) {
-        this.packPays = response.packages;
-        console.log('[FRONT] packPays:', this.packPays);
-      } else {
+    if (!this.paysChoisi) {
+      console.log('[DEBUG] Aucun pays choisi');
+      return;
+    }
+    console.log('[DEBUG] getPack appelé avec pays:', this.paysChoisi);
+    console.log('[DEBUG] Code pays:', this.paysChoisi.code);
+    
+    this.esimService.getEsimPackagesWithPrice(this.paysChoisi.code).subscribe({
+      next: (response: any) => {
+        console.log('[DEBUG] Réponse API complète:', response);
+        if (response && response.success) {
+          console.log('[DEBUG] Packages reçus:', response.packages);
+          this.packPays = response.packages;
+          console.log('[DEBUG] packPays après assignation:', this.packPays);
+          
+          // Vérification supplémentaire
+          if (!this.packPays || this.packPays.length === 0) {
+            console.warn('[DEBUG] Aucun package trouvé pour ce pays');
+          }
+        } else {
+          console.warn('[DEBUG] Réponse API sans succès:', response);
+          this.packPays = [];
+        }
+      },
+      error: (error) => {
+        console.error('[DEBUG] Erreur lors de la récupération des forfaits:', error);
         this.packPays = [];
-        console.log('[FRONT] packPays vide');
       }
     });
   }

@@ -37,7 +37,7 @@
             <div class="containerh">
               <div class="image-section"></div>
               <div class="content-section">
-                <h2>{{ 'esim.ESIM_POUR' | translate }} {{ 'COUNTRIES.' + paysChoisi?.nom | translate }}</h2>
+                <h2>{{ 'esim.ESIM_POUR' | translate }} {{ paysChoisi?.nom }}</h2>
                 <div class="plans-container">
                   <div class="plans mb-3" *ngFor="let pack of packPays" [ngClass]="{'selected': pack.id === selectedEsimId}">
                     <div class="plan" (click)="selectEsim(pack, pack.id)">

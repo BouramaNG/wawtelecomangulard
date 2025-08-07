@@ -19,6 +19,13 @@ export class BoutiqueComponent implements OnInit {
 
   pays=[
     {
+      "id": 0,
+      "nom": "PeleriConnect",
+      "drapeau": "https://flagcdn.com/w320/va.png",
+      "continent": "Europe",
+      "country_code":"PC"
+    },
+    {
       "id": 1,
       "nom": "France",
       "drapeau": "https://flagcdn.com/w320/fr.png",

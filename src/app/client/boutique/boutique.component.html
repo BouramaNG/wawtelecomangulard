@@ -102,7 +102,7 @@
                 <div class="col-md-3" [routerLink]="['/eSim', item.id]" *ngFor="let item of getPaysFiltres() | paginate: { itemsPerPage: 8, currentPage: page }">
   <div class="country-list-item d-flex align-items-center p-2 mb-3 shadow-sm rounded" style="background: #fff; cursor: pointer; min-height: 60px;">
     <img [src]="item.drapeau" alt="Drapeau {{item.nom}}" class="country-flag me-3" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-    <span class="country-name fw-bold" style="font-size: 1.1rem; color: #222;">{{ 'COUNTRIES.' + item.nom | translate }}</span>
+    <span class="country-name fw-bold" style="font-size: 1.1rem; color: #222;">{{ item.nom }}</span>
   </div>
 </div>
                 
