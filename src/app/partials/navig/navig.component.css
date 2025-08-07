@@ -1,0 +1,36 @@
+.btndecon{
+    background-color:#333 ;
+    color: white;
+}
+#nav{
+    background-color: #ffdd33 !important;
+    /* color: white; */
+}
+.link{
+    color: black;
+    font-size: 15px;
+    font-weight: 700;
+    
+}
+.nav-item:hover{
+    background-color: #333;
+    padding: 10px;
+    border-radius: 2%;
+}
+.link:hover{
+    color: white !important;
+    
+}
+.active{
+    background-color: #333;
+    padding: 10px;
+    border-radius: 2%;    
+    color: white !important;
+}
+@media(max-width:912px){
+    .active{
+        color: #333 !important;
+        text-decoration: underline !important;
+        background-color: #ffdd33 !important;
+    }
+}

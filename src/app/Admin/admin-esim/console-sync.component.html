@@ -1,0 +1,118 @@
+<div class="console-sync-container">
+  <div class="header">
+    <h2>🔄 Synchronisation Console Connect</h2>
+    <p>Gérez la synchronisation automatique avec l'API Console Connect</p>
+  </div>
+
+  <!-- Statut de synchronisation -->
+  <div class="status-card">
+    <h3>📊 Statut de synchronisation</h3>
+    <div class="status-grid">
+      <div class="status-item">
+        <span class="label">Dernière synchronisation:</span>
+        <span class="value">{{ syncStatus.last_sync || 'Jamais' }}</span>
+      </div>
+      <div class="status-item">
+        <span class="label">Statut:</span>
+        <span class="value" [class]="syncStatus.status || 'unknown'">
+          {{ syncStatus.status || 'Inconnu' }}
+        </span>
+      </div>
+      <div class="status-item">
+        <span class="label">eSIMs synchronisées:</span>
+        <span class="value">{{ syncStats.total_esims || 0 }}</span>
+      </div>
+      <div class="status-item">
+        <span class="label">Packages synchronisés:</span>
+        <span class="value">{{ syncStats.total_packages || 0 }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions de synchronisation -->
+  <div class="actions-card">
+    <h3>⚡ Actions rapides</h3>
+    <div class="actions-grid">
+      <button 
+        class="btn btn-primary" 
+        (click)="testSync()"
+        [disabled]="syncInProgress || isLoading">
+        🧪 Test (5 eSIMs)
+      </button>
+      
+      <button 
+        class="btn btn-success" 
+        (click)="quickSync()"
+        [disabled]="syncInProgress || isLoading">
+        ⚡ Rapide (50 eSIMs)
+      </button>
+      
+      <button 
+        class="btn btn-warning" 
+        (click)="fullSync()"
+        [disabled]="syncInProgress || isLoading">
+        🔄 Complète (100 eSIMs + packages)
+      </button>
+      
+      <button 
+        class="btn btn-info" 
+        (click)="testConnection()"
+        [disabled]="syncInProgress || isLoading">
+        🔍 Tester connexion
+      </button>
+    </div>
+  </div>
+
+  <!-- Synchronisation en cours -->
+  <div *ngIf="syncInProgress" class="sync-progress">
+    <div class="spinner"></div>
+    <p>Synchronisation en cours...</p>
+  </div>
+
+  <!-- Statistiques détaillées -->
+  <div class="stats-card">
+    <h3>📈 Statistiques détaillées</h3>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">{{ syncStats.esims_created || 0 }}</div>
+        <div class="stat-label">eSIMs créées</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ syncStats.esims_skipped || 0 }}</div>
+        <div class="stat-label">eSIMs ignorées</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ syncStats.packages_created || 0 }}</div>
+        <div class="stat-label">Packages créés</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ syncStats.errors || 0 }}</div>
+        <div class="stat-label">Erreurs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logs de synchronisation -->
+  <div class="logs-card">
+    <h3>📋 Logs récents</h3>
+    <button 
+      class="btn btn-secondary" 
+      (click)="loadSyncLogs()"
+      [disabled]="isLoading">
+      🔄 Actualiser les logs
+    </button>
+    
+    <div class="logs-container">
+      <div *ngFor="let log of syncLogs" class="log-item">
+        <div class="log-time">{{ log.timestamp }}</div>
+        <div class="log-message" [class]="log.level">
+          {{ log.message }}
+        </div>
+      </div>
+      
+      <div *ngIf="syncLogs.length === 0" class="no-logs">
+        Aucun log disponible
+      </div>
+    </div>
+  </div>
+</div> 

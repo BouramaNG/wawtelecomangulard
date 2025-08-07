@@ -1,0 +1,24 @@
+<section class="connexion-section">
+    <div class="connexion-container">
+        <div class="connexion-content">
+            <h2 class="connexion-title">{{"login.title" | translate}}</h2>
+            
+            <p class="text-center text-warning" style="cursor: pointer;" [routerLink]="['/']">{{"login.return_home" | translate}}</p>
+
+            <form class="connexion-form" method="POST">
+                <input type="email" id="email" name="email" autocomplete="off" placeholder="{{'login.email_placeholder' | translate}}" [(ngModel)]="email" required>
+                <input type="password" id="password" name="password" autocomplete="off" [(ngModel)]="password" placeholder="{{'login.password_placeholder' | translate}}" required>
+                <button type="submit" class="btn-submit" (click)="connexion()">{{"login.login_button" | translate}}</button>
+            </form>
+
+            <p class="connexion-footer">
+                {{"login.no_account" | translate}} <a [routerLink]="['/register']" routerLinkActive="router-link-active">{{"login.register_link" | translate}}</a>
+            </p>
+        </div>
+
+        <!-- Login image -->
+        <div class="connexion-image">
+            <img src="https://wawtelecom.com/Service-Cloud.webp" alt="{{'login.image_alt' | translate}}">
+        </div>
+    </div>
+</section>

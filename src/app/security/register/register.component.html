@@ -1,0 +1,40 @@
+<section class="inscription-section">
+    <div class="inscription-container">
+        <div class="inscription-content">
+            <h2 class="inscription-title">{{'register.title' | translate}}</h2>
+            <p class="text-center text-warning" style="cursor: pointer;" [routerLink]="['/']">{{'register.return_home' | translate}}</p>
+
+            <!-- Registration form -->
+            <form class="inscription-form">
+                <input type="text" name="first_name" placeholder="{{'register.first_name' | translate}}" required [(ngModel)]="prenom">
+                <input type="text" name="last_name" placeholder="{{'register.last_name' | translate}}" required [(ngModel)]="nom">
+                <input type="email" name="email" placeholder="{{'register.email' | translate}}" required [(ngModel)]="email">
+                <div class="d-flex">
+                    <ng-select name="ind" [(ngModel)]="selectedIndicatif"
+                    [clearable]="false"
+                    [searchable]="false" style="width: 8rem;">
+                        <ng-option *ngFor="let indicatif of indicatifs" [value]="indicatif.ind">
+                            <div class="d-flex align-items-center">
+                                <img [src]="indicatif.drapeau" width="20" height="20" class="me-2">
+                                <span>{{indicatif.ind}}</span>
+                            </div>
+                        </ng-option>
+                    </ng-select>
+                    <input type="text" required placeholder="{{'register.phone_number' | translate}}" name="tel" [(ngModel)]="telephone">
+                </div>
+                <input type="password" name="password" placeholder="{{'register.password' | translate}}" required [(ngModel)]="password">
+                <input type="password" name="confirm_password" placeholder="{{'register.confirm_password' | translate}}" required [(ngModel)]="passwordConf">
+                <button type="submit" class="btn-submit" (click)="inscription()">{{'register.register_button' | translate}}</button>
+            </form>
+
+            <p class="inscription-footer">
+                {{'register.have_account' | translate}} <a [routerLink]="['/login']" routerLinkActive="router-link-active">{{'register.login_link' | translate}}</a>
+            </p>
+        </div>
+
+        <!-- Registration image -->
+        <div class="inscription-image">
+            <img src="https://wawtelecom.com/Service-Cloud.webp" alt="{{'register.image_alt' | translate}}">
+        </div>
+    </div>
+</section>

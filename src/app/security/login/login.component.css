@@ -1,0 +1,329 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+a {
+    color: #FFDD33;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #333;
+}
+
+/* Section de connexion */
+.connexion-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    min-height: 100vh;
+    background-color: #f7f7f7;
+}
+
+/* Conteneur principal */
+.connexion-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* Contenu du formulaire */
+.connexion-content {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    padding: 20px;
+}
+
+.connexion-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.connexion-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.connexion-form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    transition: border 0.3s;
+}
+
+.connexion-form input:focus {
+    border-color: #FFDD33;
+    outline: none;
+}
+
+.btn-submit {
+    padding: 12px;
+    font-size: 16px;
+    background-color: #FFDD33;
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #333;
+    color: #FFDD33;
+}
+
+.connexion-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.connexion-footer a {
+    font-weight: bold;
+}
+
+.connexion-footer a:hover {
+    color: #333;
+}
+
+/* Image de la section */
+.connexion-image {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.connexion-image img {
+    max-width: 80%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    /* Make the nav-menu hidden by default on mobile */
+    
+    .dropdown-toggle{
+         margin-left: 140px;
+    font-size: 18px;
+    }
+    .nav-menu {
+        display: none;  /* Hide the menu initially */
+        position: fixed;  /* Fixed positioning to cover the full screen */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        z-index: 1000;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+        transform: translateY(-100%); /* Initially hide the menu above the screen */
+        transition: transform 0.3s ease-in-out;  /* Smooth transition for sliding menu */
+        flex-direction: column;  /* Stack menu items vertically */
+        justify-content: center;  /* Center the items vertically */
+        align-items: center;  /* Center the items horizontally */
+    }
+
+    /* When the menu is opened */
+    .nav-menu.open {
+        display: flex;  /* Show the menu */
+        transform: translateY(0);  /* Slide it into view */
+    }
+
+    /* Style the burger button */
+    .menu-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+    }
+
+    .menu-button div {
+        height: 4px;
+        background-color: #333;
+    }
+
+    /* Styling for mobile links */
+    .nav-menu .link_nav {
+        padding: 15px;
+        font-size: 18px;
+        color: #333;
+        text-decoration: none;
+        text-align: center;
+        width: 100%;  /* Full width for the links */
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #ddd; /* Add a separator between items */
+    }
+
+    /* Hover effect for mobile links */
+    .nav-menu .link_nav:hover {
+        background-color: #ffdd33;
+        color: #333;
+    }
+
+    /* Style for dropdown */
+    .dropdown {
+        width: 100%;
+    }
+    
+    .dropdown-list {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+/* Mobile styles */
+@media (max-width: 896px) {
+    /* Make the nav-menu hidden by default on mobile */
+    
+    .dropdown-toggle{
+         margin-left: 157px;
+    font-size: 18px;
+    }
+    .nav-menu {
+        display: none;  /* Hide the menu initially */
+        position: fixed;  /* Fixed positioning to cover the full screen */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        z-index: 1000;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+        transform: translateY(-100%); /* Initially hide the menu above the screen */
+        transition: transform 0.3s ease-in-out;  /* Smooth transition for sliding menu */
+        flex-direction: column;  /* Stack menu items vertically */
+        justify-content: center;  /* Center the items vertically */
+        align-items: center;  /* Center the items horizontally */
+    }
+
+    /* When the menu is opened */
+    .nav-menu.open {
+        display: flex;  /* Show the menu */
+        transform: translateY(0);  /* Slide it into view */
+    }
+
+    /* Style the burger button */
+    .menu-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+    }
+
+    .menu-button div {
+        height: 4px;
+        background-color: #333;
+    }
+
+    /* Styling for mobile links */
+    .nav-menu .link_nav {
+        padding: 15px;
+        font-size: 18px;
+        color: #333;
+        text-decoration: none;
+        text-align: center;
+        width: 100%;  /* Full width for the links */
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #ddd; /* Add a separator between items */
+    }
+
+    /* Hover effect for mobile links */
+    .nav-menu .link_nav:hover {
+        background-color: #ffdd33;
+        color: #333;
+    }
+
+    /* Style for dropdown */
+    .dropdown {
+        width: 100%;
+    }
+    
+    .dropdown-list {
+        width: 100%;
+    }
+}
+
+
+
+/* Responsive : Masquer l'image sur les petits écrans */
+@media (max-width: 600px) {
+    .connexion-image {
+        display: block; /* L'image est affichée sur les petits écrans */
+        order: 1; /* Image en haut (peut être changé à `order: 2;` pour l'avoir en bas) */
+        margin-bottom: 0; /* Supprime l'espacement sous l'image */
+    }
+
+    .connexion-container {
+        flex-direction: column; /* Alignement en colonne */
+        order: 2; /* Le formulaire sera affiché après l'image */
+    }
+
+    .connexion-content {
+        flex: 1 1 100%; /* Prendre toute la largeur */
+        padding: 10px;
+    }
+
+    .connexion-title {
+        font-size: 20px;
+    }
+
+    .connexion-form input {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .btn-submit {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .connexion-footer {
+        font-size: 12px;
+    }
+}
+
+/* Responsive : Masquer l'image pour encore plus petits écrans (moins de 300px) */
+@media (max-width: 300px) {
+    .connexion-image {
+        display: none;
+    }
+
+    .connexion-content {
+        padding: 5px;
+    }
+}

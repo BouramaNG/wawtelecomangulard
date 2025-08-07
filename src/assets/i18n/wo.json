@@ -1,0 +1,301 @@
+{
+  "MENU": {
+    "HOME": "Bërëb",
+    "SERVICES": "Jëf yu nu man",
+    "CONNECTIVITY": "Jàppale",
+    "CLOUD": "Cloud",
+    "TRAVEL": "Voyage",
+    "ABOUT": "Ci sunu mbir",
+    "PEER": "Dia Direct Peering",
+    "CONTACT": "Contact",
+    "LOGIN": "Seetal"
+  },
+  "peer": {
+    "heroSection": {
+      "eyebrow": "DIA Direct Peering :",
+      "title": "Yéegal ci gën jaa rafet ci internetu àdduna bi yépp ak WAW Telecom",
+      "description": "WAW Telecom moo la bàyyi nga man a jàppale ci barab yi internet di jaayante ci Europe, niki AMS-IX, LINX ak FRANCE-IX. Ak sunu jëfu DIA Direct Peering",
+      "ctaButtons": {
+        "primary": "Wax ak nun",
+        "secondary": "E-mail peering@wawtelecom.com"
+      }
+    },
+    "offerSection": {
+      "title": "DIA Direct Peering",
+      "description": "WAW Telecom moo la bàyyi nga man a jàppale ci barab yi internet di jaayante ci Europe, niki AMS-IX, LINX ak FRANCE-IX. Ak sunu jëfu DIA Direct Peering, am nga jàppale gu dëgër te gaaw ak yàgg gu néew ak itam yéegale gu baax ngir sa soxla yu mag."
+    },
+    "peerSection": {
+      "title": "Lu tax ngay tànn sunu fasonu peering direct ?",
+      "description_1": "✅ Ligéey bu gën – Jàppale direct ci IX yu mag yi ci Europe ngir yéegal gu gaaw ak gu taxaw ci mbir yi ak jëf yi ci internet. ",
+      "description_2": "✅ Yàgg gu néew – Wàññi diggante yi ngir yéegale gu gaaw ci données yi. ",
+      "description_3": "✅ Sécurité ak Wóoral – Jaayante yu gën a leer te gën a wóor ndax jàppale yu jub."
+    },
+    "stream": {
+      "title": "Ngir plateforme yu di yéegale",
+      "description": "May nit ñi ñu am expérience utilisateur bu dul tënk ak WAW Telecom. Ci biir jëfu yéegale, qualité bu am ci jàppale bi moo tollu ak qualité bu am ci mbir mi. Sunu fasonu DIA Direct Peering moo la bàyyi nga man a yéegale sa vidéo yi, sa music yi ak yénneen mbir yu bari ak yàgg gu néew ak itam yéegale gu mag. Ci sa jàppale direct ci IX yu mag yi ci Europe, dinga wàññi diggante yi te wóoral yéegale gu gaaw ak gu leer ci sa nit ñi, même ci jamono yi jaayante yi di yokku."
+    },
+    "edu": {
+      "title": "Ngir plateforme yu di jàngale",
+      "description": "Facilité jàngum internet ak jàppale gu wóor. Plateforme yu jàngale yu modern day tegu ci jàppale gu dëgër ngir bàyyi cours yu internet, vidéo conférence ak itam ressources pédagogiques yépp ñu man a yéegal. Sunu fasonu DIA Direct Peering day wóoral yàgg gu néew ak itam yéegale gu baax, ngir bàyyi yéegale gu leer ci mbir yu jàngale ak itam wax ju leer ci diggante jàngalekat yi ak itam jàngalekat yi."
+    }
+  },
+  "check": {
+    "EMAIL": "Email",
+    "TELEPHONE": "Téléphone",
+    "ACHETER": "Jënd",
+    "COMMANDE": "Commande",
+    "FORFAIT": "Forfait :",
+    "PRIX": "Prix :",
+    "PAYS": "Réew :",
+    "DUREE_VALIDITE": "Yàggu wóoral :",
+    "JOURS": "Fan",
+    "Opt": "optionnel"
+  },
+  "COMMON": {
+    "SAVE": "Enregistrer",
+    "CANCEL": "Annuler",
+    "SEARCH": "Seetal"
+  },
+  "hero": {
+    "eyebrow": "Jàppale ci àdduna bi",
+    "title": "fu mu man a nekk, à partir de",
+    "price": "3.000 FCFA",
+    "contact": "Wax ak nun",
+    "phone": "Téléphone"
+  },
+  "countries": {
+    "title": "Tànnal réew",
+    "search": "Seetal sa réew",
+    "continents": {
+      "all": "Yépp",
+      "africa": "Afrique",
+      "northAmerica": "Amerique du Nord",
+      "southAmerica": "Amerique du Sud",
+      "europe": "Europe",
+      "asia": "Asie",
+      "oceania": "Oceanie"
+    }
+  },
+  "COUNTRIES": {
+    "France": "France",
+    "Maroc": "Maroc",
+    "États-Unis": "États-Unis",
+    "Espagne": "Espagne",
+    "Italie": "Italie",
+    "Arabie Saoudite": "Saoudite Arabia",
+    "Turquie": "Turquie",
+    "Chine": "Chine",
+    "Afrique du Sud": "Afrique du Sud",
+    "Royaume-Uni": "Royaume-Uni",
+    "Côte d'Ivoire": "Côte d'Ivoire",
+    "Canada": "Canada",
+    "Kenya": "Kenya"
+  },
+  "esim": {
+    "ESIM_POUR": "eSIM ngir",
+    "ALLER_A_LA_CAISSE": "Dem ci caisse bu wóor",
+    "FCFA": "FCFA"
+  },
+  "contact": {
+    "CONTACT_TITLE": "So beesoon nga am information wallu assistance ? Wax ak nun léegi !",
+    "CONTACT_ADDRESS": "Ngor Almadies, Immeuble BIB'S , 56 Route de Ngor – Dakar, Sénégal",
+    "CONTACT_PHONE": "Téléphone +221 33 860 19 29",
+    "CONTACT_EMAIL": "E-mail: contact@wawtelecom.com",
+    "FORM_NAME": "Tur",
+    "FORM_EMAIL": "Email",
+    "FORM_MESSAGE": "Message",
+    "FORM_SUBMIT": "Envoyer"
+  },
+    "accueil": {
+      "HERO_TITLE": "Jub ci jëfandikoo gu am solo :",
+      "HERO_TITLE_1": "lépp dafa gëna baax ",
+      "HERO_TITLE_2": "soo xamé ni lépp ngi and di dox.",
+      "HERO_DESCRIPTION": "Ñu and di taxawal ëllëg ju bees ci say mbir. Ñoo ngi jàppalé ci soppi mbiri kërugëm yi ci àdduna bépp, ci biir loolu nu dugal ay xarala yu am solo : Jàppalante, Cloud ak IoT.",
+      "HERO_BUTTON": "Nga woo ñu",
+  
+      "SLIDE2_TITLE": "Jàngale ci àdduna bépp ak sunu eSIM",
+      "SLIDE2_DESCRIPTION": "Bayyi sa carte SIM yu yàgg ya ! Am ndam ci connexion bu gaaw te baax ci àdduna bépp, loolu du la sonal.",
+      "SLIDE2_BUTTON": "Découvrir eSIM bi",
+  
+      "SLIDE3_TITLE": "Bul réccu ci connexion, foo man a nekk",
+      "SLIDE3_DESCRIPTION": "Bul réccu ci réseau bi bu ngay jàngale. Ak sunu eSIM, dugg ci Internet ci ay clic yu néew te bul réccu ci contact bi.",
+      "SLIDE3_BUTTON": "Jëlal sa eSIM",
+      "APP_DOWNLOAD_BUTTON": "Meune gua am fi application Bi"
+    },
+  "OFFER_SECTION": {
+    "TITLE": "Bénéficier ci infrastructure numérique évolutive ak sécurisée",
+    "DESCRIPTION": "Ci WAW TELECOM, ñu ngi may lu ëpp simple connectivité , ñu ngi garantir infrastructure sécurisée ak performante, conçue ngir répondre ci exigences yu ère numérique. Grâce ci sunu solution yu connectivité privée, sa entreprise yi ñu ngi bénéficier ci sécurité renforcée, ci performance optimisée ak ci fiabilité bi di inspirer confiance",
+    "CONTACT_BTN": "Wax ak nun"
+  },
+  "ABOUT_SECTION": {
+    "TITLE": "Ci sunu mbir",
+    "DESCRIPTION": "Ci WAW TELECOM, ñu ngi redéfinir télécommunications ci Sénégal. Leader innovant ci secteur bi, ñu ngi may gamme complète yu services yu adapté ci besoins yu particuliers ak yu entreprises. Sunu mission : fournir solution technologique yu avancées bi di allier performance, fiabilité ak simplicité, ngir connecter Sénégal ci reste yu monde bi. Ak expertise yu pointe ak engagement vers excellence, WAW TELECOM moy sa partenaire yu confiance ngir répondre ci défis yu ère numérique.",
+    "COMPANY_NAME": "WAW TELECOM",
+    "MISSION": "Sunu mission",
+    "IMAGE_ALT": "Ci sunu mbir"
+  },
+  "VALUES_SECTION": {
+    "TITLE": "Sunu Valeurs",
+    "CARD_1": {
+      "TITLE": "Service Client : Réactivité, Expertise, Confiance",
+      "TEXT": "Chaque contact moy simplifié ngir permettre ci sunu clients yi ñu concentrer wu ci li ëpp solo : réussite yu leurs projets."
+    },
+    "CARD_2": {
+      "TITLE": "Repousser sunu limites : Une culture yu croissance ak yu résilience",
+      "TEXT": "Innover constamment ngir dépasser attentes yi ak relever défis technologiques yu demain."
+    },
+    "CARD_3": {
+      "TITLE": "Franchir les frontières : Une connectivité ngir réduire la fracture numérique ak autonomiser les communautés",
+      "TEXT": "Connecter les entreprises ak les individus au-delà yu les frontières, ci bâtir un monde plus interconnecté."
+    }
+  },
+  "ADDED_VALUE": {
+    "TITLE": "Sunu valeur ajoutée",
+    "CARD_1": {
+      "TITLE": "Accessibilité : Internet rapide ak fiable ngir tous",
+      "ALT": "Accessibilité",
+      "DESCRIPTION": "WAW TELECOM, ñu ngi croire que l'accès ci un Internet rapide ak fiable ne devrait pas être un luxe. Ñu ngi nous engager ci offrir des solutions yu connectivité yu qualité, adaptées ci tous les budgets, grâce ci des tarifs compétitifs.\n\nCette approche inclusive permet ci les particuliers, entreprises ak communautés yi ñu rester connectés, sans compromis ci la performance ni ci la fiabilité. Ak WAW TELECOM, la connectivité devient un levier d'opportunités ngir tous."
+    },
+    "CARD_2": {
+      "TITLE": "Qualité : Une connexion ci laquelle vous pouvez compter",
+      "ALT": "Qualité",
+      "DESCRIPTION": "Ci WAW TELECOM, la qualité moy sunu priorité absolue. Ñu ngi nous engager ci offrir un service Internet performant, fiable ak ci la hauteur yu les attentes yu sunu clients. Chaque connexion moy pensée ngir garantir une expérience fluide ak une satisfaction durable.\n\nAk WAW TELECOM, vous bénéficiez d'une excellence technique ak d'un accompagnement sur mesure, parce que vous méritez le meilleur."
+    },
+    "CARD_3": {
+      "TITLE": "Utilité : Une valeur ajoutée ngir votre quotidien",
+      "ALT": "Utilité",
+      "DESCRIPTION": "Ci WAW TELECOM, ñu ngi faire de l'utilité la pierre angulaire yu nos services. Nos solutions ne se limitent pas ci un simple accès ci Internet : elles offrent une réelle valeur ajoutée ngir simplifier votre quotidien ak booster vos activités professionnelles.\n\nAk des forfaits flexibles, un support client réactif, ak des services innovants conçus ngir maximiser la productivité ak la connectivité, ñu ngi nous engager ci vous accompagner ci votre réussite personnelle ak professionnelle.\n\nWAW TELECOM, c'est Internet au service yu vos ambitions."
+    }
+  },
+  "PARTNERS": {
+    "TITLE": "Parmis Nos Partenaires de Confiance"
+  },
+  "CONNECTIVITY_HERO": {
+    "EYEBROW": "Connectivité fiable :",
+    "TITLE": "profitez d'un Internet haut débit adapté ci vos besoins",
+    "DESCRIPTION": "Rester connecté ak des solutions Internet flexibles, conçues ngir répondre ci les besoins yu votre entreprise",
+    "CONTACT_BTN": "Wax ak nun",
+    "PHONE_BTN": "Téléphone: (+ 221) 33 860 19 29",
+    "IMG_ALT": "WAW TELECOM"
+  },
+  "OFFER": {
+    "OFFER_TITLE": "Connectivité privée sécurisée",
+    "OFFER_DESCRIPTION": "Ci WAW TELECOM, ñu ngi may lu ëpp une simple connexion : ñu ngi fournir des solutions yu connectivité privée bi di garantir une infrastructure sécurisée, performante ak adaptée ci les enjeux yu l’ère numérique. Faire confiance ci notre expertise ngir renforcer la sécurité ak l’efficacité yu votre entreprise tout en répondant ci vos besoins les plus stratégiques.",
+    "OFFER_BUTTON": "Wax ak nun"
+  },
+  "OFFER_2": {
+    "OFFER_TITLE": "WAW TELECOM : La connectivité au service yu votre entreprise",
+    "OFFER_DESCRIPTION": "Optimiser vos performances ak nos solutions MPLS robustes, idéales ngir interconnecter vos sites distants ak garantir une qualité de service (QoS) optimale. Bénéficier d’une faible latence ngir vos applications critiques, d’une gestion centralisée, ak d’une visibilité complète ci vos flux yu données.Ak WAW TELECOM, assurer la fiabilité ak l’efficacité yu votre réseau, ngir des communications d’entreprises sans compromis.",
+    "OFFER_BUTTON": "Wax ak nun"
+  },
+  "OFFER_SDWAN": {
+    "OFFER_BUTTON": "Wax ak nun",
+    "OFFER_DESCRIPTION": "Ak nos solutions SD-WAN yu pointe, simplifier la gestion yu votre réseau tout en améliorant ses performances. Offrir ci votre entreprise une connectivité optimisée, une gestion fluide yu vos applications ak une réduction significative yu les coûts par rapport ci les infrastructures réseau traditionnelles. WAW TELECOM vous accompagne vers une infrastructure plus intelligente ak flexible.",
+    "OFFER_TITLE": "Des solutions SD-WAN ngir une connectivité agile ak performante"
+  },
+  "OFFER_IOT": {
+    "OFFER_BUTTON": "Wax ak nun",
+    "OFFER_DESCRIPTION": "Adopter nos solutions IoT adaptées ci vos besoins spécifiques ak bénéficier d’une visibilité totale ci vos équipements ak processus. Optimiser la gestion yu vos ressources, améliorer votre efficacité opérationnelle ak réduire vos coûts d’exploitation grâce ci notre expertise en connectivité intelligente.",
+    "OFFER_TITLE": "Ci WAW TELECOM : Des solutions IoT sur mesure ngir votre entreprise"
+  },
+  "fr": {
+    "title": "BOOSTEZ VOTRE ACTIVITE GRÂCE A NOS SOLUTIONS CLOUD PERFORMANTES",
+    "shared_hosting": {
+      "title": "Hébergement Mutualisé : La solution idéale pour vos projets",
+      "features": {
+        "secure_storage": "Stockage sécurisé pour vos données et sauvegardes",
+        "optimized_hosting": "Hébergement optimisé pour vos projets de petite taille",
+        "professional_email": "Adresses e-mail professionnelles incluses",
+        "management_tools": "Outils de gestion dédiés aux startups",
+        "responsive_support": "Support réactif pour une assistance rapide et efficace"
+      }
+    },
+    "dedicated_hosting": {
+      "title": "Hébergement Pro Dédié : La puissance au service de vos grands projets",
+      "features": {
+        "custom_hosting": "Hébergement sur mesure pour vos projets de grande envergure",
+        "professional_email": "Adresses e-mail professionnelles incluses",
+        "advanced_security": "Outils avancés de sécurité pour protéger vos données",
+        "dedicated_support": "Support business dédié pour un accompagnement optimal"
+      }
+    },
+    "vps_cloud": {
+      "title": "Service Cloud VPS : Performance, flexibilité et sécurité",
+      "features": {
+        "os_choice": "Systèmes d'exploitation au choix : Ubuntu, CentOS, Debian, Fedora…",
+        "microsoft_env": "Environnements Microsoft : Windows, Windows Server, SQL Server",
+        "security_tools": "Outils avancés de sécurité intégrés",
+        "high_availability": "Haute disponibilité pour une fiabilité maximale",
+        "backups": "Sauvegardes automatiques, snapshots, et firewall inclus"
+      }
+    },
+    "contact_button": "Nous contacter"
+  },
+  "login": {
+    "title": "Connectez-vous",
+    "return_home": "Retourner à l'accueil",
+    "email_placeholder": "Entrez votre email",
+    "password_placeholder": "Entrez votre mot de passe",
+    "login_button": "Se connecter",
+    "no_account": "Vous n'avez pas de compte ?",
+    "register_link": "S'inscrire",
+    "image_alt": "Image de connexion"
+  },
+  "forfait": {
+    "title": "Mes forfaits",
+    "status": "Statut",
+    "payment_done": "Paiement effectué",
+    "pending": "En attente",
+    "amount": "Montant",
+    "payment_method": "Méthode de paiement",
+    "reference": "Référence",
+    "country": "Pays",
+    "validity": "Validité",
+    "validity_days": "jours",
+    "date": "Date",
+    "no_packages": "Aucun forfait disponible"
+  },
+  "register": {
+    "title": "Inscrivez-vous",
+    "return_home": "Retourner à l'accueil",
+    "first_name": "Prénom",
+    "last_name": "Nom",
+    "email": "Email",
+    "phone_number": "Numero telephone",
+    "password": "Mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+    "register_button": "S'inscrire",
+    "have_account": "Vous avez déjà un compte ?",
+    "login_link": "Se connecter",
+    "image_alt": "Image d'inscription"
+  },
+  "navig": {
+    "order_history": "Historique commande",
+    "buy_esim": "Acheter eSim",
+    "disc": "Deconnexion",
+    "con": "Connexion"
+  },
+  "footer": {
+    "address": {
+      "title": "Adresse",
+      "content": "Ngor Almadies, 56 Route de Ngor – Dakar, Sénégal"
+    },
+    "contacts": {
+      "title": "Contacts",
+      "email": "contact@wawtelecom.com"
+    },
+    "social": {
+      "title": "Nos Réseaux sociaux"
+    },
+    "quickLinks": {
+      "title": "Liens rapides",
+      "home": "Acceuil",
+      "esim": "eSim",
+      "about": "A propos",
+      "contact": "Contact",
+      "login": "Connexion"
+    },
+    "copyright": "WAW TELECOM 2025. Tous droits réservés.",
+    "developedBy": "Conçu et développé par WAW TELECOM"
+  }
+}

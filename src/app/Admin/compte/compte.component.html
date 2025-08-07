@@ -1,0 +1,271 @@
+<app-stat></app-stat>
+<main>
+  <h2 class="text-center">Packages eSIM synchronisés</h2>
+  <div class="search-container mb-3">
+    <div class="input-group">
+      <input 
+        type="text" 
+        class="form-control" 
+        name="assi"
+        placeholder="Rechercher par nom, pays, code..."
+        [(ngModel)]="searchText"
+        (input)="filterEsims()"
+      >
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Nom du package</th>
+          <th>Pays</th>
+          <th>Code pays</th>
+          <th>Data (Go)</th>
+          <th>ID Telna</th>
+          <th>Statut</th>
+          <th>Date de création</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pkg of filteredEsims | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+          <td class="fw-bold">{{ pkg.name }}</td>
+          <td>{{ pkg.country }}</td>
+          <td>{{ pkg.country_code }}</td>
+          <td>{{ pkg.data_mb | number:'1.0-0' }}</td>
+          <td><span class="badge bg-secondary">{{ pkg.telna_id }}</span></td>
+          <td>
+            <span [ngClass]="{
+              'badge bg-success': pkg.status === 'active',
+              'badge bg-danger': pkg.status !== 'active'
+            }">
+              {{ pkg.status === 'active' ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
+          <td>{{ pkg.created_at | date:'short' }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2" (click)="openEditModal(pkg)">Modifier</button>
+            <button class="btn btn-outline-warning btn-sm" (click)="toggleStatus(pkg)">
+              {{ pkg.status === 'active' ? 'Désactiver' : 'Activer' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls class="pagination" (pageChange)="page = $event"></pagination-controls>
+    <div *ngIf="filteredEsims.length==0">
+      <p class="text-center text-danger">😔 Aucun package eSIM disponible</p>
+    </div>
+  </div>
+
+  <!-- Modal d'édition -->
+  <div class="modal fade show" tabindex="-1" [ngStyle]="{display: showEditModal ? 'block' : 'none', background: 'rgba(0,0,0,0.5)'}" *ngIf="showEditModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modifier le package</h5>
+          <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="submitEdit()">
+            <div class="mb-3">
+              <label class="form-label">Nom du package</label>
+              <input type="text" class="form-control" [(ngModel)]="packageEdit.name" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Pays</label>
+              <input type="text" class="form-control" [(ngModel)]="packageEdit.country" name="country" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Code pays</label>
+              <input type="text" class="form-control" [(ngModel)]="packageEdit.country_code" name="country_code" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Data (Go)</label>
+              <input type="number" class="form-control" [(ngModel)]="packageEdit.data_mb" name="data_mb" min="1" required>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-secondary me-2" (click)="closeEditModal()">Annuler</button>
+              <button type="submit" class="btn btn-success">Enregistrer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+    <!-- <div class="form mt-4 ">
+        <h2 class="text-center">Formulaire d'ajout de packages eSim</h2>
+        <form action="">
+            <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Nom pays :</label>
+                  <input type="text" class="form-control" name="pays" [(ngModel)]="name" placeholder="Nom pays" aria-label="First name">
+                </div>
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1"> Code du pays :</label>
+                  <input type="text" class="form-control" name="code" [(ngModel)]="code" placeholder="Code du pays" aria-label="Last name">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">Plan :</label>
+                  <input type="text" class="form-control" name="plan" [(ngModel)]="plan"  placeholder="Plan" aria-label="First name">
+                </div>
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">Prix :</label>
+                  <input type="text" class="form-control" name="prix" [(ngModel)]="prix" placeholder="Prix" aria-label="Last name">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">Durée de validité :</label>
+                  <input type="text" class="form-control" name="duree" [(ngModel)]="duree" placeholder="Durée de validité" aria-label="First name">
+                </div>
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">Fournisseur de réseau :</label>
+                  <input type="text" class="form-control" name="net" [(ngModel)]="net" placeholder="Fournisseur de réseau" aria-label="Last name">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">Lpa :</label>
+                  <input type="text" class="form-control" name="lpa" [(ngModel)]="lpa" placeholder="Lpa" aria-label="First name">
+                </div>
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">Identificateur eSIM :</label>
+                  <input type="text" class="form-control" name="esim" [(ngModel)]="esim_ident" placeholder="Identificateur eSIM" aria-label="Last name">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">Image : </label>
+                    <input type="file" class="form-control" name="image" accept="image/*" (change)="getFiles($event)" >
+                </div>
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">Informations reseaux</label>
+                  <input type="text" class="form-control" name="info" [(ngModel)]="net_inf" placeholder="Informations reseaux" aria-label="Last name">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">Politique d'expiration :</label>
+                  <input type="text" class="form-control" name="Politique" [(ngModel)]="expolicy" placeholder="Politique d'expiration" aria-label="First name">
+                </div>
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">Point d'accès autorisé :</label>
+                  <input type="text" class="form-control" name="Point" [(ngModel)]="hotspot" placeholder="Point d'accès autorisé" aria-label="Last name">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col mb-3">
+                    <label for="" class="fw-bold mb-1">limitation de vitesse :</label>
+                  <input type="text" class="form-control"  name="speedLimit" [(ngModel)]="speed" placeholder="First name" aria-label="First name">
+                </div>
+                </div>
+
+        </form>
+
+          <div class="bouton mt-2 d-flex justify-content-center align-items-center">
+              <button class="btn btnAjout" (click)="addPack()">Ajouter</button>
+          </div>
+    </div> -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Formulaire de modification de package</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="">
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Code du pays :</label>
+                  <input type="text" class="form-control" name="country_code" placeholder="Code du pays" aria-label="Code du pays" [(ngModel)]="code">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Nom du pays :</label>
+                  <input type="text" class="form-control" name="country_name" placeholder="Nom du pays" aria-label="Nom du pays" [(ngModel)]="name">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Nom du plan :</label>
+                  <input type="text" class="form-control" name="plan_name" placeholder="Nom du plan" aria-label="Nom du plan" [(ngModel)]="plan">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Prix :</label>
+                  <input type="number" min="0" step="0.01" class="form-control" name="price" placeholder="Prix" aria-label="Prix" [(ngModel)]="prix">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Validité (jours) :</label>
+                  <input type="number" min="1" class="form-control" name="validity_days" placeholder="Validité en jours" aria-label="Validité en jours" [(ngModel)]="duree">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Fournisseur réseau :</label>
+                  <input type="text" class="form-control" name="network_provider" placeholder="Fournisseur réseau" aria-label="Fournisseur réseau" [(ngModel)]="net">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Image (URL) :</label>
+                  <input type="text" class="form-control" name="image" placeholder="URL de l'image" aria-label="URL de l'image" [(ngModel)]="image">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Informations réseau :</label>
+                  <textarea class="form-control" name="network_info" placeholder="Informations réseau" aria-label="Informations réseau" [(ngModel)]="net_inf"></textarea>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Politique d'expiration :</label>
+                  <input type="text" class="form-control" name="expiration_policy" placeholder="Politique d'expiration" aria-label="Politique d'expiration" [(ngModel)]="expolicy">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Hotspot autorisé :</label>
+                  <select class="form-select" name="hotspot_allowed" aria-label="Hotspot autorisé" [(ngModel)]="hotspot">
+                    <option value="">Sélectionner...</option>
+                    <option value="1">Oui</option>
+                    <option value="0">Non</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">Limite de vitesse :</label>
+                  <input type="text" class="form-control" name="speed_limit" placeholder="Limite de vitesse" aria-label="Limite de vitesse" [(ngModel)]="speed">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btnAjout" data-bs-dismiss="modal" (click)="updatePack()">Modifier</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>

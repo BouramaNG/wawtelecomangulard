@@ -1,0 +1,351 @@
+<app-stat></app-stat>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" *ngIf="loading">
+  <div class="spinner">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
+  <p>Chargement des commandes...</p>
+</div>
+
+<main class="admin-commandes">
+  <!-- Header avec titre et actions -->
+  <div class="header-section">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h1 class="page-title">
+            <i class="fas fa-shopping-cart"></i>
+            Gestion des Commandes
+          </h1>
+          <p class="text-muted">Suivi et gestion de toutes les commandes eSIM</p>
+        </div>
+        <div class="col-md-6 text-end">
+          <button class="btn btn-primary me-2" (click)="exporterDonnees()">
+            <i class="fas fa-download"></i> Exporter
+          </button>
+          <button class="btn btn-success" (click)="chargerCommandes()">
+            <i class="fas fa-sync-alt"></i> Actualiser
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistiques en temps réel -->
+  <div class="stats-section">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2 col-sm-6 mb-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-primary">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ statistiques.totalCommandes }}</h3>
+              <p>Total Commandes</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 mb-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-success">
+              <i class="fas fa-calendar-day"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ statistiques.commandesAujourdhui }}</h3>
+              <p>Aujourd'hui</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 mb-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-info">
+              <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formaterPrix(statistiques.revenusTotal) }}</h3>
+              <p>Revenus Total</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 mb-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-warning">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ formaterPrix(statistiques.revenusAujourdhui) }}</h3>
+              <p>Revenus Aujourd'hui</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 mb-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-success">
+              <i class="fas fa-percentage"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ statistiques.tauxReussite | number:'1.0-1' }}%</h3>
+              <p>Taux de Réussite</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtres et recherche -->
+  <div class="filters-section">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">🔍 Recherche</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Client, email, référence..."
+                [(ngModel)]="recherche"
+                (input)="appliquerFiltres()">
+            </div>
+            <div class="col-md-2 mb-3">
+              <label class="form-label">📊 Statut</label>
+              <select class="form-select" [(ngModel)]="filtreStatut" (change)="appliquerFiltres()">
+                <option *ngFor="let statut of statuts" [value]="statut.value">
+                  {{ statut.label }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-2 mb-3">
+              <label class="form-label">🌍 Pays</label>
+              <select class="form-select" [(ngModel)]="filtrePays" (change)="appliquerFiltres()">
+                <option *ngFor="let pays of pays" [value]="pays.value">
+                  {{ pays.label }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-2 mb-3">
+              <label class="form-label">📅 Date</label>
+              <input 
+                type="date" 
+                class="form-control" 
+                [(ngModel)]="filtreDate"
+                (change)="appliquerFiltres()">
+            </div>
+            <div class="col-md-3 mb-3 d-flex align-items-end">
+              <button class="btn btn-outline-secondary me-2" (click)="reinitialiserFiltres()">
+                <i class="fas fa-times"></i> Réinitialiser
+              </button>
+              <button class="btn btn-primary" (click)="appliquerFiltres()">
+                <i class="fas fa-search"></i> Filtrer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div class="alert alert-danger" *ngIf="error">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ error }}
+  </div>
+
+  <!-- Tableau des commandes -->
+  <div class="table-section">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="fas fa-list"></i>
+            Liste des Commandes ({{ commandesFiltrees.length }} résultats)
+          </h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-dark">
+                <tr>
+                  <th>#</th>
+                  <th>👤 Client</th>
+                  <th>📱 Produit</th>
+                  <th>🌍 Pays</th>
+                  <th>💰 Prix</th>
+                  <th>💳 Paiement</th>
+                  <th>🔗 Référence</th>
+                  <th>📋 ICCID</th>
+                  <th>📅 Date</th>
+                  <th>📊 Statut</th>
+                  <th>⚙️ Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let commande of commandesFiltrees | paginate: { itemsPerPage: itemsPerPage, currentPage: page }; let i = index" 
+                    class="commande-row">
+                  <td>{{ (page - 1) * itemsPerPage + i + 1 }}</td>
+                  <td>
+                    <div class="client-info">
+                      <strong>{{ commande.order?.user?.name || 'N/A' }}</strong>
+                      <small class="text-muted d-block">{{ commande.order?.user?.email || commande.order?.email || 'N/A' }}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="product-info">
+                      <strong>{{ commande.order?.esim_package_template?.name || 'N/A' }}</strong>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="country-info">
+                      <strong>{{ commande.order?.esim_package_template?.country || 'N/A' }}</strong>
+                    </div>
+                  </td>
+                  <td>
+                    <strong class="text-success">{{ formaterPrix(commande.amount) }}</strong>
+                  </td>
+                  <td>
+                    <span class="payment-method">
+                      <i class="fas fa-credit-card"></i>
+                      {{ commande.provider || 'N/A' }}
+                    </span>
+                  </td>
+                  <td>
+                    <code class="reference-code">{{ commande.transaction_reference || 'N/A' }}</code>
+                  </td>
+                  <td>
+                    <div class="iccid-info">
+                      <strong>{{ commande.order?.esim?.iccid || 'N/A' }}</strong>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="date-info">
+                      {{ formaterDate(commande.created_at) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatutClass(commande.payment_status)">
+                      {{ getStatutLabel(commande.payment_status) }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="btn btn-sm btn-outline-primary me-1" 
+                              (click)="voirDetails(commande)"
+                              title="Voir détails">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-success me-1" 
+                              (click)="renvoyerEmail(commande)"
+                              title="Renvoyer email">
+                        <i class="fas fa-envelope"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-section" *ngIf="commandesFiltrees.length > 0">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="text-muted">
+            Affichage {{ (page - 1) * itemsPerPage + 1 }} à {{ Math.min(page * itemsPerPage, commandesFiltrees.length) }} 
+            sur {{ commandesFiltrees.length }} commandes
+          </p>
+        </div>
+        <div class="col-md-6 text-end">
+          <pagination-controls 
+            class="pagination-custom" 
+            (pageChange)="page = $event">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message si aucune commande -->
+  <div class="empty-state" *ngIf="commandesFiltrees.length === 0 && !loading">
+    <div class="container-fluid text-center">
+      <div class="empty-icon">
+        <i class="fas fa-shopping-cart"></i>
+      </div>
+      <h3>Aucune commande trouvée</h3>
+      <p class="text-muted">
+        Aucune commande ne correspond à vos critères de recherche.
+      </p>
+      <button class="btn btn-primary" (click)="reinitialiserFiltres()">
+        <i class="fas fa-refresh"></i> Réinitialiser les filtres
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal de détails de commande -->
+  <div class="modal fade show" tabindex="-1" [ngStyle]="{display: showDetailModal ? 'block' : 'none', background: showDetailModal ? 'rgba(0,0,0,0.5)' : 'none'}" *ngIf="showDetailModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fas fa-info-circle"></i> Détail de la commande
+          </h5>
+          <button type="button" class="btn-close" aria-label="Fermer" (click)="fermerDetailModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <h6 class="fw-bold mb-2">Informations client</h6>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Nom :</strong> {{ selectedCommande?.order?.user?.name || 'N/A' }}</li>
+                <li class="list-group-item"><strong>Email :</strong> {{ selectedCommande?.order?.user?.email || selectedCommande?.order?.email || 'N/A' }}</li>
+                <li class="list-group-item"><strong>Téléphone :</strong> {{ selectedCommande?.order?.user?.phone || selectedCommande?.order?.phone_number || 'N/A' }}</li>
+              </ul>
+            </div>
+            <div class="col-md-6 mb-3">
+              <h6 class="fw-bold mb-2">Détails de la commande</h6>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Référence :</strong> {{ selectedCommande?.order?.ref_command || 'N/A' }}</li>
+                <li class="list-group-item"><strong>Date :</strong> {{ selectedCommande?.order?.created_at | date:'medium' }}</li>
+                <li class="list-group-item"><strong>Statut :</strong> {{ getStatutLabel(selectedCommande?.payment_status || '') }}</li>
+                <li class="list-group-item"><strong>Montant :</strong> {{ selectedCommande?.order?.amount || selectedCommande?.amount || 0 }} XOF</li>
+                <li class="list-group-item"><strong>Méthode de paiement :</strong> {{ selectedCommande?.order?.payment_method || 'N/A' }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <h6 class="fw-bold mb-2">eSIM achetée</h6>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>ICCID :</strong> {{ selectedCommande?.order?.esim?.iccid || 'N/A' }}</li>
+                <li class="list-group-item"><strong>Activation code :</strong> {{ selectedCommande?.order?.esim?.activation_code || 'N/A' }}</li>
+                <li class="list-group-item"><strong>Statut eSIM :</strong> {{ selectedCommande?.order?.esim?.status || 'N/A' }}</li>
+              </ul>
+            </div>
+            <div class="col-md-6 mb-3">
+              <h6 class="fw-bold mb-2">Forfait eSIM</h6>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Plan :</strong> {{ selectedCommande?.order?.esim_package_template?.name || 'N/A' }}</li>
+                <li class="list-group-item"><strong>Pays :</strong> {{ selectedCommande?.order?.esim_package_template?.country || 'N/A' }}</li>
+                <li class="list-group-item"><strong>Code pays :</strong> {{ selectedCommande?.order?.esim_package_template?.country_code || 'N/A' }}</li>
+                <li class="list-group-item"><strong>Data :</strong> {{ selectedCommande?.order?.esim_package_template?.data_mb || 'N/A' }} Mo</li>
+                <li class="list-group-item"><strong>Statut :</strong> {{ selectedCommande?.order?.esim_package_template?.status || 'N/A' }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="fermerDetailModal()">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

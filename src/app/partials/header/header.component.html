@@ -1,0 +1,60 @@
+<div data-animation="default" class="navbar w-nav" role="banner" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
+    <div class="container">
+        <div class="wrapper_nav">
+            <a class="brand">
+                <img src="https://wawtelecom.com/waw.png" alt="Logo" class="img_brand"/>
+            </a>
+            <nav role="navigation" class="nav-menu" [class.active]="isMenuOpen">
+                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="link_nav">
+                    {{ 'MENU.HOME' | translate }}
+                </a>
+                
+                <div class="dropdown">
+                    <div class="dropdown-toggle" >
+                        {{ 'MENU.SERVICES' | translate }}
+                    </div>
+                    <nav class="dropdown-list">
+                        <a routerLink="/connectivite"  class="link_nav">
+                            {{ 'MENU.CONNECTIVITY' | translate }}
+                        </a>
+                        <a routerLink="/cloud"  class="link_nav">
+                            {{ 'MENU.CLOUD' | translate }}
+                        </a>
+                        <a routerLink="/travel"  class="link_nav">
+                            {{ 'MENU.TRAVEL' | translate }}
+                        </a>
+                        <a routerLink="/peer"  class="link_nav">
+                            {{ 'MENU.PEER' | translate }}
+                        </a>
+                    </nav>
+                </div>
+                
+                <a routerLink="/a_propos" routerLinkActive="active" class="link_nav">
+                    {{ 'MENU.ABOUT' | translate }}
+                </a>
+                <a routerLink="/contact" routerLinkActive="active" class="link_nav">
+                    {{ 'MENU.CONTACT' | translate }}
+                </a>
+                <div class="me-5  " > 
+                    <button class="border-0 btnCon btn link_nav" *ngIf="loggedOut" routerLink="/login" routerLinkActive="active" > {{ 'MENU.LOGIN' | translate }}</button>
+                    <div class="">
+                     <button class="border-0 btnCon btn link_nav" *ngIf="loggedIn" type="button" (click)="deconnexion()">
+                       Deconnexion
+                     </button>
+                   
+                   </div>
+                </div>
+               
+                
+            </nav>
+
+            <app-language-selector />
+            <div class="menu-button" (click)="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              
+        </div>
+    </div>
+</div>

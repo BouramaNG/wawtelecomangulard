@@ -1,0 +1,321 @@
+<div class="console-connect-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <h1 class="title">
+        <i class="fas fa-satellite-dish"></i>
+        Console Connect - Données Directes
+      </h1>
+      <p class="subtitle">Affichage des données brutes de l'API Console Connect</p>
+    </div>
+    
+    <div class="header-actions">
+      <button class="btn btn-primary" (click)="refreshData()" [disabled]="loading">
+        <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
+        {{ loading ? 'Chargement...' : 'Actualiser' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Statistiques du stock eSIM -->
+  <div class="stock-stats-section" *ngIf="stockStats">
+    <div class="stats-header">
+      <h2><i class="fas fa-chart-bar"></i> Statistiques du Stock eSIM</h2>
+      <div class="last-sync" *ngIf="stockStats.last_sync">
+        <i class="fas fa-clock"></i>
+        Dernière synchronisation: {{ stockStats.last_sync | date:'short' }}
+      </div>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-icon">
+          <i class="fas fa-sim-card"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stockStats.total || 0 }}</div>
+          <div class="stat-label">Total eSIMs</div>
+        </div>
+      </div>
+      
+      <div class="stat-card available">
+        <div class="stat-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stockStats.available || 0 }}</div>
+          <div class="stat-label">Disponibles</div>
+        </div>
+      </div>
+      
+      <div class="stat-card used">
+        <div class="stat-icon">
+          <i class="fas fa-user-check"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stockStats.used || 0 }}</div>
+          <div class="stat-label">Utilisées</div>
+        </div>
+      </div>
+      
+      <div class="stat-card disabled">
+        <div class="stat-icon">
+          <i class="fas fa-ban"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stockStats.disabled || 0 }}</div>
+          <div class="stat-label">Désactivées</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Détail par statut -->
+    <div class="status-details" *ngIf="stockStats.by_status">
+      <h3>Répartition par statut</h3>
+      <div class="status-grid">
+        <div class="status-item" *ngFor="let status of getStatusItems()">
+          <span class="status-name">{{ status.key }}</span>
+          <span class="status-count">{{ status.value }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages d'état -->
+  <div class="messages" *ngIf="error || success">
+    <div class="alert alert-danger" *ngIf="error">
+      <i class="fas fa-exclamation-triangle"></i>
+      {{ error }}
+    </div>
+    <div class="alert alert-success" *ngIf="success">
+      <i class="fas fa-check-circle"></i>
+      {{ success }}
+    </div>
+  </div>
+
+  <!-- Tableau des eSIMs directement -->
+  <div class="tab-content">
+    
+    <!-- Filtres -->
+    <div class="filters">
+      <div class="filter-group">
+        <label for="statusFilter">Filtrer par statut:</label>
+        <input 
+          type="text" 
+          id="statusFilter"
+          [(ngModel)]="esimStatusFilter"
+          placeholder="Rechercher par statut..."
+          class="filter-input">
+      </div>
+    </div>
+
+    <!-- Tableau des eSIMs -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>ICCID</th>
+            <th>Code Activation</th>
+            <th>Statut</th>
+            <th>Destination</th>
+            <th>Données</th>
+            <th>Validité</th>
+            <th>Prix</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let esim of paginatedEsims" class="table-row">
+            <td class="id-cell">{{ esim.id }}</td>
+            <td class="iccid-cell">{{ esim.iccid || 'Non spécifié' }}</td>
+            <td class="activation-cell">{{ esim.activation_code || 'Non spécifié' }}</td>
+            <td class="status-cell">
+              <span class="status-badge" [class]="getStatusClass(esim.status || 'unknown')">
+                {{ formatStatus(esim.status || 'unknown') }}
+              </span>
+            </td>
+            <td class="destination-cell">{{ formatDestination(esim.destination || 'unknown') }}</td>
+            <td class="data-cell">{{ formatDataLimit(esim.data_limit) }}</td>
+            <td class="validity-cell">{{ esim.validity_days || 'Non spécifié' }} jours</td>
+            <td class="price-cell">{{ formatPrice(esim.price, esim.currency) }}</td>
+            <td class="actions-cell">
+              <button class="btn btn-sm btn-info" (click)="viewEsimDetails(esim)">
+                <i class="fas fa-eye"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination debug très visible -->
+    <div style="margin: 2rem 0; text-align: center;">
+      <button style="font-size:2rem; background:orange; color:white; margin:0 2rem;" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">⬅️</button>
+      <span style="font-size:1.5rem; color:#2563eb;">Page {{ currentPage }} / {{ totalPages }}</span>
+      <button style="font-size:2rem; background:orange; color:white; margin:0 2rem;" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">➡️</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de détails eSIM -->
+<div class="modal-overlay" *ngIf="showDetailsModal" (click)="closeDetailsModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Détails eSIM - {{ selectedEsim?.iccid }}</h2>
+      <button class="modal-close" (click)="closeDetailsModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div *ngIf="loadingDetails" class="loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        Chargement des détails...
+      </div>
+      
+      <div *ngIf="!loadingDetails && esimDetails" class="esim-details">
+        <!-- Informations générales -->
+        <div class="detail-section">
+          <h3>Informations Générales</h3>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <strong>ICCID:</strong>
+              <span>{{ esimDetails.iccid || 'Non disponible' }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Statut:</strong>
+              <span class="status-badge" [class]="getStatusClass(esimDetails.sim_status)">
+                {{ formatStatus(esimDetails.sim_status) }}
+              </span>
+            </div>
+            <div class="detail-item">
+              <strong>Date de création:</strong>
+              <span>{{ formatDate(esimDetails.created_date) }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Entreprise:</strong>
+              <span>{{ esimDetails.company || 'Non disponible' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profil EUICC -->
+        <div class="detail-section">
+          <h3>Profil EUICC</h3>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <strong>État:</strong>
+              <span class="status-badge" [class]="getEuiccStateClass(getEuiccState())">
+                {{ getEuiccState() }}
+              </span>
+            </div>
+            <div class="detail-item">
+              <strong>Dernière opération:</strong>
+              <span>{{ getLastOperationDate() }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Code d'activation:</strong>
+              <span class="lpa-code">{{ getLpaCode() }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Actions:</strong>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-primary" (click)="generateQrCode()" *ngIf="getLpaCode() !== 'Non disponible'">
+                  <i class="fas fa-qrcode"></i>
+                  Générer QR Code
+                </button>
+                <button class="btn btn-sm btn-info" (click)="copyLpaCode()" *ngIf="getLpaCode() !== 'Non disponible'">
+                  <i class="fas fa-copy"></i>
+                  Copier Code
+                </button>
+              </div>
+            </div>
+
+            <!-- QR Code Section -->
+            <div class="detail-item qr-code-section" *ngIf="showQrCode">
+              <strong>QR Code d'activation:</strong>
+              <div class="qr-code-container">
+                <img [src]="qrCodeUrl" alt="QR Code d'activation" class="qr-code-image">
+                <div class="qr-code-info">
+                  <p class="qr-instructions">
+                    <i class="fas fa-info-circle"></i>
+                    Scannez ce QR code avec votre téléphone pour activer automatiquement l'eSIM
+                  </p>
+                  <button class="btn btn-sm btn-secondary" (click)="hideQrCode()">
+                    <i class="fas fa-times"></i>
+                    Masquer QR Code
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-item">
+              <strong>Réutilisations restantes:</strong>
+              <span>{{ getReuseRemainingCount() }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Réutilisation activée:</strong>
+              <span>{{ getReuseEnabled() }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Code de confirmation requis:</strong>
+              <span>{{ getCcRequired() }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Date de libération:</strong>
+              <span>{{ getReleaseDate() }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>EID:</strong>
+              <span class="eid-code">{{ getEid() }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>IMSI:</strong>
+              <span>{{ getImsi() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Politique de réutilisation -->
+        <div class="detail-section" *ngIf="getProfileReusePolicy()">
+          <h3>Politique de Réutilisation</h3>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <strong>Type de réutilisation:</strong>
+              <span>{{ getProfileReusePolicy().reuse_type || 'Non spécifié' }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Nombre maximum:</strong>
+              <span>{{ getProfileReusePolicy().max_count || 'Non spécifié' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- IMSI -->
+        <div class="detail-section" *ngIf="esimDetails.imsis && esimDetails.imsis.length > 0">
+          <h3>IMSI</h3>
+          <div class="detail-grid">
+            <div class="detail-item" *ngFor="let imsi of esimDetails.imsis">
+              <strong>IMSI {{ imsi.type || 'Principal' }}:</strong>
+              <span>{{ imsi.imsi || 'Non disponible' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Données complètes (pour debug) -->
+        <div class="detail-section">
+          <h3>Données Complètes</h3>
+          <div class="raw-data">
+            <pre>{{ JSON.stringify(esimDetails, null, 2) }}</pre>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="!loadingDetails && !esimDetails" class="error">
+        <i class="fas fa-exclamation-triangle"></i>
+        Impossible de récupérer les détails de cette eSIM
+      </div>
+    </div>
+  </div>
+</div> 

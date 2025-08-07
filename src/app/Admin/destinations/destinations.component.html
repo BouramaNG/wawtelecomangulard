@@ -1,0 +1,212 @@
+<div class="destinations-container">
+  <!-- Header -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-left">
+        <i class="fas fa-globe header-icon"></i>
+        <h1 class="header-title">Gestion des Destinations</h1>
+      </div>
+      <div class="header-actions">
+        <button (click)="openSyncModal()" class="btn btn-primary">
+          <i class="fas fa-sync-alt"></i>
+          Synchroniser
+        </button>
+        <button (click)="loadData()" class="btn btn-secondary">
+          <i class="fas fa-refresh"></i>
+          Actualiser
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div *ngIf="errorMessage" class="alert alert-error">
+    <i class="fas fa-exclamation-circle"></i>
+    {{ errorMessage }}
+    <button (click)="clearMessages()" class="alert-close">×</button>
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success">
+    <i class="fas fa-check-circle"></i>
+    {{ successMessage }}
+    <button (click)="clearMessages()" class="alert-close">×</button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Chargement des données...</p>
+    </div>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div *ngIf="stats" class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-blue">
+        <i class="fas fa-globe"></i>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Destinations</p>
+        <p class="stat-value">{{ stats.total_destinations }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-green">
+        <i class="fas fa-box"></i>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Packages</p>
+        <p class="stat-value">{{ stats.total_packages }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-purple">
+        <i class="fas fa-sim-card"></i>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">eSIMs Disponibles</p>
+        <p class="stat-value">{{ stats.available_esims }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-red">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Ruptures</p>
+        <p class="stat-value">{{ stats.out_of_stock_packages }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Destinations Grid -->
+  <div class="destinations-grid">
+    <div *ngFor="let destination of destinations" class="destination-card">
+      <div class="card-header">
+        <div class="destination-info">
+          <div class="destination-flag">
+            <span class="flag-code">{{ destination.country_code }}</span>
+          </div>
+          <div class="destination-details">
+            <h3 class="destination-name">{{ destination.country_name }}</h3>
+            <p class="destination-provider">{{ destination.network_provider }}</p>
+          </div>
+        </div>
+        <div class="destination-status">
+          <span class="status-indicator" [class]="getOverallStatus(destination).class"></span>
+          <span class="status-text" [class]="getOverallStatus(destination).color">
+            {{ getOverallStatus(destination).text }}
+          </span>
+        </div>
+      </div>
+
+      <div class="packages-list">
+        <div *ngFor="let pkg of destination.packages" class="package-item">
+          <div class="package-info">
+            <h4 class="package-name">{{ pkg.plan_name }}</h4>
+            <p class="package-details">{{ pkg.data_limit }}GB - {{ pkg.validity_days }} jours</p>
+          </div>
+          <div class="package-pricing">
+            <p class="package-price">{{ formatPrice(pkg.price) }}</p>
+            <p class="package-stock">
+              {{ pkg.available_esims }}/{{ pkg.total_esims }} disponibles
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button (click)="viewDestinationDetails(destination)" class="btn btn-outline">
+          <i class="fas fa-eye"></i>
+          Voir les détails
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sync Modal -->
+  <div *ngIf="showSyncModal" class="modal-overlay" (click)="closeSyncModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Synchronisation des Destinations</h3>
+        <button (click)="closeSyncModal()" class="modal-close">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre d'eSIMs à traiter</label>
+          <input type="number" [(ngModel)]="syncLimit" min="1" max="100" class="form-input">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="closeSyncModal()" class="btn btn-secondary">Annuler</button>
+        <button (click)="syncDestinations()" [disabled]="syncLoading" class="btn btn-primary">
+          <i *ngIf="syncLoading" class="fas fa-spinner fa-spin"></i>
+          <i *ngIf="!syncLoading" class="fas fa-sync-alt"></i>
+          {{ syncLoading ? 'Synchronisation...' : 'Synchroniser' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Details Modal -->
+  <div *ngIf="showDetailsModal && selectedDestination" class="modal-overlay" (click)="closeDetailsModal()">
+    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Détails - {{ selectedDestination.country_name }}</h3>
+        <button (click)="closeDetailsModal()" class="modal-close">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="destination-details-full">
+          <div class="detail-section">
+            <h4>Informations générales</h4>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span class="detail-label">Pays:</span>
+                <span class="detail-value">{{ selectedDestination.country_name }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Code:</span>
+                <span class="detail-value">{{ selectedDestination.country_code }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Opérateur:</span>
+                <span class="detail-value">{{ selectedDestination.network_provider }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h4>Packages disponibles</h4>
+            <div class="packages-detail-grid">
+              <div *ngFor="let pkg of selectedDestination.packages" class="package-detail-card">
+                <div class="package-detail-header">
+                  <h5>{{ pkg.plan_name }}</h5>
+                  <span class="stock-badge" [class]="getStockStatus(pkg).class">
+                    {{ getStockStatus(pkg).text }}
+                  </span>
+                </div>
+                <div class="package-detail-content">
+                  <div class="package-specs">
+                    <p><strong>Données:</strong> {{ pkg.data_limit }}GB</p>
+                    <p><strong>Validité:</strong> {{ pkg.validity_days }} jours</p>
+                    <p><strong>Prix:</strong> {{ formatPrice(pkg.price) }}</p>
+                  </div>
+                  <div class="package-stock-info">
+                    <p><strong>Stock:</strong> {{ pkg.available_esims }}/{{ pkg.total_esims }}</p>
+                    <div class="stock-bar">
+                      <div class="stock-fill" [style.width.%]="pkg.stock_percentage"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

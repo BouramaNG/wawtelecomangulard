@@ -1,0 +1,778 @@
+.hero-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background-color: #1a1a1a;
+    color: #fff;
+    height: 60vh;
+    padding: 20px;
+}
+
+/* Arrière-plan et superposition */
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Superposition noire */
+    z-index: 2;
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+/* Conteneur de contenu principal */
+.hero-content {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 3;
+    max-width: 1200px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.content-wrapper {
+    flex: 1;
+    max-width: 50%;
+    padding: 20px;
+}
+
+/* Texte de la section */
+.hero-eyebrow {
+    font-size: 30px;
+    color: #FFDD33;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.hero-title {
+    font-size: 36px;
+    margin: 0 0 15px;
+    line-height: 1.2;
+}
+
+.hero-description {
+    font-size: 60px;
+    line-height: 1.2;
+    font-weight: bold;
+    color: #FFDD33;
+    margin-bottom: 20px;
+}
+
+/* Boutons d'appel à l'action */
+.cta-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #fff;
+    color: #007bff;
+}
+
+/* Image responsive */
+.hero-image {
+    flex: 1;
+    max-width: 50%;
+    text-align: center;
+}
+
+.image-responsive {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-content {
+        flex-direction: column;
+    }
+    
+    .content-wrapper, .hero-image {
+        max-width: 100%;
+        padding: 15px;
+    }
+    
+    .hero-title {
+        font-size: 28px;
+    }
+    
+    .btn-primary, .btn-secondary {
+        font-size: 14px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Section principale */
+.offer-section {
+    background-color: #f4f4f4;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Arrière-plan */
+.offer-background {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Conteneur de contenu */
+.container.offer-content {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    align-items: center;
+}
+
+/* Rangée */
+.offer-row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+/* Image de l'offre */
+.offer-image {
+    flex: 1;
+    max-width: 50%;
+}
+
+.image-responsive {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Texte de l'offre */
+.offer-text {
+    flex: 1;
+    max-width: 50%;
+    text-align: left;
+}
+
+.offer-title {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.offer-description {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.offer-legal {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+/* Boutons d'appel à l'action */
+.cta-buttons {
+    display: flex;
+    gap: 15px;
+    /* background-color: ; */
+}
+
+
+
+
+.btn-primary, .btn-secondary {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #FFDD33;
+    color: #fff;
+}
+
+
+/* Style de base pour le bouton */
+.custom-btn {
+    background-color: #FFDD33; /* Couleur de fond */
+    color: #333; /* Couleur de texte */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-block;
+}
+
+/* Style au survol du bouton */
+.custom-btn:hover {
+    background-color: #333; /* Couleur de fond au survol */
+    color: #FFDD33; /* Couleur de texte au survol */
+}
+
+/* Facultatif : effet de clic */
+.custom-btn:active {
+    background-color: #d4b523; /* Couleur de fond lors du clic */
+    color: #111;
+    font-size: 20px;
+    box-shadow: #FFDD33;
+    font-weight: bold;
+}
+
+
+
+.btn-primary:hover {
+    background-color: #333;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #FFDD33;
+    border: 2px solid #FFDD33;
+}
+
+.btn-secondary:hover {
+    background-color: #FFDD33;
+    color: #333;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .offer-row {
+        flex-direction: column;
+    }
+    
+    .offer-image, .offer-text {
+        max-width: 100%;
+        padding: 10px 0;
+    }
+
+    .offer-title {
+        font-size: 24px;
+    }
+
+    .offer-description {
+        font-size: 16px;
+    }
+    
+    .btn-primary, .btn-secondary {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+}
+
+
+
+
+
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .hero-section {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .hero-description {
+        font-size: 1.2rem;
+    }
+
+    .cta-buttons a {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .hero-image img {
+        max-width: 200px;
+    }
+}
+
+
+
+
+
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    /* Make the nav-menu hidden by default on mobile */
+    
+    .dropdown-toggle{
+         margin-left: 140px;
+    font-size: 18px;
+    }
+    .nav-menu {
+        display: none;  /* Hide the menu initially */
+        position: fixed;  /* Fixed positioning to cover the full screen */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        z-index: 1000;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+        transform: translateY(-100%); /* Initially hide the menu above the screen */
+        transition: transform 0.3s ease-in-out;  /* Smooth transition for sliding menu */
+        flex-direction: column;  /* Stack menu items vertically */
+        justify-content: center;  /* Center the items vertically */
+        align-items: center;  /* Center the items horizontally */
+    }
+
+    /* When the menu is opened */
+    .nav-menu.open {
+        display: flex;  /* Show the menu */
+        transform: translateY(0);  /* Slide it into view */
+    }
+
+    /* Style the burger button */
+    .menu-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+    }
+
+    .menu-button div {
+        height: 4px;
+        background-color: #333;
+    }
+
+    /* Styling for mobile links */
+    .nav-menu .link_nav {
+        padding: 15px;
+        font-size: 18px;
+        color: #333;
+        text-decoration: none;
+        text-align: center;
+        width: 100%;  /* Full width for the links */
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #ddd; /* Add a separator between items */
+    }
+
+    /* Hover effect for mobile links */
+    .nav-menu .link_nav:hover {
+        background-color: #ffdd33;
+        color: #333;
+    }
+
+    /* Style for dropdown */
+    .dropdown {
+        width: 100%;
+    }
+    
+    .dropdown-list {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+/* Mobile styles */
+@media (max-width: 896px) {
+    /* Make the nav-menu hidden by default on mobile */
+    
+    .dropdown-toggle{
+         margin-left: 157px;
+    font-size: 18px;
+    }
+    .nav-menu {
+        display: none;  /* Hide the menu initially */
+        position: fixed;  /* Fixed positioning to cover the full screen */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        z-index: 1000;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+        transform: translateY(-100%); /* Initially hide the menu above the screen */
+        transition: transform 0.3s ease-in-out;  /* Smooth transition for sliding menu */
+        flex-direction: column;  /* Stack menu items vertically */
+        justify-content: center;  /* Center the items vertically */
+        align-items: center;  /* Center the items horizontally */
+    }
+
+    /* When the menu is opened */
+    .nav-menu.open {
+        display: flex;  /* Show the menu */
+        transform: translateY(0);  /* Slide it into view */
+    }
+
+    /* Style the burger button */
+    .menu-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+    }
+
+    .menu-button div {
+        height: 4px;
+        background-color: #333;
+    }
+
+    /* Styling for mobile links */
+    .nav-menu .link_nav {
+        padding: 15px;
+        font-size: 18px;
+        color: #333;
+        text-decoration: none;
+        text-align: center;
+        width: 100%;  /* Full width for the links */
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #ddd; /* Add a separator between items */
+    }
+
+    /* Hover effect for mobile links */
+    .nav-menu .link_nav:hover {
+        background-color: #ffdd33;
+        color: #333;
+    }
+
+    /* Style for dropdown */
+    .dropdown {
+        width: 100%;
+    }
+    
+    .dropdown-list {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+/*Pour la section 2*/
+/* Section background and spacing */
+.max-width-background {
+    background-color: #f5f5f5;
+    padding: 2rem;
+}
+
+.theme-base-bg {
+    background-color: #fff;
+}
+
+.pad-t-lg, .pad-b-lg {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Responsive padding */
+@media (max-width: 768px) {
+    .pad-t-md, .pad-b-md {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+    .pad-t-none-sm, .pad-b-md-sm, .pad-l-lg-sm, .pad-r-lg-sm {
+        padding-top: 0;
+        padding-bottom: 1.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* Grid system */
+.grid-col-6 {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.grid-col-10 {
+    width: 83.3333%;
+}
+
+.grid-col-12-md {
+    width: 100%;
+}
+
+/* Alignment */
+.right-alignment .order-changed-onlyMobile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Text and content */
+.heading-xxl {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.type-base p, .type-legal-wysiwyg-editor p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.type-base p {
+    margin-top: 0.5rem;
+}
+
+.type-legal-wysiwyg-editor {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* Button styles */
+.btn-primary, .btn-secondary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #FFDD33;
+    color: #333;
+}
+
+.btn-primary:hover {
+    background-color: #e6c82f;
+}
+
+.btn-secondary {
+    background-color: #ccc;
+    color: #333;
+    margin-left: 1rem;
+}
+
+.btn-secondary:hover {
+    background-color: #b3b3b3;
+}
+
+/* Image content */
+.video-content-offer img {
+    max-width: 100%;
+    height: auto;
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* Border radius for responsive design */
+.radius-lg {
+    border-radius: 8px;
+}
+
+
+
+
+
+
+
+
+
+
+.cta-buttons {
+    display: flex;
+    flex-direction: row; /* Par défaut, les boutons sont alignés horizontalement */
+    gap: 10px;  /* Espacement entre les boutons */
+}
+
+/* Media Queries pour gérer la disposition sur différents écrans */
+@media (max-width: 300px) {
+    .cta-buttons {
+        flex-direction: column; /* Sur les très petits écrans, les boutons seront empilés */
+    }
+}
+
+@media (min-width: 301px) and (max-width: 600px) {
+    .cta-buttons {
+        flex-direction: column; /* Sur les écrans entre 301px et 600px, les boutons seront empilés */
+    }
+}
+
+@media (min-width: 601px) and (max-width: 800px) {
+    .cta-buttons {
+        flex-direction: column; /* Sur les écrans entre 601px et 800px, les boutons seront empilés */
+    }
+}
+.choix{
+    width: 80%;
+    margin: 0 auto;
+}
+.pays{
+    width: 100%;
+    margin: 0 auto;
+}
+#image{
+    width: 20px;
+    height: 15px;
+}
+#carte{
+    display: flex !important;
+    justify-content: space-between;
+    margin-top: -29px;
+}
+.search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+input{
+    height: 2.5rem;
+    width: 25rem;
+    border: none; 
+    border-radius: 21px;
+    box-shadow: 1px 1px 0.5px lightgray;
+}
+input::placeholder {
+    padding-left: 1.5rem !important;
+}
+
+.filtre{
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem auto;
+    flex-wrap: wrap;
+}
+.zone{
+    border: 1px solid lightgray;
+    padding: 5px;
+    border-radius: 14px;
+    cursor: pointer;
+}
+.zone.selected {
+    background-color: #ffdd33; /* Couleur de fond du continent sélectionné */
+    color: white; /* Couleur du texte */
+  }
+#ens{
+    height: 100px;
+}
+.pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+@media only screen and (max-width: 712px){
+    .hero-eyebrow{
+        font-size: 18px;
+        /* border: 1px solid red; */
+    }
+    .hero-title{
+        font-size: 16px;
+    }
+}
+
+.country-list-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+}
+.country-list-item:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.country-flag {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.country-name {
+  font-size: 1.1rem;
+  color: #222;
+  font-weight: 600;
+}

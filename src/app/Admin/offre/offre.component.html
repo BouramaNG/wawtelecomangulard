@@ -1,0 +1,164 @@
+<main class="mt-3">
+    <div class=" " id="esim">
+        <div class="infos">
+            <div class="image">
+                <img src="https://img.freepik.com/premium-photo/silhouette-high-frequency-5g-station-communication-tower-4g-network-telephone-cellsite-with-dusk-sunset-sky-with-space-text_43300-2298.jpg?ga=GA1.1.522834921.1700648147&semt=ais_hybrid" alt="">
+            </div>
+            <div class="info">
+                <h2 class="text-center mt-2">liste des  eSims</h2>
+                <div class="search-container mb-3">
+                  <div class="input-group">
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      name="assi"
+                      placeholder="Rechercher par code d'activation, LPA..."
+                      [(ngModel)]="searchText"
+                      (input)="filterEsims()"
+                    >
+                    
+                   
+                  </div>
+                <div class="cartes row">
+                    <div class="esim-card m-2" *ngFor="let esim of filteredEsims | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+                        <div class="header">
+                          <h3 class="fw-bold">eSIM</h3>
+                          <svg [routerLink]="['/admin/admin_eSim', esim.id]" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4.25 4A2.25 2.25 0 0 0 2 6.25v2.5A2.25 2.25 0 0 0 4.25 11h2.5A2.25 2.25 0 0 0 9 8.75v-2.5A2.25 2.25 0 0 0 6.75 4zM3.5 6.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 .75.75v2.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1-.75-.75zM11.25 5a.75.75 0 0 0 0 1.5h10a.75.75 0 0 0 0-1.5zm0 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5zm-7 5A2.25 2.25 0 0 0 2 15.25v2.5A2.25 2.25 0 0 0 4.25 20h2.5A2.25 2.25 0 0 0 9 17.75v-2.5A2.25 2.25 0 0 0 6.75 13zm-.75 2.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 .75.75v2.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1-.75-.75zM11.25 14a.75.75 0 0 0 0 1.5h10a.75.75 0 0 0 0-1.5zm0 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5z"/></svg>
+                        </div>
+                      
+                        <p class="id"><strong>Code d'activation :</strong> {{ esim.activation_code }}</p>
+                        <p><strong>ICCID :</strong> {{ esim.iccid }}</p>
+                        <p><strong>Provider :</strong> {{ esim.provider }}</p>
+                        <p><strong>LPA :</strong> {{ esim.lpa }}</p>
+                        <p><strong>Assigné :</strong> 
+                          <span *ngIf="esim.is_assigned === 1" class="active">Assigné</span>
+                          <span *ngIf="esim.is_assigned === 0" class="inactive">Non Assigné</span>
+                        </p>
+                        <p><strong>Créé le :</strong> {{ esim.created_at | date:'dd/MM/yyyy HH:mm' }}</p>
+                        <p><strong>Assigné le :</strong> {{ esim.assigned_at | date:'dd/MM/yyyy HH:mm' }}</p>
+                        <div class="bouton">
+                          <button class="btn btn-danger fw-bold" (click)="archiver(esim.id)">Desactiver</button>
+                        </div>
+                      </div>
+                      <!-- Pagination -->
+                      <pagination-controls class="pagination" (pageChange)="page = $event"></pagination-controls>
+                      <div *ngIf="filteredEsims.length==0"><p class="text-center text-danger">  😔 Aucun esim disponible</p></div>
+                </div>
+                
+    
+            </div>
+
+        </div>
+        <!-- <div class="formscon">
+          <div class="form">
+              <h2 class="text-center">Formulaire d'ajout d'eSim</h2>
+              <form action="">
+                  <div class="row">
+                      <div class="col mb-3">
+                          <label for="" class="fw-bold mb-1"> Code d'activation :</label>
+                        <input type="text" class="form-control" name="code" placeholder="Code d'activation" aria-label="Code d'activation" [(ngModel)]="code">
+                      </div>
+                    </div>
+                  <div class="row">
+                      <div class="col mb-3">
+                          <label for="" class="fw-bold mb-1"> Code du pays :</label>
+                        <input type="text" class="form-control" name="code_c" placeholder="Code du pays" aria-label="Code du pays" [(ngModel)]="c_code">
+                      </div>
+                    </div>
+                  <div class="row">
+                      <div class="col mb-3">
+                          <label for="" class="fw-bold mb-1"> Forfait :</label>
+                        <input type="text" class="form-control" name="Forfait" placeholder="Forfait" aria-label="forfait" [(ngModel)]="plan">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col mb-3">
+                          <label for="" class="fw-bold mb-1">sm_dp_address :</label>
+                        <input type="text" class="form-control" name="sm_dp_address" placeholder="sm_dp_address" aria-label="sm_dp_address" [(ngModel)]="sm_dp_address">
+                      </div>
+                     
+                    </div>
+                    <div class="row">
+                      <div class="col mb-3">
+                        <label for="" class="fw-bold mb-1">Lpa :</label>
+                      <input type="text" class="form-control" name="lpa" placeholder="lpa" aria-label="lpa" [(ngModel)]="lpa">
+                    </div>
+                    </div>
+                    <div class="col mb-3">
+                        <label for="" class="fw-bold mb-1">Esim Package :</label>
+                        <select class="form-select" name="package_id"  aria-label="Default select example"  [(ngModel)]="package_id">
+                          <option *ngFor="let pack of EsimsPack" [value]="pack.id">{{pack.plan_name}} {{pack.country_name}}</option>
+                          
+                        </select>
+                    </div>
+                   
+      
+              </form>
+  
+                <div class="bouton mt-2 d-flex justify-content-center align-items-center">
+                    <button class="btn btnAjout" (click)="addEsim()">Ajouter</button>
+                </div>
+          </div> -->
+
+        <!-- </div> -->
+
+    </div>
+    
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Formulaire de modification d'esim</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="row">
+              <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1"> Code d'activation :</label>
+                <input type="text" class="form-control" name="code" placeholder="Code d'activation" aria-label="Code d'activation" [(ngModel)]="code">
+              </div>
+            </div>
+          <div class="row">
+              <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1"> Code du pays :</label>
+                <input type="text" class="form-control" name="code_c" placeholder="Code du pays" aria-label="Code du pays" [(ngModel)]="c_code">
+              </div>
+            </div>
+          <div class="row">
+              <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1"> Forfait :</label>
+                <input type="text" class="form-control" name="Forfait" placeholder="Forfait" aria-label="forfait" [(ngModel)]="plan">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col mb-3">
+                  <label for="" class="fw-bold mb-1">sm_dp_address :</label>
+                <input type="text" class="form-control" name="sm_dp_address" placeholder="sm_dp_address" aria-label="sm_dp_address" [(ngModel)]="sm_dp_address">
+              </div>
+             
+            </div>
+            <div class="row">
+              <div class="col mb-3">
+                <label for="" class="fw-bold mb-1">Lpa :</label>
+              <input type="text" class="form-control" name="lpa" placeholder="lpa" aria-label="lpa" [(ngModel)]="lpa">
+            </div>
+            </div>
+            <div class="col mb-3">
+                <label for="" class="fw-bold mb-1">Esim Package :</label>
+                <select class="form-select"  aria-label="Default select example"  [(ngModel)]="package_id">
+                  <option *ngFor="let pack of EsimsPack" [value]="pack.id">{{pack.plan_name}} {{pack.country_name}}</option>
+                  
+                </select>
+            </div>
+           
+
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btnAjout" data-bs-dismiss="modal" (click)="modifierEsim()">Modifier</button>
+        <button type="button" class="btn btn-outline-warning"  data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,167 @@
+<div class="esim-admin-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>📱 Gestion des eSIMs</h1>
+    <p>Gérez toutes vos eSIMs importées depuis Console Connect</p>
+  </div>
+
+  <!-- Statistiques -->
+  <div class="stats-grid" *ngIf="stats">
+    <div class="stat-card">
+      <div class="stat-number">{{ stats.total }}</div>
+      <div class="stat-label">Total eSIMs</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ stats.assigned }}</div>
+      <div class="stat-label">Assignées</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ stats.unassigned }}</div>
+      <div class="stat-label">Non assignées</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ stats.recently_assigned }}</div>
+      <div class="stat-label">Assignées cette semaine</div>
+    </div>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters">
+    <div class="search-box">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        placeholder="Rechercher par ICCID, code d'activation..."
+        class="search-input"
+      >
+    </div>
+    <button (click)="loadEsims()" class="refresh-btn">
+      🔄 Actualiser
+    </button>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Chargement des eSIMs...</p>
+  </div>
+
+  <!-- Tableau des eSIMs -->
+  <div class="table-container" *ngIf="!loading">
+    <table class="esim-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>ICCID</th>
+          <th>Code d'activation</th>
+          <th>LPA</th>
+          <th>Package</th>
+          <th>Assignée</th>
+          <th>Date assignation</th>
+          <th>Date création</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let esim of filteredEsims" class="esim-row">
+          <td>{{ esim.id }}</td>
+          <td>
+            <div class="iccid-cell">
+              <span class="iccid-text">{{ esim.iccid }}</span>
+              <button (click)="copyToClipboard(esim.iccid)" class="copy-btn" title="Copier ICCID">
+                📋
+              </button>
+            </div>
+          </td>
+          <td>
+            <div class="activation-cell">
+              <span class="activation-text">{{ esim.activation_code }}</span>
+              <button (click)="copyToClipboard(esim.activation_code)" class="copy-btn" title="Copier le code">
+                📋
+              </button>
+            </div>
+          </td>
+          <td>
+            <div class="lpa-cell">
+              <span class="lpa-text">{{ esim.lpa }}</span>
+              <button (click)="copyToClipboard(esim.lpa)" class="copy-btn" title="Copier LPA">
+                📋
+              </button>
+            </div>
+          </td>
+          <td>
+            <span *ngIf="esim.esim_package" class="package-info">
+              {{ esim.esim_package.name }} - {{ esim.esim_package.destination }}
+            </span>
+            <span *ngIf="!esim.esim_package" class="no-package">
+              Non assignée
+            </span>
+          </td>
+          <td>
+            <span class="boolean-badge" [class.true]="esim.is_assigned" [class.false]="!esim.is_assigned">
+              {{ esim.is_assigned ? 'Oui' : 'Non' }}
+            </span>
+          </td>
+          <td>
+            <span *ngIf="esim.assigned_at" class="date-text">
+              {{ formatDate(esim.assigned_at) }}
+            </span>
+            <span *ngIf="!esim.assigned_at" class="no-date">
+              -
+            </span>
+          </td>
+          <td>{{ formatDate(esim.created_at) }}</td>
+          <td>
+            <div class="actions">
+              <button (click)="editEsim(esim)" class="action-btn edit-btn" title="Modifier">
+                ✏️
+              </button>
+              <button (click)="deleteEsim(esim.id)" class="action-btn delete-btn" title="Supprimer">
+                🗑️
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Message si aucune eSIM -->
+    <div class="no-data" *ngIf="filteredEsims.length === 0">
+      <p>Aucune eSIM trouvée avec les filtres actuels.</p>
+    </div>
+  </div>
+
+  <!-- Modal d'édition -->
+  <div class="modal-overlay" *ngIf="showEditModal" (click)="showEditModal = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Modifier l'eSIM #{{ selectedEsim?.id }}</h3>
+        <button (click)="showEditModal = false" class="close-btn">×</button>
+      </div>
+      
+      <div class="modal-body" *ngIf="selectedEsim">
+        <div class="form-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="selectedEsim.is_assigned">
+            Assignée
+          </label>
+        </div>
+        
+        <div class="form-group">
+          <label>Date d'assignation:</label>
+          <input type="datetime-local" [(ngModel)]="selectedEsim.assigned_at" class="form-select">
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button (click)="showEditModal = false" class="btn btn-secondary">Annuler</button>
+        <button (click)="updateEsimStatus()" class="btn btn-primary">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div> 

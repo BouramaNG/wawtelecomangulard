@@ -1,0 +1,308 @@
+{
+    "MENU": {
+    "HOME": "Accueil",
+    "SERVICES": "Services",
+    "CONNECTIVITY": "Connectivité",
+    "CLOUD": "Cloud",
+    "TRAVEL": "Travel",
+    "ABOUT": "À propos",
+    "PEER": "Dia Direct Peering",
+    "CONTACT": "Contact",
+    "LOGIN": "Connexion"
+  },
+  "peer": {
+    "heroSection": {
+      "eyebrow": "DIA Direct Peering :",
+      "title": "Accédez au meilleur de l'Internet mondial avec WAW Telecom",
+      "description": "WAW Telecom vous offre un accès direct aux plus grands points d'échange Internet en Europe, y compris AMS-IX, LINX et FRANCE-IX. Grâce à notre service DIA Direct Peering",
+      "ctaButtons": {
+        "primary": "Contactez nous",
+        "secondary": "E-mail peering@wawtelecom.com"
+      }
+    },
+    "offerSection": {
+      "title": "DIA Direct Peering",
+      "description": "WAW Telecom vous offre un accès direct aux plus grands points d’échange Internet en Europe, y compris AMS-IX, LINX et FRANCE-IX. Grâce à notre service DIA Direct Peering, bénéficiez d’une connectivité ultra-performante avec une latence réduite et une bande passante optimisée pour vos besoins stratégiques."
+    },
+    "peerSection": {
+      "title": "Pourquoi choisir notre solution de peering direct ?",
+      "description_1": "✅ Performance Maximale – Connexion directe aux principaux IX européens pour un accès rapide et stable aux contenus et services en ligne. ",
+      "description_2": "✅ Faible Latence – Réduction des intermédiaires pour un transit plus rapide des données. ",
+      "description_3": "✅ Sécurité et Fiabilité – Un trafic plus prévisible et sécurisé grâce aux connexions directes."
+    },
+    "stream":{
+      "title":"Pour les plateformes de streaming",
+      "description":"Offrez une expérience utilisateur sans interruption avec WAW Telecom. Dans l’industrie du streaming, la qualité de la connexion est aussi importante que la qualité du contenu. Notre solution DIA Direct Peering vous permet de diffuser vos vidéos, musiques et autres contenus multimédias avec une latence minimale et une bande passante maximale. En vous connectant directement aux principaux IX européens, vous réduisez les intermédiaires et assurez une diffusion fluide et rapide à vos utilisateurs, même lors des pics de trafic."
+    }
+    ,
+    "edu":{
+      "title":"Pour les plateformes éducatives",
+      "description": "Facilitez l’apprentissage en ligne avec une connectivité fiable. Les plateformes éducatives modernes reposent sur une connectivité robuste pour offrir des cours en ligne, des vidéoconférences et des ressources pédagogiques accessibles à tous. Notre solution DIA Direct Peering garantit une latence réduite et une bande passante optimisée, permettant une diffusion fluide des contenus éducatifs et une interaction en temps réel entre enseignants et élèves."
+    }
+  },
+  "check":{
+    "EMAIL": "Email",
+    "TELEPHONE": "Téléphone",
+    "ACHETER": "Acheter",
+    "COMMANDE": "Commande",
+    "FORFAIT": "Forfait :",
+    "PRIX": "Prix :",
+    "PAYS": "Pays :",
+    "DUREE_VALIDITE": "Durée de validité :",
+    "JOURS": "Jours",
+    "Opt": "optionnel"
+  },
+    "COMMON": {
+      "SAVE": "Enregistrer",
+      "CANCEL": "Annuler",
+      "SEARCH": "Rechercher"
+    },
+    "hero": {
+        "eyebrow": "Connectez-vous au monde",
+        "title": "où que vous soyez, à partir de",
+        "price": "3.000 FCFA",
+        "contact": "Contactez nous",
+        "phone": "Telephone"
+      },
+      "countries": {
+        "title": "Choisissez un pays",
+        "search": "Rechercher votre pays",
+        "continents": {
+          "all": "Tous",
+          "africa": "Afrique",
+          "northAmerica": "Amerique du Nord",
+          "southAmerica": "Amerique du Sud",
+          "europe": "Europe",
+          "asia": "Asie",
+          "oceania": "Oceanie"
+        }
+      },
+    "COUNTRIES": {
+    "France": "France",
+    "Maroc": "Maroc",
+    "États-Unis": "États-Unis",
+    "Espagne": "Espagne",
+    "Italie": "Italie",
+    "Arabie Saoudite": "Arabie Saoudite",
+    "Turquie": "Turquie",
+    "Chine": "Chine",
+    "Afrique du Sud": "Afrique du Sud",
+    "Royaume-Uni": "Royaume-Uni",
+    "Côte d'Ivoire": "Côte d'Ivoire",
+    "Canada": "Canada",
+    "Kenya": "Kenya"
+  },
+  "esim":{
+    
+        "ESIM_POUR": "eSIM pour",
+        "ALLER_A_LA_CAISSE": "Aller à la caisse sécurisée",
+        "FCFA": "FCFA"
+      
+  },
+  "contact":{
+    "CONTACT_TITLE": "Besoin d'informations ou d'assistance ? Contactez-nous dès aujourd'hui !",
+    "CONTACT_ADDRESS": "Ngor Almadies, Immeuble BIB'S , 56 Route de Ngor – Dakar, Sénégal",
+    "CONTACT_PHONE": "Telephone: (+ 221) 33 860 19 29",
+    "CONTACT_EMAIL": "E-mail: contact@wawtelecom.com",
+    "FORM_NAME": "Nom",
+    "FORM_EMAIL": "Email",
+    "FORM_MESSAGE": "Message",
+    "FORM_SUBMIT": "Envoyer"
+  },
+"accueil": {
+  "HERO_TITLE": "L'efficacité dans la synergie : ",
+  "HERO_TITLE_1": "tout fonctionne mieux ",
+  "HERO_TITLE_2": "quand tout fonctionne ensemble.",
+  "HERO_DESCRIPTION": "Ensemble, façonnons l’avenir digital de votre organisation. Nous accompagnons les entreprises dans leur transformation numérique à l’échelle mondiale en intégrant des technologies essentielles : Connectivité, Cloud et IoT.",
+  "HERO_BUTTON": "Contactez-nous",
+
+  "SLIDE2_TITLE": "Voyagez sans frontières avec notre eSIM",
+  "SLIDE2_DESCRIPTION": "Dites adieu aux cartes SIM physiques ! Profitez d’une connexion instantanée et fluide partout dans le monde, sans tracas.",
+  "SLIDE2_BUTTON": "Découvrez l'eSIM",
+
+  "SLIDE3_TITLE": "Restez connecté, où que vous soyez",
+  "SLIDE3_DESCRIPTION": "Ne perdez plus jamais le réseau en voyage. Avec notre eSIM, accédez à Internet en quelques clics et gardez le contact en toute simplicité.",
+  "SLIDE3_BUTTON": "Obtenez votre eSIM",
+  "APP_DOWNLOAD_BUTTON": "Télécharger l'application"
+
+},
+  "OFFER_SECTION": {
+    "TITLE": "Bénéficiez d'une infrastructure numérique évolutive et sécurisée",
+    "DESCRIPTION": "Chez WAW TELECOM, nous offrons bien plus qu'une simple connectivité , nous garantissons une infrastructure sécurisée et performante, conçue pour répondre aux exigences de l'ère numérique. Grâce à nos solutions de connectivité privée, vos entreprises bénéficient d'une sécurité renforcée, d'une performance optimisée et d'une fiabilité qui inspire confiance",
+    "CONTACT_BTN": "Contactez nous"
+  },
+  "ABOUT_SECTION": {
+    "TITLE": "À Propos de nous",
+    "DESCRIPTION": "Chez WAW TELECOM, nous redéfinissons les télécommunications au Sénégal. Leader innovant du secteur, nous offrons une gamme complète de services adaptés aux besoins des particuliers et des entreprises. Notre mission : fournir des solutions technologiques avancées qui allient performance, fiabilité et simplicité, pour connecter le Sénégal au reste du monde. Avec une expertise de pointe et un engagement envers l'excellence, WAW TELECOM est votre partenaire de confiance pour répondre aux défis de l'ère numérique.",
+    "COMPANY_NAME": "WAW TELECOM",
+    "MISSION": "Notre mission",
+    "IMAGE_ALT": "À propos de nous"
+  },
+  "VALUES_SECTION": {
+    "TITLE": "Nos Valeurs",
+    "CARD_1": {
+      "TITLE": "Service Client : Réactivité, Expertise, Confiance",
+      "TEXT": "Chaque contact est simplifié pour permettre à nos clients de se concentrer sur ce qui compte vraiment : la réussite de leurs projets."
+    },
+    "CARD_2": {
+      "TITLE": "Repousser nos limites : Une culture de croissance et de résilience",
+      "TEXT": "Innover constamment pour dépasser les attentes et relever les défis technologiques de demain."
+    },
+    "CARD_3": {
+      "TITLE": "Franchir les frontières : Une connectivité pour réduire la fracture numérique et autonomiser les communautés",
+      "TEXT": "Connecter les entreprises et les individus au-delà des frontières, en bâtissant un monde plus interconnecté."
+    }
+  },
+  "ADDED_VALUE": {
+    "TITLE": "Notre valeur ajoutée",
+    "CARD_1": {
+      "TITLE": "Accessibilité : Internet rapide et fiable pour tous",
+      "ALT": "Accessibilité",
+      "DESCRIPTION": "WAW TELECOM, nous croyons que l'accès à un Internet rapide et fiable ne devrait pas être un luxe. Nous nous engageons à offrir des solutions de connectivité de qualité, adaptées à tous les budgets, grâce à des tarifs compétitifs.\n\nCette approche inclusive permet aux particuliers, entreprises et communautés de rester connectés, sans compromis sur la performance ni sur la fiabilité. Avec WAW TELECOM, la connectivité devient un levier d'opportunités pour tous."
+    },
+    "CARD_2": {
+      "TITLE": "Qualité : Une connexion sur laquelle vous pouvez compter",
+      "ALT": "Qualité",
+      "DESCRIPTION": "Chez WAW TELECOM, la qualité est notre priorité absolue. Nous nous engageons à offrir un service Internet performant, fiable et à la hauteur des attentes de nos clients. Chaque connexion est pensée pour garantir une expérience fluide et une satisfaction durable.\n\nAvec WAW TELECOM, vous bénéficiez d'une excellence technique et d'un accompagnement sur mesure, parce que vous méritez le meilleur."
+    },
+    "CARD_3": {
+      "TITLE": "Utilité : Une valeur ajoutée pour votre quotidien",
+      "ALT": "Utilité",
+      "DESCRIPTION": "Chez WAW TELECOM, nous faisons de l'utilité la pierre angulaire de nos services. Nos solutions ne se limitent pas à un simple accès à Internet : elles offrent une réelle valeur ajoutée pour simplifier votre quotidien et booster vos activités professionnelles.\n\nAvec des forfaits flexibles, un support client réactif, et des services innovants conçus pour maximiser la productivité et la connectivité, nous nous engageons à vous accompagner dans votre réussite personnelle et professionnelle.\n\nWAW TELECOM, c'est Internet au service de vos ambitions."
+    }
+  },
+  "PARTNERS": {
+    "TITLE": "Parmis Nos Partenaires de Confiance"
+  },
+
+  "CONNECTIVITY_HERO": {
+    "EYEBROW": "Connectivité fiable :",
+    "TITLE": "profitez d'un Internet haut débit adapté à vos besoins",
+    "DESCRIPTION": "Restez connecté avec des solutions Internet flexibles, conçues pour répondre aux besoins de votre entreprise",
+    "CONTACT_BTN": "Contactez nous",
+    "PHONE_BTN": "Telephone +221 33 860 19 29",
+    "IMG_ALT": "WAW TELECOM"
+  },
+  "OFFER":{
+    "OFFER_TITLE": "Connectivité privée sécurisée",
+    "OFFER_DESCRIPTION": "Chez WAW TELECOM, nous offrons bien plus qu'une simple connexion : nous fournissons des solutions de connectivité privée qui garantissent une infrastructure sécurisée, performante et adaptée aux enjeux de l’ère numérique. Faites confiance à notre expertise pour renforcer la sécurité et l’efficacité de votre entreprise tout en répondant à vos besoins les plus stratégiques.",
+    "OFFER_BUTTON": "Contactez nous"
+  },
+  "OFFER_2":{
+    "OFFER_TITLE": "WAW TELECOM : La connectivité au service de votre entreprise",
+    "OFFER_DESCRIPTION": "Optimisez vos performances avec nos solutions MPLS robustes, idéales pour interconnecter vos sites distants et garantir une qualité de service (QoS) optimale. Bénéficiez d’une faible latence pour vos applications critiques, d’une gestion centralisée, et d’une visibilité complète sur vos flux de données.Avec WAW TELECOM, assurez la fiabilité et l’efficacité de votre réseau, pour des communications d’entreprises sans compromis.",
+    "OFFER_BUTTON": "Contactez nous"
+  },
+  "OFFER_SDWAN":{
+     "OFFER_BUTTON":"Contactez nous",
+     "OFFER_DESCRIPTION":"Avec nos solutions SD-WAN de pointe, simplifiez la gestion de votre réseau tout en améliorant ses performances. Offrez à votre entreprise une connectivité optimisée, une gestion fluide de vos applications et une réduction significative des coûts par rapport aux infrastructures réseau traditionnelles. WAW TELECOM vous accompagne vers une infrastructure plus intelligente et flexible.",
+     "OFFER_TITLE":"Des solutions SD-WAN pour une connectivité agile et performante"
+  },
+  "OFFER_IOT":{
+     "OFFER_BUTTON":"Contactez nous",
+     "OFFER_DESCRIPTION":"Adoptez nos solutions IoT adaptées à vos besoins spécifiques et bénéficiez d’une visibilité totale sur vos équipements et processus. Optimisez la gestion de vos ressources, améliorez votre efficacité opérationnelle et réduisez vos coûts d’exploitation grâce à notre expertise en connectivité intelligente.",
+     "OFFER_TITLE":"Chez WAW TELECOM : Des solutions IoT sur mesure pour votre entreprise"
+  },
+  
+    "fr": {
+      "title": "BOOSTEZ VOTRE ACTIVITE GRÂCE A NOS SOLUTIONS CLOUD PERFORMANTES",
+      "shared_hosting": {
+        "title": "Hébergement Mutualisé : La solution idéale pour vos projets",
+        "features": {
+          "secure_storage": "Stockage sécurisé pour vos données et sauvegardes",
+          "optimized_hosting": "Hébergement optimisé pour vos projets de petite taille",
+          "professional_email": "Adresses e-mail professionnelles incluses",
+          "management_tools": "Outils de gestion dédiés aux startups",
+          "responsive_support": "Support réactif pour une assistance rapide et efficace"
+        }
+      },
+      "dedicated_hosting": {
+        "title": "Hébergement Pro Dédié : La puissance au service de vos grands projets",
+        "features": {
+          "custom_hosting": "Hébergement sur mesure pour vos projets de grande envergure",
+          "professional_email": "Adresses e-mail professionnelles incluses",
+          "advanced_security": "Outils avancés de sécurité pour protéger vos données",
+          "dedicated_support": "Support business dédié pour un accompagnement optimal"
+        }
+      },
+      "vps_cloud": {
+        "title": "Service Cloud VPS : Performance, flexibilité et sécurité",
+        "features": {
+          "os_choice": "Systèmes d'exploitation au choix : Ubuntu, CentOS, Debian, Fedora…",
+          "microsoft_env": "Environnements Microsoft : Windows, Windows Server, SQL Server",
+          "security_tools": "Outils avancés de sécurité intégrés",
+          "high_availability": "Haute disponibilité pour une fiabilité maximale",
+          "backups": "Sauvegardes automatiques, snapshots, et firewall inclus"
+        }
+      },
+      "contact_button": "Nous contacter"
+    },
+    "login": {
+      "title": "Connectez-vous",
+      "return_home": "Retourner à l'accueil",
+      "email_placeholder": "Entrez votre email",
+      "password_placeholder": "Entrez votre mot de passe",
+      "login_button": "Se connecter",
+      "no_account": "Vous n'avez pas de compte ?",
+      "register_link": "S'inscrire",
+      "image_alt": "Image de connexion"
+    },
+    "forfait": {
+    "title": "Mes forfaits",
+    "status": "Statut",
+    "payment_done": "Paiement effectué",
+    "pending": "En attente",
+    "amount": "Montant",
+    "payment_method": "Méthode de paiement",
+    "reference": "Référence",
+    "country": "Pays",
+    "validity": "Validité",
+    "validity_days": "jours",
+    "date": "Date",
+    "no_packages": "Aucun forfait disponible"
+  },
+    "register": {
+    "title": "Inscrivez-vous",
+    "return_home": "Retourner à l'accueil",
+    "first_name": "Prénom",
+    "last_name": "Nom",
+    "email": "Email",
+    "phone_number": "Numero telephone",
+    "password": "Mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+    "register_button": "S'inscrire",
+    "have_account": "Vous avez déjà un compte ?",
+    "login_link": "Se connecter",
+    "image_alt": "Image d'inscription"
+  },
+  "navig": {
+    "order_history": "Historique commande",
+    "buy_esim": "Acheter eSim",
+    "disc": "Deconnexion",
+    "con": "Connexion"
+  },
+      "footer": {
+        "address": {
+          "title": "Adresse",
+          "content": "Ngor Almadies, 56 Route de Ngor – Dakar, Sénégal"
+        },
+        "contacts": {
+          "title": "Contacts",
+          "email": "contact@wawtelecom.com"
+        },
+        "social": {
+          "title": "Nos Réseaux sociaux"
+        },
+        "quickLinks": {
+          "title": "Liens rapides",
+          "home": "Acceuil",
+          "esim": "eSim",
+          "about": "A propos",
+          "contact": "Contact",
+          "login": "Connexion"
+        },
+        "copyright": "WAW TELECOM 2025. Tous droits réservés.",
+        "developedBy": "Conçu et développé par WAW TELECOM"
+      }
+    
+  }

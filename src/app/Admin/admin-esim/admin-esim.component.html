@@ -1,0 +1,141 @@
+<main class="mt-3">
+    <div class=" " id="esim">
+      <div class="image">
+          <img src="https://img.freepik.com/premium-photo/silhouette-high-frequency-5g-station-communication-tower-4g-network-telephone-cellsite-with-dusk-sunset-sky-with-space-text_43300-2298.jpg?ga=GA1.1.522834921.1700648147&semt=ais_hybrid" alt="">
+      </div>
+      <h2 class="titre mt-2">Packages de {{esimPackageChoisi.plan_name}} de l'   eSim</h2>
+      <div class="cartes row">
+          <div class="plan-card mt-2 ms-2" >
+              <h2>{{ esimPackageChoisi.plan_name }} <span class="price">XOF {{esimPackageChoisi.price }}</span></h2>
+              <div class="d-flex justify-content-between">
+                  <ul class="plan-details">
+                    <li >🌐 N/A</li>
+                    <li >⏳ {{ esimPackageChoisi.validity_days }} jours</li>
+                  </ul>
+                  <ul class="plan-details">
+                    <li>🔗 {{ esimPackageChoisi.network_provider }}</li>
+                    <li>💳 {{ esimPackageChoisi.country_name }} ({{esimPackageChoisi.country_code}})</li>
+                  </ul>
+
+              </div>
+            
+              <div class="plan-features">
+                <p><span class="icon">📶</span> <span style="margin-left: -30vh;">Hotspot</span>  <strong class="ms-5">{{ esimPackageChoisi.hotspot_allowed}}</strong></p>
+                <p><span class="icon">⚡</span> <span style="margin-left: -27vh;">Speed Limit</span> <strong class="ms-5" >{{ esimPackageChoisi.data_limit }}</strong></p>
+                <p><span class="icon">⌛</span> <span style="margin-left: -20vh;">Expiration</span> <strong class="ms-5">{{ esimPackageChoisi.expiration_policy}}</strong></p>
+                <p><span class="icon">⌚</span> <span style="margin-left: -23vh;">Crée le</span> <strong class="ms-5">{{ esimPackageChoisi.created_at | date}}</strong></p>
+              </div>
+              <div class="bouton">
+                <button class="btn btnAjout me-4" (click)="charger()" data-bs-toggle="modal" data-bs-target="#exampleModal">Modifier</button>
+                <button class="btn btn-outline-danger" (click)="archiverPack()">Archiver</button>
+              </div>
+            </div>
+            
+      </div>
+      <div *ngIf="esimPackageChoisi.length==0"><p class="text-center text-danger">  😔 Aucun package disponible</p></div>
+       
+
+    </div>
+    
+</main>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Formulaire de modification de package</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Code du pays :</label>
+              <input type="text" class="form-control" name="country_code" placeholder="Code du pays" aria-label="Code du pays" [(ngModel)]="code">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Nom du pays :</label>
+              <input type="text" class="form-control" name="country_name" placeholder="Nom du pays" aria-label="Nom du pays" [(ngModel)]="name">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Nom du plan :</label>
+              <input type="text" class="form-control" name="plan_name" placeholder="Nom du plan" aria-label="Nom du plan" [(ngModel)]="plan">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Prix :</label>
+              <input type="number" min="0" step="0.01" class="form-control" name="price" placeholder="Prix" aria-label="Prix" [(ngModel)]="prix">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Validité (jours) :</label>
+              <input type="number" min="1" class="form-control" name="validity_days" placeholder="Validité en jours" aria-label="Validité en jours" [(ngModel)]="duree">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Fournisseur réseau :</label>
+              <input type="text" class="form-control" name="network_provider" placeholder="Fournisseur réseau" aria-label="Fournisseur réseau" [(ngModel)]="net">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Image (URL) :</label>
+              <input type="text" class="form-control" name="image" placeholder="URL de l'image" aria-label="URL de l'image" [(ngModel)]="image">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Informations réseau :</label>
+              <textarea class="form-control" name="network_info" placeholder="Informations réseau" aria-label="Informations réseau" [(ngModel)]="net_inf"></textarea>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Politique d'expiration :</label>
+              <input type="text" class="form-control" name="expiration_policy" placeholder="Politique d'expiration" aria-label="Politique d'expiration" [(ngModel)]="expolicy">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Hotspot autorisé :</label>
+              <select class="form-select" name="hotspot_allowed" aria-label="Hotspot autorisé" [(ngModel)]="hotspot">
+                <option value="">Sélectionner...</option>
+                <option value="1">Oui</option>
+                <option value="0">Non</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="" class="fw-bold mb-1">Limite de vitesse :</label>
+              <input type="text" class="form-control" name="speed_limit" placeholder="Limite de vitesse" aria-label="Limite de vitesse" [(ngModel)]="speed">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btnAjout" data-bs-dismiss="modal" (click)="updatePack()">Modifier</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>

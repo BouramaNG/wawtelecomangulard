@@ -1,0 +1,776 @@
+<style>
+  /* AJOUT DU BACKGROUND IMAGE AVEC SUPERPOSITION SOMBRE */
+.hero-section {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+  background: url('https://wawtelecom.com/Services-Synapsys-04.jpg') center/cover no-repeat;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Superposition sombre */
+  z-index: 1;
+}
+
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 2; /* Assure que le contenu est au-dessus de la superposition */
+}
+
+  /* HERO SECTION */
+.hero-section {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+}
+
+/* SLIDER CONTAINER */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* WRAPPER POUR LES SLIDES */
+.hero-wrapper {
+  display: flex;
+  width: 300%; /* Largeur totale pour 3 slides */
+  height: 100%;
+  animation: slideAnimation 12s infinite;
+}
+
+.hero-slide {
+  flex: 0 0 100%; /* Chaque slide prend 100% de la largeur */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px;
+}
+
+/* TEXTE À GAUCHE */
+.content-wrapper {
+  flex: 1;
+  max-width: 50%;
+}
+
+.hero-text {
+  color: white;
+}
+
+.hero-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+}
+
+.custom-btn {
+  display: inline-block;
+  background: #FFDD33;
+  color: #000;
+  padding: 10px 20px;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+/* IMAGE À DROITE */
+.hero-image {
+  flex: 1;
+  max-width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hero-image img {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.hero-title.yellow {
+  color: #FFDD33;
+}
+/* ANIMATION */
+@keyframes slideAnimation {
+  0%, 33% { transform: translateX(0%); }
+  34%, 66% { transform: translateX(-100%); }
+  67%, 100% { transform: translateX(-200%); }
+}
+
+
+
+
+
+/* 📱 Ajustement pour les petits écrans (mobile) */
+@media screen and (max-width: 768px) {
+  .hero-slide {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    width: 100%;
+  }
+
+  .content-wrapper {
+    order: 1;
+    width: 90%; /* Empêche le texte de toucher les bords */
+    max-width: 350px; /* Ajuste la largeur maximale */
+    padding: 0 10px; /* Ajoute un peu d’espace */
+  }
+
+  .hero-title {
+    font-size: 18px; /* Taille adaptée */
+    margin-bottom: 8px;
+    word-break: break-word; /* Force la coupure des mots si nécessaire */
+  }
+
+  .hero-description {
+    font-size: 14px;
+    line-height: 1.4; /* Meilleure lisibilité */
+    text-align: center; /* Centre le texte */
+  }
+
+  .hero-image {
+    order: 2;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-image img {
+    width: 80%; /* Ajuste automatiquement */
+    max-width: 200px;
+    height: auto;
+  }
+
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  .cta-buttons a {
+    font-size: 14px;
+    padding: 10px 18px;
+    width: auto;
+    min-width: 140px;
+    text-align: center;
+  }
+  .cta-container {
+    flex-direction: row; /* Garde les boutons en ligne */
+    flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si nécessaire */
+    justify-content: center;
+    gap: 10px; /* Réduit l’espace entre eux */
+  }
+
+  .cta-buttons,
+  .app-download {
+    display: flex;
+    align-items: center; /* Aligne parfaitement */
+    justify-content: center;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.cta-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Alignement vertical des boutons */
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.app-download{
+  margin-top: 20px;
+}
+
+
+.cta-buttons, .app-download {
+  display: flex;
+  align-items: center; /* Assure un alignement parfait */
+  
+}
+
+.custom-btn, .app-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px; /* Uniformisation de la hauteur */
+  padding: 12px 24px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.6s ease;
+  font-size: 16px; /* S'assure que la taille de police est la même */
+}
+
+.custom-btn {
+  background-color: #FFDD33;
+  color: #333;
+}
+
+.custom-btn:hover {
+  background-color: #333;
+}
+
+.app-button {
+  background-color: #FFDD33;
+
+}
+
+.app-button:hover {
+  background-color: #FFDD33;
+
+}
+
+.button-text {
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.store-icons {
+  display: flex;
+  align-items: center; /* Assure un alignement parfait des icônes */
+}
+
+.store-icons img {
+  width: 24px;
+  height: 24px;
+  margin-left: 5px;
+}
+
+/* Correction spécifique si le décalage persiste */
+.app-button {
+  min-height: 50px; /* S'assure qu'il ne soit pas plus petit */
+}
+
+.app-button {
+  display: flex;
+  align-items: center;
+  background-color: #FFDD33;
+  border-radius: 40px;
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Ajoute une transition fluide */
+}
+
+.app-button:hover {
+  background-color: #333; /* Fond gris foncé */
+  color: #FFDD33; /* Texte jaune */
+}
+
+.app-button:hover .button-text {
+  color: #FFDD33; /* Assure que le texte change bien */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* height: 400px; */
+  background: rgba(51, 51, 51, 0.8); /* #333 avec transparence */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.popup-content {
+  background-color: white; /* #FFDD33 adouci */
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  height: 550px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  display: flex;
+  gap: 20px;
+  position: relative;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.popup-image {
+  width: 220px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.popup-text {
+  flex: 1;
+}
+
+.popup-text h2 {
+  color: #333;
+  margin-top: 0;
+}
+
+.popup-text p, .popup-text ul {
+  color: #333;
+}
+
+.popup-text button {
+  margin-top: 10px;
+  background-color: #333;
+  color: #FFDD33;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.popup-text button:hover {
+  background-color: #222;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  color: #000;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+  .popup-content {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .popup-image {
+    width: 400px;
+    max-height: 200px;
+    /* object-fit: cover; */
+  }
+
+  .popup-text h2 {
+    text-align: center;
+  }
+
+  .popup-text ul {
+    padding-left: 20px;
+  }
+
+  .popup-text button {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+
+
+</style>
+<app-header></app-header>
+ <main>
+
+
+<section class="hero-section">
+  <div class="hero-slider">
+    <div class="hero-wrapper">
+
+      <!-- SLIDE 1 -->
+      <div class="hero-slide">
+        <div class="content-wrapper">
+          <div class="hero-text">
+            <h2 class="hero-title">{{'accueil.HERO_TITLE' | translate}} <br> {{'accueil.HERO_TITLE_1' | translate}}
+              <br> <span style="color: #FFDD33;">{{'accueil.HERO_TITLE_2' | translate}}</span>
+            </h2>
+            <p class="hero-description">{{'accueil.HERO_DESCRIPTION' | translate}}</p>
+          </div>
+          
+            <div class="cta-buttons">
+              <a [routerLink]="['/contact']" class="custom-btn">{{'accueil.HERO_BUTTON' | translate}}</a>
+            </div>
+           
+
+
+          
+        </div>
+        <div class="hero-image">
+          <!-- <img src="https://wawtelecom.com/Services-Synapsys-04.jpg" alt="WAW TELECOM"> -->
+        </div>
+      </div>
+
+      <!-- SLIDE 2 -->
+     <!-- SLIDE 2 -->
+<!-- SLIDE 2 -->
+<div class="hero-slide">
+  <div class="content-wrapper">
+    <div class="hero-text">
+      <h2 class="hero-title yellow">{{'accueil.SLIDE2_TITLE' | translate}}</h2>
+      <p class="hero-description">{{'accueil.SLIDE2_DESCRIPTION' | translate}}</p>
+    </div>
+    <div class="cta-container">
+    <div class="cta-buttons">
+      <a [routerLink]="['/travel']" class="custom-btn">{{'accueil.SLIDE2_BUTTON' | translate}}</a>
+    </div>
+
+    <div class="app-download">
+      <a href="https://play.google.com/store/apps/details?id=com.wawtravel.app&pcampaignid=web_share" class="app-button" id="openQR">
+        <span class="button-text">{{ 'accueil.APP_DOWNLOAD_BUTTON' | translate }}</span>
+        <div class="store-icons">
+          <img src="https://framerusercontent.com/images/yx5I6hjMu32t7L3E6b2mLP8.svg" alt="Apple Store">
+          <img src="https://framerusercontent.com/images/E8VrVr4yUvcF9QowXk3aFf8cW8k.svg" alt="Google Play">
+        </div>
+      </a>
+    </div>
+
+  </div>
+  </div>
+  <div class="hero-image">
+    <img src="https://wawtelecom.com/Image (3).jpeg" alt="wawtelecom esim Service eSIM">
+  </div>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="hero-slide">
+  <div class="content-wrapper">
+    <div class="hero-text">
+      <h2 class="hero-title yellow">{{'accueil.SLIDE3_TITLE' | translate}}</h2>
+      <p class="hero-description">{{'accueil.SLIDE3_DESCRIPTION' | translate}}</p>
+    </div>
+    <div class="cta-container">
+    <div class="cta-buttons">
+      <a [routerLink]="['/travel']" class="custom-btn">{{'accueil.SLIDE3_BUTTON' | translate}}</a>
+    </div>
+
+
+    <div class="app-download">
+      <a href="https://play.google.com/store/apps/details?id=com.wawtravel.app&pcampaignid=web_share" class="app-button" id="openQR">
+        <span class="button-text">{{ 'accueil.APP_DOWNLOAD_BUTTON' | translate }}</span>
+        <div class="store-icons">
+          <img src="https://framerusercontent.com/images/yx5I6hjMu32t7L3E6b2mLP8.svg" alt="Apple Store">
+          <img src="https://framerusercontent.com/images/E8VrVr4yUvcF9QowXk3aFf8cW8k.svg" alt="Google Play">
+        </div>
+      </a>
+    </div>
+  </div>
+
+  </div>
+  <div class="hero-image">
+    <img src="https://wawtelecom.com/esim3.jpg" alt="wawtelecom Connexion simplifiée">
+  </div>
+</div>
+
+
+
+    </div>
+  </div>
+</section>
+
+
+<!-- Umrah eSIM Popup -->
+<!-- <div *ngIf="showModal" class="popup">
+  <div class="popup-content">
+    <img style="width: 550px;height: 250px;" src="https://www.wawtelecom.com/oumraimage.jpg"  class="popup-image" alt="Umrah">
+    <div class="popup-text">
+      <h2>Partez à l'Umrah avec notre eSIM ! 🕋</h2>
+      <p>Restez connecté pendant votre pèlerinage grâce à notre forfait eSIM pour l'Arabie Saoudite.</p>
+      <ul>
+        <li>✅ 1GB pour seulement 2.999 FCFA 😲</li>
+        <li>✅ Activation instantanée</li>
+        <li>✅ Sans carte SIM physique</li>
+      </ul>
+      <button (click)="goToEsimPage()">Activer mon eSIM</button>
+    </div>
+    <span class="close" (click)="closeModal()">&times;</span>
+  </div>
+</div> -->
+
+
+
+<section class="offer-section">
+  <div class="offer-background">
+      <div class="container offer-content">
+          <div class="offer-row" >
+              
+              <!-- Image / Vidéo -->
+              <div class="offer-image">
+                  <img style="height: 550px;width: 500px;" src="https://wawtelecom.com/femmme.jpg" alt="WAW TELECOM®" class="image-responsive">
+              </div>
+              
+              <!-- Texte et Boutons -->
+              <div class="offer-text">
+                  <h2 class="offer-title">
+                      {{ 'OFFER_SECTION.TITLE' | translate }}
+                  </h2>
+                  <p class="offer-description">
+                      {{ 'OFFER_SECTION.DESCRIPTION' | translate }}
+                  </p>
+
+                  <div class="cta-buttons">
+                      <a [routerLink]="['/contact']" class="custom-btn">
+                          {{ 'OFFER_SECTION.CONTACT_BTN' | translate }}
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<!-- <section class=" choix my-3">
+  <h3 class="text-center fw-bold">{{ 'countries.title' | translate }}  {{ 'countries.home' | translate }}</h3>
+
+  <div class="search ms-4">
+      <input type="search" name="search" [(ngModel)]="searchText" id=""   placeholder="{{ 'countries.search' | translate }}" (input)="filterEsims()">
+  </div>
+  <div class="filtre">
+    <p class="zone" [class.selected]="selectedContinent === 'All'" (click)="filtrerPays('All')">{{ 'countries.continents.all' | translate }}</p>
+    <p class="zone" [class.selected]="selectedContinent === 'Afrique'" (click)="filtrerPays('Afrique')">{{ 'countries.continents.africa' | translate }}</p>
+    <p class="zone" [class.selected]="selectedContinent === 'Amerique du Nord'" (click)="filtrerPays('Amerique du Nord')">{{ 'countries.continents.northAmerica' | translate }}</p>
+    <p class="zone" [class.selected]="selectedContinent === 'Amerique du Sud'" (click)="filtrerPays('Amerique du Sud')">{{ 'countries.continents.southAmerica' | translate }}</p>
+    <p class="zone" [class.selected]="selectedContinent === 'Asie'" (click)="filtrerPays('Asie')">{{ 'countries.continents.asia' | translate }}</p>
+    <p class="zone" [class.selected]="selectedContinent === 'Europe'" (click)="filtrerPays('Europe')">{{ 'countries.continents.europe' | translate }}</p>
+    <p class="zone" [class.selected]="selectedContinent === 'Oceanie'"  (click)="filtrerPays('Oceanie')">{{ 'countries.continents.oceania' | translate }}</p>
+  </div>
+ 
+      <div class="row pays">
+          <div class="col-md-3"  [routerLink]="['/eSim',item.id]" *ngFor="let item of getPaysFiltres() | paginate: { itemsPerPage: 8, currentPage: page }">
+            <div class="card" id="ens">
+              <div class="card-body" >
+                <div id="carte">
+                  <img class="mt-3" [src]="item.drapeau" alt="" id="image">
+                <p class="card-text">{{ 'COUNTRIES.' + item.nom | translate }}</p>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+              <div *ngIf="filteredEsims.length==0"><p class="text-center text-danger"> 😔 Aucun esim disponible pour ce pays ou continent</p></div>
+              <pagination-controls class="pagination" (pageChange)="page = $event"></pagination-controls>
+        </div>
+  
+</section> -->
+
+<section class="contact-section">
+  <div class="contact-container">
+      <div class="contact-info">
+          <h2 id="contact-title">{{'contact.CONTACT_TITLE' | translate}}</h2>
+          <p><span class="icon">📍</span><span id="contact-address">{{'contact.CONTACT_ADDRESS' | translate}}</span></p>
+          <p><span class="icon">📞</span><a id="contact-phone" href="tel:+221338601929" class="btn-secondary">{{'contact.CONTACT_PHONE' | translate}}</a></p>
+          <p><span class="icon">📞</span><a id="contact-phone" href="tel:+221769291717" class="btn-secondary">Téléphone : + (221) 76 929 17 17</a></p>
+          <p><span class="icon">✉️</span><a id="contact-email" href="mailto:contact@wawtelecom.com" class="btn-secondary">{{'contact.CONTACT_EMAIL' | translate}}</a></p>
+      </div>
+      <div class="contact-form">
+        <form method="POST">
+          <label for="name" id="form-name">{{'contact.FORM_NAME' | translate}}</label>
+          <input type="text" id="name" name="name" required [(ngModel)]="name">
+
+          <label for="email" id="form-email">{{'contact.FORM_EMAIL' | translate}}</label>
+          <input type="email" id="email" name="email" required [(ngModel)]="email">
+
+          <label for="message" id="form-message">{{'contact.FORM_MESSAGE' | translate}}</label>
+          <textarea id="message" name="message" rows="4" required [(ngModel)]="message"></textarea>
+
+          <button type="submit" id="form-submit" (click)="contacter()">{{'contact.FORM_SUBMIT' | translate}}</button>
+      </form>
+      </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+<section class="section1">
+    <div class="container">
+      <div class="page-padding is--footer">
+        <div class="wrapper_footer">
+          <!-- Logo section -->
+          <div id="w-node-_956d022f-1588-c453-227f-5564ee79f01d-ee79f019" class="column_footer">
+            <a href="/" aria-current="page" class="w-nav-brand w--current">
+              <img src="https://wawtelecom.com/waw.png" loading="lazy" 
+                   [alt]="'footer.logo.alt' | translate" 
+                   class="img_brande" 
+                   style="width: 150px; height: 100px;border-radius: 10px;"/>
+            </a>
+          </div>
+  
+          <!-- Contact details section -->
+          <div id="w-node-_956d022f-1588-c453-227f-5564ee79f020-ee79f019" class="column_footer">
+            <div class="wrapper_contact-details">
+              <p class="text-size-body-xsm is--bold" style="font-size: 18px;">
+                {{ 'footer.address.title' | translate }}
+              </p>
+              <p class="text-size-body-sm">
+                <a href="https://www.google.com/maps/place/Si%C3%A8ge+Social+WAW+TELECOM/@14.7496095,-17.5082828,17z" 
+                   target="_blank" 
+                   class="link_footer">
+                  {{ 'footer.address.content' | translate }}
+                </a>
+              </p>
+              
+              <p class="text-size-body-xsm is--bold">
+                {{ 'footer.contacts.title' | translate }}
+              </p>
+              <p class="text-size-body-sm">
+                <a href="tel:+221338601929" class="link_footer">+221 33 860 19 29</a>
+              </p>
+              <p class="text-size-body-sm">
+                <a href="tel:+221769291717" class="link_footer">+221 76 929 17 17</a>
+              </p>
+              <p class="text-size-body-sm">
+                <a href="mailto:contact@wawtelecom.com" class="link_footer">contact&#64;wawtelecom.com</a>
+              </p>
+  
+              <p class="text-size-body-xsm is--bold" style="font-size: 18px;">
+                {{ 'footer.social.title' | translate }}
+              </p>
+              
+              <!-- Social media links -->
+              <div class="wrapper_socials">
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/company/wawtelecom" 
+                   target="_blank" 
+                   class="link_socials w-inline-block"
+                   [attr.aria-label]="'footer.social.linkedin' | translate">
+                  <div class="svg_social w-embed">
+                    <!-- LinkedIn SVG remains unchanged -->
+                    <svg width="32" height="auto" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 0.242676C0.67157 0.242676 0 0.914246 0 1.74268V16.7427C0 17.5711 0.67157 18.2427 1.5 18.2427H16.5C17.3284 18.2427 18 17.5711 18 16.7427V1.74268C18 0.914246 17.3284 0.242676 16.5 0.242676H1.5ZM5.52076 4.2454C5.52639 5.20165 4.81061 5.79087 3.96123 5.78665C3.16107 5.78243 2.46357 5.1454 2.46779 4.24681C2.47201 3.40165 3.13998 2.72243 4.00764 2.74212C4.88795 2.76181 5.52639 3.40728 5.52076 4.2454ZM9.2797 7.00444H6.75971H6.7583V15.5643H9.4217V15.3646C9.4217 14.9847 9.4214 14.6047 9.4211 14.2246C9.4203 13.2108 9.4194 12.1959 9.4246 11.1824C9.426 10.9363 9.4372 10.6804 9.5005 10.4455C9.7381 9.56798 10.5271 9.00128 11.4074 9.14058C11.9727 9.22908 12.3467 9.55678 12.5042 10.0898C12.6013 10.423 12.6449 10.7816 12.6491 11.129C12.6605 12.1766 12.6589 13.2242 12.6573 14.2719C12.6567 14.6417 12.6561 15.0117 12.6561 15.3815V15.5629H15.328V15.3576C15.328 14.9056 15.3278 14.4537 15.3275 14.0018C15.327 12.8723 15.3264 11.7428 15.3294 10.6129C15.3308 10.1024 15.276 9.59898 15.1508 9.10538C14.9638 8.37128 14.5771 7.76378 13.9485 7.32508C13.5027 7.01287 13.0133 6.81178 12.4663 6.78928C12.404 6.78669 12.3412 6.7833 12.2781 6.77989C11.9984 6.76477 11.7141 6.74941 11.4467 6.80334C10.6817 6.95662 10.0096 7.30678 9.5019 7.92408C9.4429 7.99488 9.3852 8.06678 9.2991 8.17408L9.2797 8.19838V7.00444ZM2.68164 15.5671H5.33242V7.01001H2.68164V15.5671Z" fill="CurrentColor"/>
+                    </svg>
+                  </div>
+                </a>
+  
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/wawtelecom" 
+                   class="link_socials w-inline-block"
+                   [attr.aria-label]="'footer.social.instagram' | translate">
+                  <div class="svg_social w-embed">
+                    <!-- Instagram SVG remains unchanged -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path fill="#ffffff" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+                    </svg>
+                  </div>
+                </a>
+  
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/wawtelecom" 
+                   class="link_socials w-inline-block"
+                   [attr.aria-label]="'footer.social.facebook' | translate">
+                  <div class="svg_social w-embed">
+                    <!-- Facebook SVG remains unchanged -->
+                    <svg width="32" height="auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22.675 0H1.325C0.593 0 0 0.593 0 1.325v21.351C0 23.407 0.593 24 1.325 24h11.495v-9.294h-3.13v-3.62h3.13v-2.67c0-4.073 2.485-6.363 6.202-6.363 1.804 0 3.649.354 3.649.354v4h-2.052c-2.014 0-2.64 1.508-2.64 3.062v3.348h4.318l-0.689 3.62h-3.629V24h7.271c.732 0 1.325-.593 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z" fill="CurrentColor"/>
+                    </svg>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Quick Links section -->
+          <div id="w-node-_956d022f-1588-c453-227f-5564ee79f02f-ee79f019" class="column_footer">
+            <p class="text-size-body-xsm is--bold" style="font-size: 18px;">
+              {{ 'footer.quickLinks.title' | translate }}
+            </p>
+            <a [routerLink]="['/']" class="link_footer hide-for-now">
+              {{ 'footer.quickLinks.home' | translate }}
+            </a>
+            <a [routerLink]="['/service']" class="link_footer hide-for-now">
+              {{ 'footer.quickLinks.esim' | translate }}
+            </a>
+            <a [routerLink]="['/a_propos']" class="link_footer">
+              {{ 'footer.quickLinks.about' | translate }}
+            </a>
+            <a [routerLink]="['/contact']" class="link_footer">
+              {{ 'footer.quickLinks.contact' | translate }}
+            </a>
+            <a [routerLink]="['/login']" class="link_footer">
+              {{ 'footer.quickLinks.login' | translate }}
+            </a>
+          </div>
+  
+          <!-- Footer row -->
+          <div id="w-node-_956d022f-1588-c453-227f-5564ee79f045-ee79f019" class="footer_row">
+            <p class="text-size-body-xsm">
+              © {{ 'footer.copyright' | translate }}
+            </p>
+            <p class="text-size-body-xsm">
+              {{ 'footer.developedBy' | translate }}
+              <a href="https://www.wawtelecom.com/" target="_blank" class="link_legals">WAW TELECOM</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ </main>
+
+
+

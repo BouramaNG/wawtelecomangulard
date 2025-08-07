@@ -1,0 +1,288 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Section d'inscription */
+.inscription-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.inscription-container {
+    display: flex;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 1200px;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Contenu principal */
+.inscription-content {
+    flex: 1;
+    padding: 20px;
+    max-width: 500px;
+}
+
+.inscription-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.inscription-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.inscription-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.inscription-form button {
+    padding: 12px;
+    background-color: #FFDD33;
+    border: none;
+    border-radius: 5px;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.inscription-form button:hover {
+    background-color: #f4c700;
+}
+
+/* Messages */
+.erreur {
+    color: red;
+    font-size: 0.9em;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.success {
+    color: green;
+    font-size: 0.9em;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Footer */
+.inscription-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.inscription-footer a {
+    color: #FFDD33;
+    text-decoration: none;
+}
+
+.inscription-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Image */
+.inscription-image {
+    display: block;
+    margin-left: 20px;
+    max-width: 600px;
+    flex: 1;
+    align-self: center;
+}
+
+.inscription-image img {
+    max-width: 100%;
+    height: auto;
+    margin-left: 20px;
+ 
+    border-radius: 10px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .inscription-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .inscription-image {
+        display: none; /* Cache l'image sur petits écrans */
+    }
+}
+
+
+
+
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    /* Make the nav-menu hidden by default on mobile */
+    
+    .dropdown-toggle{
+         margin-left: 140px;
+    font-size: 18px;
+    }
+    .nav-menu {
+        display: none;  /* Hide the menu initially */
+        position: fixed;  /* Fixed positioning to cover the full screen */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        z-index: 1000;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+        transform: translateY(-100%); /* Initially hide the menu above the screen */
+        transition: transform 0.3s ease-in-out;  /* Smooth transition for sliding menu */
+        flex-direction: column;  /* Stack menu items vertically */
+        justify-content: center;  /* Center the items vertically */
+        align-items: center;  /* Center the items horizontally */
+    }
+
+    /* When the menu is opened */
+    .nav-menu.open {
+        display: flex;  /* Show the menu */
+        transform: translateY(0);  /* Slide it into view */
+    }
+
+    /* Style the burger button */
+    .menu-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+    }
+
+    .menu-button div {
+        height: 4px;
+        background-color: #333;
+    }
+
+    /* Styling for mobile links */
+    .nav-menu .link_nav {
+        padding: 15px;
+        font-size: 18px;
+        color: #333;
+        text-decoration: none;
+        text-align: center;
+        width: 100%;  /* Full width for the links */
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #ddd; /* Add a separator between items */
+    }
+
+    /* Hover effect for mobile links */
+    .nav-menu .link_nav:hover {
+        background-color: #ffdd33;
+        color: #333;
+    }
+
+    /* Style for dropdown */
+    .dropdown {
+        width: 100%;
+    }
+    
+    .dropdown-list {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+/* Mobile styles */
+@media (max-width: 896px) {
+    /* Make the nav-menu hidden by default on mobile */
+    
+    .dropdown-toggle{
+         margin-left: 157px;
+    font-size: 18px;
+    }
+    .nav-menu {
+        display: none;  /* Hide the menu initially */
+        position: fixed;  /* Fixed positioning to cover the full screen */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        z-index: 1000;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+        transform: translateY(-100%); /* Initially hide the menu above the screen */
+        transition: transform 0.3s ease-in-out;  /* Smooth transition for sliding menu */
+        flex-direction: column;  /* Stack menu items vertically */
+        justify-content: center;  /* Center the items vertically */
+        align-items: center;  /* Center the items horizontally */
+    }
+
+    /* When the menu is opened */
+    .nav-menu.open {
+        display: flex;  /* Show the menu */
+        transform: translateY(0);  /* Slide it into view */
+    }
+
+    /* Style the burger button */
+    .menu-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+    }
+
+    .menu-button div {
+        height: 4px;
+        background-color: #333;
+    }
+
+    /* Styling for mobile links */
+    .nav-menu .link_nav {
+        padding: 15px;
+        font-size: 18px;
+        color: #333;
+        text-decoration: none;
+        text-align: center;
+        width: 100%;  /* Full width for the links */
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #ddd; /* Add a separator between items */
+    }
+
+    /* Hover effect for mobile links */
+    .nav-menu .link_nav:hover {
+        background-color: #ffdd33;
+        color: #333;
+    }
+
+    /* Style for dropdown */
+    .dropdown {
+        width: 100%;
+    }
+    
+    .dropdown-list {
+        width: 100%;
+    }
+}
+input{
+    height: 2.3rem;
+}
+
+

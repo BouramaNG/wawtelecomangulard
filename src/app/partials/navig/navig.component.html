@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary" id="nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><span class="ms-4" ><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7M6.5 7.5a5.5 5.5 0 1 1 11 0a5.5 5.5 0 0 1-11 0M3 19a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v3H3zm5-3a3 3 0 0 0-3 3v1h14v-1a3 3 0 0 0-3-3z"/></svg></span> {{user.name}}</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item ms-5">
+            <a *ngIf="user.role_id==2" class="link" [class.active]="isHisActive()">{{'navig.order_history' | translate}}</a>
+        </li>
+        <li class="nav-item ms-5">
+            <a *ngIf="user.role_id==2" class="link" [class.active]="isAchatActive()" [routerLink]="['/service']">{{'navig.buy_esim' | translate}}</a>
+        </li>
+          <li class="nav-item ms-5 ">
+            <a *ngIf="user.role_id==1" [routerLink]="['/admin/commande']"   [class.active]="isCommandeActive()"      class="link">Liste Commande</a>
+            
+          </li>
+          
+          <li class="nav-item ms-5 ">
+            <a *ngIf="user.role_id==1" [routerLink]="['/admin/offre']"   [class.active]="isOffreActive()"             class="link">Gestion eSim</a>
+          </li>
+          
+          <li class="nav-item ms-5">
+            <a *ngIf="user.role_id==1" [routerLink]="['/admin/compte']"   [class.active]="isPackActive()"             class="link">Gestion Package</a>
+          </li>
+          
+          <li class="nav-item ms-5">
+            <a *ngIf="user.role_id==1" [routerLink]="['/admin/destinations']"   [class.active]="isDestinationsActive()"             class="link">Destinations</a>
+          </li>
+          
+          <li class="nav-item ms-5">
+            <a *ngIf="user.role_id==1" [routerLink]="['/admin/esims']"   [class.active]="isEsimsActive()"             class="link">Gestion eSIMs</a>
+          </li>
+          
+          <li class="nav-item ms-5">
+            <a *ngIf="user.role_id==1" [routerLink]="['/admin/console-connect']"   [class.active]="isConsoleConnectActive()"             class="link">eSIM Connectée</a>
+          </li>
+          
+          <li class="nav-item ms-5">
+            <a *ngIf="user.role_id==1" [routerLink]="['/admin/template-create']"   [class.active]="isTemplateCreateActive()"             class="link">Créer Template</a>
+          </li>
+        </ul>
+        <div class="me-5  " > 
+          <button class="border-0 btndecon btn " *ngIf="loggedOut"  [routerLink]="['/login']">Connexion</button>
+          <div class="">
+           <button class="border-0 btndecon btn " *ngIf="loggedIn" type="button" (click)="deconnexion()">
+            {{'navig.disc' | translate}}
+           </button>
+         
+         </div>
+      </div>
+      <app-language-selector *ngIf="user.role_id==2" />
+      </div>
+    </div>
+  </nav>
