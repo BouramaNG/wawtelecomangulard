@@ -115,6 +115,13 @@ export class BoutiqueComponent implements OnInit {
       "drapeau": "https://flagcdn.com/w320/ke.png",
       "continent": "Afrique",
       "country_code":"KE"
+    },
+    {
+      "id": 14,
+      "nom": "Japon",
+      "drapeau": "https://flagcdn.com/w320/jp.png",
+      "continent": "Asie",
+      "country_code":"JP"
     }
   ]
   

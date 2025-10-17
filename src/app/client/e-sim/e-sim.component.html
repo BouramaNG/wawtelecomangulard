@@ -41,7 +41,7 @@
                 <div class="plans-container">
                   <div class="plans mb-3" *ngFor="let pack of packPays" [ngClass]="{'selected': pack.id === selectedEsimId}">
                     <div class="plan" (click)="selectEsim(pack, pack.id)">
-                      {{ pack.name }} - {{ pack.data_mb }} Mo - {{pack.price | spaceNumber}} {{ 'esim.FCFA' | translate }}
+                      {{ pack.plan_name }} - {{ pack.price | spaceNumber }} {{ 'esim.FCFA' | translate }}
                     </div>
                   </div>
                   <div class="checkout" (click)="acheterEsim()">

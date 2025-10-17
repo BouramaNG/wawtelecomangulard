@@ -48,6 +48,13 @@ export class ESimComponent  implements OnInit{
       "code":"US"
     },
     {
+      "id": 14,
+      "nom": "Japon",
+      "drapeau": "https://flagcdn.com/w320/jp.png",
+      "continent": "Asie",
+      "code": "JP"
+    },
+    {
       "id": 4,
       "nom": "Espagne",
       "drapeau": "https://flagcdn.com/w320/es.png",
@@ -1423,10 +1430,19 @@ export class ESimComponent  implements OnInit{
 
 
   getPays(){
-    // console.log(this.pays)
-    console.log(this.idPays)
+    console.log('[DEBUG] ID du pays recherché:', this.idPays);
+    console.log('[DEBUG] Liste complète des pays:', this.pays);
     this.paysChoisi = this.pays.find((elt) => elt.id === Number(this.idPays));
-    console.log(this.paysChoisi)
+    if (this.paysChoisi) {
+      console.log('[DEBUG] Pays trouvé:', this.paysChoisi);
+    } else {
+      console.error('[DEBUG] Aucun pays trouvé avec l\'ID:', this.idPays);
+      // Recherche directe du Japon par code
+      this.paysChoisi = this.pays.find((elt) => elt.code === 'JP');
+      if (this.paysChoisi) {
+        console.log('[DEBUG] Pays Japon trouvé par code:', this.paysChoisi);
+      }
+    }
   }
   getPack(){
     if (!this.paysChoisi) {
@@ -1435,6 +1451,7 @@ export class ESimComponent  implements OnInit{
     }
     console.log('[DEBUG] getPack appelé avec pays:', this.paysChoisi);
     console.log('[DEBUG] Code pays:', this.paysChoisi.code);
+    console.log('[DEBUG] URL API:', `esim-packages/${this.paysChoisi.code}/with-price`);
     
     this.esimService.getEsimPackagesWithPrice(this.paysChoisi.code).subscribe({
       next: (response: any) => {
