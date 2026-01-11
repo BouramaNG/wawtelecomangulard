@@ -2,19 +2,26 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { url } from '../shared/api_url';
 import { Observable, of } from 'rxjs';
+import { EncryptionService } from './encryption.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsoleConnectService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private encryptionService: EncryptionService
+  ) { }
 
   /**
    * Déclencher la synchronisation Console Connect
    */
   triggerSync(limit: number = 50, includePackages: boolean = false): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.encryptionService.getDecryptedToken();
+    if (!token) {
+      return of({ error: 'Token non disponible' });
+    }
     const params = {
       limit: limit,
       packages: includePackages
@@ -31,7 +38,10 @@ export class ConsoleConnectService {
    * Obtenir le statut de la synchronisation
    */
   getSyncStatus(): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.encryptionService.getDecryptedToken();
+    if (!token) {
+      return of({ error: 'Token non disponible' });
+    }
     return this.http.get(`${url}console-connect/status`, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${token}` 
@@ -43,7 +53,10 @@ export class ConsoleConnectService {
    * Obtenir les logs de synchronisation
    */
   getSyncLogs(): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.encryptionService.getDecryptedToken();
+    if (!token) {
+      return of({ error: 'Token non disponible' });
+    }
     return this.http.get(`${url}console-connect/logs`, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${token}` 
@@ -55,7 +68,10 @@ export class ConsoleConnectService {
    * Tester la connexion Console Connect
    */
   testConnection(): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.encryptionService.getDecryptedToken();
+    if (!token) {
+      return of({ error: 'Token non disponible' });
+    }
     return this.http.get(`${url}console-connect/test`, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${token}` 
@@ -67,7 +83,10 @@ export class ConsoleConnectService {
    * Obtenir les statistiques de synchronisation
    */
   getSyncStats(): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.encryptionService.getDecryptedToken();
+    if (!token) {
+      return of({ error: 'Token non disponible' });
+    }
     return this.http.get(`${url}console-connect/stats`, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${token}` 

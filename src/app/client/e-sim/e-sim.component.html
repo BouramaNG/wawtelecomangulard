@@ -1,61 +1,323 @@
 <app-header></app-header>
 <main>
-  <section class="hero-section" style="margin-top: 20px;margin-bottom: 30px;">
-    <div class="hero-background">
-      <div class="background-overlay"></div>
-      <div class="background-image" style="background-image: url('https://wawtelecom.com/passager.jpg');"></div>
+  <!-- Hero Section Premium -->
+  <section class="esim-hero-premium" *ngIf="paysChoisi">
+    <div class="esim-hero-bg">
+      <div class="esim-bg-gradient"></div>
+      <div class="esim-floating-shapes">
+        <div class="esim-shape esim-shape-1"></div>
+        <div class="esim-shape esim-shape-2"></div>
+        <div class="esim-shape esim-shape-3"></div>
+      </div>
     </div>
-
-    <div class="hero-content">
-      <div class="content-wrapper">
-        <div class="hero-text">
-          <span class="hero-eyebrow">{{ 'hero.eyebrow' | translate }}</span>
-          <h2 class="hero-title">{{ 'hero.title' | translate }}</h2>
-          <p class="hero-description">{{ 'hero.price' | translate }}</p>
+    
+    <div class="esim-hero-container">
+      <div class="esim-hero-content">
+        <div class="esim-country-badge animate-fade-in">
+          <img [src]="paysChoisi.drapeau" [alt]="paysChoisi.nom" class="esim-flag-badge" />
+          <span>{{ paysChoisi.continent }}</span>
         </div>
-  
-        <div class="cta-buttons">
-            <a [routerLink]="['/contact']" class="custom-btn" >
-                {{ 'hero.contact' | translate }}
-            </a>
-          <a href="tel:+221338601929" class="btn-secondary">{{ 'hero.phone' | translate }} +221 33 860 19 29</a>
+        
+        <h1 class="esim-hero-title animate-slide-up">
+          eSIM pour <span class="esim-country-name">{{ paysChoisi.nom }}</span>
+        </h1>
+        
+        <p class="esim-hero-subtitle animate-slide-up-delay">
+          Restez connecté pendant votre voyage avec notre eSIM haute performance. Activation instantanée, couverture optimale.
+        </p>
+        
+        <div class="esim-hero-features animate-fade-in-delay">
+          <div class="esim-feature-item">
+            <div class="esim-feature-icon">⚡</div>
+            <span>Activation instantanée</span>
+          </div>
+          <div class="esim-feature-item">
+            <div class="esim-feature-icon">🌍</div>
+            <span>Couverture optimale</span>
+          </div>
+          <div class="esim-feature-item">
+            <div class="esim-feature-icon">💰</div>
+            <span>Prix transparents</span>
+          </div>
         </div>
       </div>
-  
-      <div class="hero-image">
-        <img src="https://wawtelecom.com/passage.jpg" alt="wawtelecom" class="image-responsive">
+      
+      <div class="esim-hero-visual animate-fade-in-delay-2">
+        <div class="esim-flag-display">
+          <img [src]="paysChoisi.drapeau" [alt]="paysChoisi.nom" class="esim-flag-large" />
+        </div>
       </div>
     </div>
   </section>
-      <section class="roam">
-        <div class="roamc">
 
-        </div>
-        <div class="texte">
+  <!-- Plans Section Premium -->
+  <section class="esim-plans-section" *ngIf="paysChoisi">
+    <div class="esim-plans-container">
+      <div class="esim-plans-header animate-fade-in">
+        <h2 class="esim-plans-title">Choisissez votre forfait</h2>
+        <p class="esim-plans-subtitle">Sélectionnez le plan qui correspond à vos besoins de données</p>
+      </div>
+      
+      <div class="esim-plans-wrapper" *ngIf="packPays && packPays.length > 0">
+        <div class="esim-plans-grid-premium">
+          <div 
+            class="esim-plan-card-premium" 
+            *ngFor="let pack of packPays; let i = index"
+            [class.esim-plan-premium-selected]="pack.id === selectedEsimId"
+            [style.animation-delay]="(i * 0.1) + 's'"
+            (click)="selectEsim(pack, pack.id)"
+          >
+            <!-- Card Background Gradient -->
+            <div class="plan-card-bg-gradient"></div>
             
-          <div class="forfait">
-            <div class="containerh">
-              <div class="image-section"></div>
-              <div class="content-section">
-                <h2>{{ 'esim.ESIM_POUR' | translate }} {{ paysChoisi?.nom }}</h2>
-                <div class="plans-container">
-                  <div class="plans mb-3" *ngFor="let pack of packPays" [ngClass]="{'selected': pack.id === selectedEsimId}">
-                    <div class="plan" (click)="selectEsim(pack, pack.id)">
-                      {{ pack.plan_name }} - {{ pack.price | spaceNumber }} {{ 'esim.FCFA' | translate }}
-                    </div>
-                  </div>
-                  <div class="checkout" (click)="acheterEsim()">
-                    {{ 'esim.ALLER_A_LA_CAISSE' | translate }} - {{selectedEsim?.price || '0'}} {{ 'esim.FCFA' | translate }}
-                  </div>
+            <!-- Popular Badge -->
+            <div class="plan-popular-badge" *ngIf="i === 1">
+              <span class="popular-star">⭐</span>
+              <span>Populaire</span>
+            </div>
+            
+            <!-- Selected Badge -->
+            <div class="plan-selected-badge" *ngIf="pack.id === selectedEsimId">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="currentColor"/>
+              </svg>
+              <span>Sélectionné</span>
+            </div>
+            
+            <!-- Card Content -->
+            <div class="plan-card-content">
+              <!-- Data Icon & Amount -->
+              <div class="plan-data-section">
+                <div class="plan-data-icon-wrapper">
+                  <div class="plan-data-icon">📶</div>
+                  <div class="plan-data-pulse"></div>
+                </div>
+                <div class="plan-data-info">
+                  <div class="plan-data-amount-premium">{{ pack.name || (pack.data_mb | dataSize) }}</div>
+                  <div class="plan-data-label-premium">Données incluses</div>
                 </div>
               </div>
+              
+              <!-- Price Section -->
+              <div class="plan-price-section-premium">
+                <div class="plan-price-wrapper">
+                  <span class="plan-price-amount-premium">{{ pack.price | spaceNumber }}</span>
+                  <span class="plan-price-currency-premium">FCFA</span>
+                </div>
+                <div class="plan-price-per-gb" *ngIf="pack.data_mb">
+                  <span>{{ (pack.price / (pack.data_mb / 1024)) | number:'1.0-0' }} FCFA/GB</span>
+                </div>
+              </div>
+              
+              <!-- Features List -->
+              <div class="plan-features-premium">
+                <div class="plan-feature-item-premium">
+                  <div class="feature-check-icon">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <span>Activation instantanée</span>
+                </div>
+                <div class="plan-feature-item-premium">
+                  <div class="feature-check-icon">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <span>Support 24/7 disponible</span>
+                </div>
+                <div class="plan-feature-item-premium">
+                  <div class="feature-check-icon">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <span>QR code par email</span>
+                </div>
+              </div>
+              
+              <!-- Select Indicator -->
+              <div class="plan-select-indicator">
+                <span *ngIf="pack.id !== selectedEsimId">Sélectionner</span>
+                <span *ngIf="pack.id === selectedEsimId" class="selected-text">Forfait sélectionné</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" *ngIf="pack.id !== selectedEsimId">
+                  <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" *ngIf="pack.id === selectedEsimId">
+                  <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="currentColor"/>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Shine Effect -->
+            <div class="plan-card-shine"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="esim-loading-state" *ngIf="loadingPackages">
+        <div class="esim-loading-spinner"></div>
+        <p class="esim-loading-text">Chargement des forfaits...</p>
+      </div>
+      
+      <div class="esim-empty-state" *ngIf="!loadingPackages && (!packPays || packPays.length === 0)">
+        <div class="esim-empty-icon">📭</div>
+        <p class="esim-empty-text">Aucun forfait disponible pour le moment</p>
+        <p class="esim-empty-subtext">Veuillez réessayer plus tard ou contacter le support</p>
+      </div>
+      
+      <div class="esim-checkout-wrapper" *ngIf="selectedEsim">
+        <button class="esim-checkout-btn" (click)="acheterEsim()">
+          <span>{{ 'esim.ALLER_A_LA_CAISSE' | translate }}</span>
+          <span class="esim-checkout-price">{{ selectedEsim.price | spaceNumber }} {{ 'esim.FCFA' | translate }}</span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="esim-features-section">
+    <div class="esim-features-container">
+      <h2 class="esim-features-title">Pourquoi choisir WAW Telecom ?</h2>
+      
+      <div class="esim-features-grid">
+        <div class="esim-feature-card">
+          <div class="esim-feature-card-icon">⚡</div>
+          <h3 class="esim-feature-card-title">Activation Instantanée</h3>
+          <p class="esim-feature-card-desc">Recevez votre eSIM en quelques secondes après l'achat</p>
+        </div>
+        
+        <div class="esim-feature-card">
+          <div class="esim-feature-card-icon">🌍</div>
+          <h3 class="esim-feature-card-title">Couverture Optimale</h3>
+          <p class="esim-feature-card-desc">Réseau fiable dans plus de 150 pays à travers le monde</p>
+        </div>
+        
+        <div class="esim-feature-card">
+          <div class="esim-feature-card-icon">💰</div>
+          <h3 class="esim-feature-card-title">Prix Transparents</h3>
+          <p class="esim-feature-card-desc">Aucun frais caché, vous payez uniquement ce que vous voyez</p>
+        </div>
+        
+        <div class="esim-feature-card">
+          <div class="esim-feature-card-icon">🛡️</div>
+          <h3 class="esim-feature-card-title">Sécurisé</h3>
+          <p class="esim-feature-card-desc">Vos données sont protégées avec notre infrastructure sécurisée</p>
+        </div>
+        
+        <div class="esim-feature-card">
+          <div class="esim-feature-card-icon">📞</div>
+          <h3 class="esim-feature-card-title">Support 24/7</h3>
+          <p class="esim-feature-card-desc">Notre équipe est disponible à tout moment pour vous aider</p>
+        </div>
+        
+        <div class="esim-feature-card">
+          <div class="esim-feature-card-icon">🔄</div>
+          <h3 class="esim-feature-card-title">Sans Engagement</h3>
+          <p class="esim-feature-card-desc">Achetez uniquement ce dont vous avez besoin, quand vous en avez besoin</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Checkout Modal Premium -->
+  <div class="checkout-modal-overlay" *ngIf="showCheckoutModal" (click)="closeCheckoutModal()">
+    <div class="checkout-modal-container" (click)="$event.stopPropagation()">
+      <button class="checkout-modal-close" (click)="closeCheckoutModal()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      
+      <div class="checkout-modal-content">
+        <!-- Header -->
+        <div class="checkout-modal-header">
+          <div class="checkout-modal-icon">🛒</div>
+          <h2 class="checkout-modal-title">Finaliser votre commande</h2>
+          <p class="checkout-modal-subtitle">Remplissez vos informations pour recevoir votre eSIM</p>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="checkout-order-summary" *ngIf="selectedEsim">
+          <div class="summary-item">
+            <span class="summary-label">Forfait</span>
+            <span class="summary-value">{{ selectedEsim.name }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Prix</span>
+            <span class="summary-price">{{ selectedEsim.price | spaceNumber }} FCFA</span>
+          </div>
+        </div>
+        
+        <!-- Form -->
+        <form class="checkout-modal-form" (ngSubmit)="order()">
+          <div class="checkout-form-group">
+            <label class="checkout-label">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M2.5 6.66667L10 11.6667L17.5 6.66667M2.5 13.3333L10 18.3333L17.5 13.3333V8.33333L10 13.3333L2.5 8.33333V13.3333Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Email <span class="required-star">*</span>
+            </label>
+            <input 
+              type="email" 
+              class="checkout-input" 
+              [(ngModel)]="email" 
+              name="email"
+              placeholder="votre@email.com"
+              required
+            />
+          </div>
+          
+          <div class="checkout-form-group">
+            <label class="checkout-label">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M2.5 4.16667C2.5 3.24619 3.24619 2.5 4.16667 2.5H6.66667C7.58714 2.5 8.33333 3.24619 8.33333 4.16667V15.8333C8.33333 16.7538 7.58714 17.5 6.66667 17.5H4.16667C3.24619 17.5 2.5 16.7538 2.5 15.8333V4.16667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M11.6667 2.5H15.8333C16.7538 2.5 17.5 3.24619 17.5 4.16667V15.8333C17.5 16.7538 16.7538 17.5 15.8333 17.5H11.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8.33333 13.3333H11.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Téléphone <span class="required-star">*</span>
+            </label>
+            <div class="checkout-phone-group">
+              <ng-select 
+                [(ngModel)]="selectedIndicatif" 
+                [clearable]="false" 
+                [searchable]="true" 
+                name="indicatif"
+                class="checkout-country-select"
+              >
+                <ng-option *ngFor="let indicatif of indicatifs" [value]="indicatif.ind">
+                  <div class="checkout-country-option">
+                    <img [src]="indicatif.drapeau" width="20" height="20" class="checkout-flag" />
+                    <span>{{ indicatif.ind }}</span>
+                  </div>
+                </ng-option>
+              </ng-select>
+              <input 
+                type="text" 
+                class="checkout-input checkout-phone-input" 
+                [(ngModel)]="phone" 
+                name="phone"
+                placeholder="Numéro de téléphone"
+                required
+              />
             </div>
           </div>
-
-        </div>
-
-      </section>
-      
+          
+          <button type="submit" class="checkout-submit-btn">
+            <span>Confirmer et payer</span>
+            <span class="checkout-submit-price" *ngIf="selectedEsim">{{ selectedEsim.price | spaceNumber }} FCFA</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 
       <section class="section1">
         <div class="container">
@@ -111,7 +373,7 @@
                        [attr.aria-label]="'footer.social.linkedin' | translate">
                       <div class="svg_social w-embed">
                         <!-- LinkedIn SVG remains unchanged -->
-                        <svg width="32" height="auto" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="32" height="32" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 0.242676C0.67157 0.242676 0 0.914246 0 1.74268V16.7427C0 17.5711 0.67157 18.2427 1.5 18.2427H16.5C17.3284 18.2427 18 17.5711 18 16.7427V1.74268C18 0.914246 17.3284 0.242676 16.5 0.242676H1.5ZM5.52076 4.2454C5.52639 5.20165 4.81061 5.79087 3.96123 5.78665C3.16107 5.78243 2.46357 5.1454 2.46779 4.24681C2.47201 3.40165 3.13998 2.72243 4.00764 2.74212C4.88795 2.76181 5.52639 3.40728 5.52076 4.2454ZM9.2797 7.00444H6.75971H6.7583V15.5643H9.4217V15.3646C9.4217 14.9847 9.4214 14.6047 9.4211 14.2246C9.4203 13.2108 9.4194 12.1959 9.4246 11.1824C9.426 10.9363 9.4372 10.6804 9.5005 10.4455C9.7381 9.56798 10.5271 9.00128 11.4074 9.14058C11.9727 9.22908 12.3467 9.55678 12.5042 10.0898C12.6013 10.423 12.6449 10.7816 12.6491 11.129C12.6605 12.1766 12.6589 13.2242 12.6573 14.2719C12.6567 14.6417 12.6561 15.0117 12.6561 15.3815V15.5629H15.328V15.3576C15.328 14.9056 15.3278 14.4537 15.3275 14.0018C15.327 12.8723 15.3264 11.7428 15.3294 10.6129C15.3308 10.1024 15.276 9.59898 15.1508 9.10538C14.9638 8.37128 14.5771 7.76378 13.9485 7.32508C13.5027 7.01287 13.0133 6.81178 12.4663 6.78928C12.404 6.78669 12.3412 6.7833 12.2781 6.77989C11.9984 6.76477 11.7141 6.74941 11.4467 6.80334C10.6817 6.95662 10.0096 7.30678 9.5019 7.92408C9.4429 7.99488 9.3852 8.06678 9.2991 8.17408L9.2797 8.19838V7.00444ZM2.68164 15.5671H5.33242V7.01001H2.68164V15.5671Z" fill="CurrentColor"/>
                         </svg>
                       </div>
@@ -135,7 +397,7 @@
                        [attr.aria-label]="'footer.social.facebook' | translate">
                       <div class="svg_social w-embed">
                         <!-- Facebook SVG remains unchanged -->
-                        <svg width="32" height="auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M22.675 0H1.325C0.593 0 0 0.593 0 1.325v21.351C0 23.407 0.593 24 1.325 24h11.495v-9.294h-3.13v-3.62h3.13v-2.67c0-4.073 2.485-6.363 6.202-6.363 1.804 0 3.649.354 3.649.354v4h-2.052c-2.014 0-2.64 1.508-2.64 3.062v3.348h4.318l-0.689 3.62h-3.629V24h7.271c.732 0 1.325-.593 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z" fill="CurrentColor"/>
                         </svg>
                       </div>

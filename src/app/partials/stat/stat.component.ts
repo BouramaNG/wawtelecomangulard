@@ -10,9 +10,9 @@ import { EsimService } from '../../services/esim.service';
   styleUrl: './stat.component.css'
 })
 export class StatComponent implements OnInit {
-  commandes:any;
-  esims: any;
-  esimChoisi: any[]=[];
+  commandes: any = [];
+  esims: any[] = [];
+  esimChoisi: any[] = [];
   constructor(private orderService:OrderService, private esimService:EsimService){}
   ngOnInit(): void {
     this.getPaie();
@@ -21,12 +21,30 @@ export class StatComponent implements OnInit {
   getPaie(){
     this.orderService.listePaiement().subscribe((response:any)=>{
       console.log(response);
-      this.commandes=response.payments;
-      console.log(this.commandes)
-      this.totalPayments = this.commandes.reduce((total:any, payment:any) => total + parseFloat(payment.amount), 0);
-      // console.log('montant totel ',this.totalPayments)
+      // Gérer différents formats de réponse
+      if (response && Array.isArray(response.payments)) {
+        this.commandes = response.payments;
+      } else if (response && Array.isArray(response)) {
+        this.commandes = response;
+      } else if (response && Array.isArray(response.data)) {
+        this.commandes = response.data;
+      } else {
+        this.commandes = [];
+      }
+      console.log('Commandes:', this.commandes);
+      
+      if (Array.isArray(this.commandes) && this.commandes.length > 0) {
+        this.totalPayments = this.commandes.reduce((total:any, payment:any) => {
+          const amount = parseFloat(payment.amount) || 0;
+          return total + amount;
+        }, 0);
+      } else {
+        this.totalPayments = 0;
+      }
     }, (error) => {
       console.error('Erreur lors du chargement des paiements:', error);
+      this.commandes = [];
+      this.totalPayments = 0;
     });
   }
   

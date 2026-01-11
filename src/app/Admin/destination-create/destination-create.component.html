@@ -1,0 +1,130 @@
+<div class="destination-create-container">
+  <div class="create-header">
+    <div class="header-content">
+      <div>
+        <h1 class="page-title">➕ Nouvelle Destination</h1>
+        <p class="page-subtitle">Créez une nouvelle destination avec ses packages</p>
+      </div>
+      <button class="btn-cancel" (click)="cancel()">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        Annuler
+      </button>
+    </div>
+  </div>
+
+  <form class="destination-form" (ngSubmit)="submitForm()" #destinationForm="ngForm">
+    <div class="form-section">
+      <h2 class="section-title">📍 Informations de Base</h2>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Pays <span class="required">*</span></label>
+          <select class="form-control" name="country" [(ngModel)]="countryCode" (change)="onCountryChange()" required>
+            <option value="">Sélectionner un pays...</option>
+            <option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nom du Pays <span class="required">*</span></label>
+          <input 
+            type="text" 
+            class="form-control"
+            name="countryName"
+            [(ngModel)]="countryName"
+            placeholder="Ex: France"
+            required
+          >
+        </div>
+
+        <div class="form-group full-width">
+          <label class="form-label">Opérateur Réseau (optionnel)</label>
+          <input 
+            type="text" 
+            class="form-control"
+            name="networkProvider"
+            [(ngModel)]="networkProvider"
+            placeholder="Ex: Orange, Vodafone"
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2 class="section-title">📦 Sélection des Templates & Prix</h2>
+      <p class="section-description">Sélectionnez les templates existants et définissez les prix (en FCFA)</p>
+      
+      <div *ngIf="loadingTemplates" class="loading-templates">
+        <div class="spinner"></div>
+        <span>Chargement des templates...</span>
+      </div>
+
+      <div *ngIf="!loadingTemplates && availableTemplates.length === 0" class="no-templates">
+        <p *ngIf="!countryCode">⚠️ Veuillez d'abord sélectionner un pays pour voir les templates disponibles.</p>
+        <p *ngIf="countryCode">⚠️ Aucun template disponible pour <strong>{{ countryName }}</strong> ({{ countryCode }}).</p>
+      </div>
+
+      <div *ngIf="!loadingTemplates && availableTemplates.length > 0" class="templates-selection-grid">
+        <div *ngFor="let template of availableTemplates" class="template-selection-card" [class.selected]="isTemplateSelected(template.id)">
+          <div class="template-selection-header">
+            <label class="checkbox-label-large">
+              <input 
+                type="checkbox" 
+                [checked]="isTemplateSelected(template.id)"
+                (change)="toggleTemplateSelection(template)"
+              >
+              <div class="template-info">
+                <span class="template-name-large">{{ getTemplateDisplayName(template) }}</span>
+                <span class="template-details">
+                  {{ getTemplateDataLimit(template) }}GB • 
+                  {{ template.duration_days || template.validity_days || 'N/A' }} jours
+                </span>
+              </div>
+            </label>
+          </div>
+          <div class="template-selection-body" *ngIf="isTemplateSelected(template.id)">
+            <div class="price-input-wrapper">
+              <label class="form-label-price">Prix (FCFA) <span class="required">*</span></label>
+              <input 
+                type="number" 
+                class="form-control-price"
+                [value]="getSelectedTemplatePrice(template.id)"
+                (input)="updateTemplatePrice(template.id, +$any($event.target).value)"
+                placeholder="5000"
+                min="1"
+                step="100"
+                required
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      {{ error }}
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">
+        Annuler
+      </button>
+      <button 
+        type="submit" 
+        class="btn-primary"
+        [disabled]="loading"
+      >
+        <span *ngIf="loading" class="spinner"></span>
+        <span *ngIf="!loading">Créer la Destination</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+
+

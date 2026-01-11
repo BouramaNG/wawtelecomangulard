@@ -1,0 +1,175 @@
+<div class="dashboard-overview">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">
+        <span class="title-icon">📊</span>
+        Tableau de bord
+      </h1>
+      <p class="dashboard-subtitle">Vue d'ensemble de votre activité</p>
+    </div>
+    <button class="refresh-btn" (click)="refreshData()" [disabled]="isLoading">
+      <span class="refresh-icon" [class.spinning]="isLoading">🔄</span>
+      {{ isLoading ? 'Chargement...' : 'Actualiser' }}
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading && !stats" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Chargement des données...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" class="error-container">
+    <div class="error-content">
+      <span class="error-icon">⚠️</span>
+      <p class="error-message">{{ error }}</p>
+      <button class="retry-btn" (click)="loadDashboardData()">Réessayer</button>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="stats && !isLoading" class="dashboard-content">
+    
+    <!-- Statistiques Cards -->
+    <div class="stats-grid">
+      <!-- Total eSIMs -->
+      <div class="stat-card card-esims">
+        <div class="stat-icon">📱</div>
+        <div class="stat-content">
+          <h3 class="stat-label">Total eSIMs</h3>
+          <p class="stat-value">{{ formatNumber(stats.total_esims) }}</p>
+          <div class="stat-footer">
+            <span class="stat-detail">Disponibles: {{ formatNumber(stats.available_esims) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Packages actifs -->
+      <div class="stat-card card-packages">
+        <div class="stat-icon">📦</div>
+        <div class="stat-content">
+          <h3 class="stat-label">Packages actifs</h3>
+          <p class="stat-value">{{ formatNumber(stats.active_packages) }}</p>
+          <div class="stat-footer">
+            <span class="stat-detail">Templates: {{ formatNumber(stats.active_templates) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Commandes -->
+      <div class="stat-card card-orders">
+        <div class="stat-icon">🛒</div>
+        <div class="stat-content">
+          <h3 class="stat-label">Commandes</h3>
+          <p class="stat-value">{{ formatNumber(stats.total_orders) }}</p>
+          <div class="stat-footer">
+            <span class="stat-detail stat-pending">En attente: {{ formatNumber(stats.pending_orders) }}</span>
+            <span class="stat-detail stat-completed">Complétées: {{ formatNumber(stats.completed_orders) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenus du mois -->
+      <div class="stat-card card-revenue">
+        <div class="stat-icon">💰</div>
+        <div class="stat-content">
+          <h3 class="stat-label">Revenus du mois</h3>
+          <p class="stat-value">{{ formatCurrency(stats.monthly_revenue) }}</p>
+          <div class="stat-footer">
+            <span class="stat-detail">Aujourd'hui: {{ formatCurrency(stats.today_revenue) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- eSIMs en service -->
+      <div class="stat-card card-service">
+        <div class="stat-icon">✅</div>
+        <div class="stat-content">
+          <h3 class="stat-label">eSIMs en service</h3>
+          <p class="stat-value">{{ formatNumber(stats.in_service_esims) }}</p>
+          <div class="stat-footer">
+            <span class="stat-detail">Terminées: {{ formatNumber(stats.terminated_esims) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Commandes aujourd'hui -->
+      <div class="stat-card card-today">
+        <div class="stat-icon">📅</div>
+        <div class="stat-content">
+          <h3 class="stat-label">Commandes aujourd'hui</h3>
+          <p class="stat-value">{{ formatNumber(stats.today_orders) }}</p>
+          <div class="stat-footer">
+            <span class="stat-detail">Revenu: {{ formatCurrency(stats.today_revenue) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <!-- Graphique des ventes -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">
+            <span class="chart-icon">📈</span>
+            Ventes (7 derniers jours)
+          </h2>
+        </div>
+        <div class="chart-container">
+          <canvas baseChart
+            [data]="salesChartData"
+            [type]="salesChartType"
+            [options]="salesChartOptions">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Graphique statut eSIMs -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">
+            <span class="chart-icon">🥧</span>
+            Répartition des eSIMs par statut
+          </h2>
+        </div>
+        <div class="chart-container">
+          <canvas baseChart
+            [data]="esimStatusChartData"
+            [type]="esimStatusChartType"
+            [options]="esimStatusChartOptions">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activités récentes -->
+    <div class="activities-section">
+      <div class="activities-card">
+        <div class="activities-header">
+          <h2 class="activities-title">
+            <span class="activities-icon">🔔</span>
+            Activités récentes
+          </h2>
+        </div>
+        <div class="activities-list">
+          <div *ngIf="activities.length === 0" class="no-activities">
+            <span class="no-activities-icon">📭</span>
+            <p>Aucune activité récente</p>
+          </div>
+          <div *ngFor="let activity of activities" class="activity-item">
+            <div class="activity-icon">{{ getActivityIcon(activity.type) }}</div>
+            <div class="activity-content">
+              <h4 class="activity-title">{{ activity.title }}</h4>
+              <p class="activity-description">{{ activity.description }}</p>
+              <span class="activity-time">{{ activity.time }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

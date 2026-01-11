@@ -1,60 +1,162 @@
-<div data-animation="default" class="navbar w-nav" role="banner" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
+<div data-animation="default" class="navbar w-nav" [class.scrolled]="isScrolled" role="banner"
+    [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
     <div class="container">
         <div class="wrapper_nav">
-            <a class="brand">
-                <img src="https://wawtelecom.com/waw.png" alt="Logo" class="img_brand"/>
+            <a routerLink="/" class="brand">
+                <img src="https://wawtelecom.com/waw.png" alt="Logo" class="img_brand" />
             </a>
             <nav role="navigation" class="nav-menu" [class.active]="isMenuOpen">
-                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="link_nav">
+                <!-- Menu Desktop -->
+                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                    class="link_nav desktop-link">
+                    <span class="menu-icon">🏠</span>
                     {{ 'MENU.HOME' | translate }}
                 </a>
-                
-                <div class="dropdown">
-                    <div class="dropdown-toggle" >
+
+                <div class="dropdown desktop-dropdown" [class.active]="activeDropdown === 'services'"
+                    (mouseenter)="activeDropdown = 'services'" (mouseleave)="activeDropdown = null">
+                    <div class="dropdown-toggle">
+                        <span class="menu-icon">📱</span>
                         {{ 'MENU.SERVICES' | translate }}
                     </div>
-                    <nav class="dropdown-list">
-                        <a routerLink="/connectivite"  class="link_nav">
+                    <div class="dropdown-list">
+                        <a routerLink="/connectivite" class="link_nav">
+                            <span class="menu-icon">🌐</span>
                             {{ 'MENU.CONNECTIVITY' | translate }}
                         </a>
-                        <a routerLink="/cloud"  class="link_nav">
+                        <a routerLink="/cloud" class="link_nav">
+                            <span class="menu-icon">☁️</span>
                             {{ 'MENU.CLOUD' | translate }}
                         </a>
-                        <a routerLink="/travel"  class="link_nav">
+                        <a routerLink="/travel" class="link_nav">
+                            <span class="menu-icon">✈️</span>
                             {{ 'MENU.TRAVEL' | translate }}
                         </a>
-                        <a routerLink="/peer"  class="link_nav">
+                        <a routerLink="/peer" class="link_nav">
+                            <span class="menu-icon">🤝</span>
                             {{ 'MENU.PEER' | translate }}
                         </a>
-                    </nav>
+                    </div>
                 </div>
-                
-                <a routerLink="/a_propos" routerLinkActive="active" class="link_nav">
+
+                <a routerLink="/a_propos" routerLinkActive="active" class="link_nav desktop-link">
+                    <span class="menu-icon">ℹ️</span>
                     {{ 'MENU.ABOUT' | translate }}
                 </a>
-                <a routerLink="/contact" routerLinkActive="active" class="link_nav">
+                <a routerLink="/contact" routerLinkActive="active" class="link_nav desktop-link">
+                    <span class="menu-icon">📞</span>
                     {{ 'MENU.CONTACT' | translate }}
                 </a>
-                <div class="me-5  " > 
-                    <button class="border-0 btnCon btn link_nav" *ngIf="loggedOut" routerLink="/login" routerLinkActive="active" > {{ 'MENU.LOGIN' | translate }}</button>
-                    <div class="">
-                     <button class="border-0 btnCon btn link_nav" *ngIf="loggedIn" type="button" (click)="deconnexion()">
-                       Deconnexion
-                     </button>
-                   
-                   </div>
+                <div class="me-5 desktop-buttons">
+                    <button class="border-0 btnCon btn" *ngIf="loggedOut" routerLink="/login" routerLinkActive="active">
+                        {{ 'MENU.LOGIN' | translate }}
+                    </button>
+                    <button class="border-0 btnCon btn" *ngIf="loggedIn" type="button" (click)="deconnexion()">
+                        Déconnexion
+                    </button>
                 </div>
-               
-                
+
+                <!-- Header du menu mobile -->
+                <div class="mobile-menu-header">
+                    <img src="https://wawtelecom.com/waw.png" alt="Logo" class="mobile-menu-logo" />
+                    <button class="mobile-menu-close" (click)="toggleMenu()" aria-label="Fermer le menu">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="mobile-menu-content">
+                    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                        class="mobile-link" (click)="toggleMenu()">
+                        <span class="mobile-link-content">
+                            <span class="menu-icon">🏠</span>
+                            <span>{{ 'MENU.HOME' | translate }}</span>
+                        </span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </a>
+
+                    <div class="mobile-dropdown" [class.open]="isDropdownOpen">
+                        <div class="mobile-dropdown-toggle" (click)="isDropdownOpen = !isDropdownOpen">
+                            <span class="mobile-link-content">
+                                <span class="menu-icon">📱</span>
+                                <span>{{ 'MENU.SERVICES' | translate }}</span>
+                            </span>
+                            <svg class="dropdown-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" [class.rotated]="isDropdownOpen">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="mobile-dropdown-content">
+                            <a routerLink="/connectivite" class="mobile-sublink" (click)="toggleMenu()">
+                                <span class="menu-icon">🌐</span>
+                                <span>{{ 'MENU.CONNECTIVITY' | translate }}</span>
+                            </a>
+                            <a routerLink="/cloud" class="mobile-sublink" (click)="toggleMenu()">
+                                <span class="menu-icon">☁️</span>
+                                <span>{{ 'MENU.CLOUD' | translate }}</span>
+                            </a>
+                            <a routerLink="/travel" class="mobile-sublink" (click)="toggleMenu()">
+                                <span class="menu-icon">✈️</span>
+                                <span>{{ 'MENU.TRAVEL' | translate }}</span>
+                            </a>
+                            <a routerLink="/peer" class="mobile-sublink" (click)="toggleMenu()">
+                                <span class="menu-icon">🤝</span>
+                                <span>{{ 'MENU.PEER' | translate }}</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <a routerLink="/a_propos" routerLinkActive="active" class="mobile-link" (click)="toggleMenu()">
+                        <span class="mobile-link-content">
+                            <span class="menu-icon">ℹ️</span>
+                            <span>{{ 'MENU.ABOUT' | translate }}</span>
+                        </span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </a>
+
+                    <a routerLink="/contact" routerLinkActive="active" class="mobile-link" (click)="toggleMenu()">
+                        <span class="mobile-link-content">
+                            <span class="menu-icon">📞</span>
+                            <span>{{ 'MENU.CONTACT' | translate }}</span>
+                        </span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Footer du menu mobile -->
+                <div class="mobile-menu-footer">
+                    <button class="mobile-btn-login" *ngIf="loggedOut" routerLink="/login" (click)="toggleMenu()">
+                        {{ 'MENU.LOGIN' | translate }}
+                    </button>
+                    <button class="mobile-btn-logout" *ngIf="loggedIn" (click)="deconnexion(); toggleMenu()">
+                        Déconnexion
+                    </button>
+                </div>
             </nav>
 
             <app-language-selector />
-            <div class="menu-button" (click)="toggleMenu()">
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-              
+            <div class="menu-button" [class.active]="isMenuOpen" (click)="toggleMenu()">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+            </div>
+
+            <!-- Overlay pour fermer le menu -->
+            <div class="menu-overlay" [class.active]="isMenuOpen" (click)="toggleMenu()"></div>
+
         </div>
     </div>
 </div>

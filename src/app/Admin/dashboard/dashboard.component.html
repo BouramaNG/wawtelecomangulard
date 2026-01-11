@@ -1,6 +1,96 @@
-<div class="dashboard-layout">
-   <app-navig></app-navig>
-    <main>
+<div class="modern-dashboard-layout">
+  <!-- Sidebar Moderne -->
+  <aside class="modern-sidebar" [class.collapsed]="sidebarCollapsed">
+    <div class="sidebar-header">
+      <div class="logo-section" *ngIf="!sidebarCollapsed">
+        <img src="https://wawtelecom.com/waw.png" alt="WAW Telecom" class="sidebar-logo">
+        <h2 class="sidebar-title">WAW Telecom</h2>
+      </div>
+      <button class="sidebar-toggle" (click)="toggleSidebar()">
+        <span *ngIf="!sidebarCollapsed">◀</span>
+        <span *ngIf="sidebarCollapsed">▶</span>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Dashboard</span>
+      </a>
+      
+      <a routerLink="/admin/compte" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">📦</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Packages</span>
+      </a>
+      
+      <a routerLink="/admin/offre" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">📱</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Gestion eSIM</span>
+      </a>
+      
+      <a routerLink="/admin/esims" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">🔧</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">eSIMs Admin</span>
+      </a>
+      
+      <a routerLink="/admin/commande" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">🛒</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Commandes</span>
+      </a>
+      
+      <a routerLink="/admin/destinations" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">🌍</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Destinations</span>
+      </a>
+      
+      <a routerLink="/admin/template-create" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Templates</span>
+      </a>
+      
+      <a routerLink="/admin/console-connect" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">🔌</span>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Console Connect</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info" *ngIf="!sidebarCollapsed">
+        <div class="user-avatar">👤</div>
+        <div class="user-details">
+          <p class="user-name">{{ userName || 'Admin' }}</p>
+          <p class="user-role">Administrateur</p>
+        </div>
+      </div>
+      <button class="logout-btn" (click)="logout()" [title]="sidebarCollapsed ? 'Déconnexion' : ''">
+        <span class="logout-icon">🚪</span>
+        <span class="logout-label" *ngIf="!sidebarCollapsed">Déconnexion</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="dashboard-main">
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="top-bar-content">
+        <h1 class="page-title">Tableau de bord</h1>
+        <div class="top-bar-actions">
+          <button class="notif-btn" title="Notifications">
+            <span class="notif-icon">🔔</span>
+            <span class="notif-badge" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
+          </button>
+          <div class="user-menu">
+            <div class="user-menu-avatar">👤</div>
+            <span class="user-menu-name">{{ userName || 'Admin' }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="dashboard-content-wrapper">
       <router-outlet></router-outlet>
-    </main>
-  </div>
+    </div>
+  </main>
+</div>

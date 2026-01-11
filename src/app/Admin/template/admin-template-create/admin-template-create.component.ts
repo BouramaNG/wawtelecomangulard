@@ -93,12 +93,21 @@ export class AdminTemplateCreateComponent {
       inventory: this.DEFAULT_INVENTORY_ID
     };
 
-    console.log('[FRONT] Payload envoyé au backend:', payload);
+    console.log('[FRONT] 📤 Payload envoyé au backend:', payload);
+    console.log('[FRONT] 📋 Structure du payload:', {
+      keys: Object.keys(payload),
+      data_usage_allowance: payload.data_usage_allowance,
+      data_unit: payload.data_unit,
+      supported_countries: payload.supported_countries,
+      time_allowance: payload.time_allowance,
+      has_duration: 'duration' in payload,
+      has_duration_unit: 'duration_unit' in payload,
+    });
 
     this.templateService.createTemplate(payload).subscribe({
       next: (response) => {
         this.loading = false;
-        console.log('[FRONT] Réponse succès backend:', response);
+        console.log('[FRONT] ✅ Réponse succès backend:', response);
         if (response.success) {
           this.success = 'Template créé avec succès !';
           this.templateForm.reset();
@@ -108,8 +117,20 @@ export class AdminTemplateCreateComponent {
       },
       error: (err) => {
         this.loading = false;
-        console.error('[FRONT] Erreur création template:', err);
-        if (err.error && err.error.message) {
+        console.error('[FRONT] ❌ Erreur création template:', err);
+        console.error('[FRONT] 📊 Détails de l\'erreur:', {
+          status: err.status,
+          statusText: err.statusText,
+          error: err.error,
+          error_errors: err.error?.errors,
+          error_debug: err.error?.debug,
+        });
+        if (err.error && err.error.errors) {
+          const errorMessages = Object.entries(err.error.errors)
+            .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
+            .join(' | ');
+          this.error = `Erreur de validation: ${errorMessages}`;
+        } else if (err.error && err.error.message) {
           this.error = 'Erreur backend : ' + err.error.message;
         } else if (err.status === 400 && err.error) {
           this.error = 'Erreur 400 : ' + JSON.stringify(err.error);

@@ -578,6 +578,265 @@
   </div>
 </section>
 
+<!-- Section Destinations avec iPhone Mockup -->
+<section class="destinations-section">
+  <div class="destinations-container">
+    <!-- Left Side - Destinations Grid -->
+    <div class="destinations-content">
+      <div class="destinations-header">
+        <h2 class="destinations-title">
+          🌍 <span class="title-highlight">150+ Destinations</span> à portée de main
+        </h2>
+        <p class="destinations-subtitle">
+          Connectez-vous instantanément dans le monde entier. Plus besoin de chercher une carte SIM, votre eSIM est déjà prête !
+        </p>
+      </div>
+      
+      <div class="destinations-grid">
+        <div class="destination-card" *ngFor="let item of pays.slice(0, 8)">
+          <div class="destination-card-top" [routerLink]="['/eSim', item.id]">
+            <div class="destination-flag-wrapper">
+              <img [src]="item.drapeau" [alt]="item.nom" class="destination-flag" />
+            </div>
+            <div class="destination-info">
+              <h3 class="destination-name">{{ 'COUNTRIES.' + item.nom | translate }}</h3>
+              <p class="destination-continent">{{ item.continent }}</p>
+            </div>
+            <div class="destination-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          
+          <!-- Forfaits intégrés dans la carte -->
+          <div class="destination-packages-inline" *ngIf="hasPackages(item)">
+            <div class="package-item-inline" *ngFor="let pkg of getItemPackages(item).slice(0, 3)" (click)="openCheckoutModal(pkg, item, $event)">
+              <span class="package-data-inline">{{ formatDataSize(pkg.data_mb) }}</span>
+              <span class="package-price-inline">{{ formatPrice(pkg.price) }} <small>FCFA</small></span>
+            </div>
+          </div>
+          
+          <!-- Loading state -->
+          <div class="destination-packages-loading-inline" *ngIf="loadingPackages[item.id]">
+            <div class="loading-spinner-small"></div>
+            <span>Chargement...</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Checkout Modal -->
+      <div class="checkout-modal-overlay" *ngIf="showCheckoutModal" (click)="closeCheckoutModal()">
+        <div class="checkout-modal-container" (click)="$event.stopPropagation()">
+          <button class="checkout-modal-close" (click)="closeCheckoutModal()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          
+          <div class="checkout-modal-content">
+            <!-- Header -->
+            <div class="checkout-modal-header">
+              <div class="checkout-modal-icon">🛒</div>
+              <h2 class="checkout-modal-title">Finaliser votre commande</h2>
+              <p class="checkout-modal-subtitle">Remplissez vos informations pour recevoir votre eSIM</p>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="checkout-order-summary" *ngIf="selectedPackage && selectedDestination">
+              <div class="summary-item">
+                <span class="summary-label">Destination</span>
+                <span class="summary-value">{{ selectedDestination.nom }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Forfait</span>
+                <span class="summary-value">{{ selectedPackage.name || formatDataSize(selectedPackage.data_mb) }}</span>
+              </div>
+              <div class="summary-item summary-total">
+                <span class="summary-label">Total</span>
+                <span class="summary-value">{{ formatPrice(selectedPackage.price) }} FCFA</span>
+              </div>
+            </div>
+            
+            <!-- Form -->
+            <form class="checkout-form" (ngSubmit)="order()">
+              <div class="form-group">
+                <label class="form-label">Email *</label>
+                <input 
+                  type="email" 
+                  class="form-input" 
+                  [(ngModel)]="email" 
+                  name="email"
+                  placeholder="votre@email.com"
+                  required
+                />
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Numéro de téléphone *</label>
+                <div class="phone-input-wrapper">
+                  <ng-select 
+                    [(ngModel)]="selectedIndicatif" 
+                    [clearable]="false"
+                    [searchable]="false"
+                    class="phone-indicatif-select"
+                    name="indicatif"
+                  >
+                    <ng-option *ngFor="let indicatif of indicatifs" [value]="indicatif.ind">
+                      <div class="indicatif-option">
+                        <img [src]="indicatif.drapeau" class="indicatif-flag" />
+                        <span>{{ indicatif.ind }}</span>
+                      </div>
+                    </ng-option>
+                  </ng-select>
+                  <input 
+                    type="tel" 
+                    class="form-input phone-input" 
+                    [(ngModel)]="phone" 
+                    name="phone"
+                    placeholder="76 929 17 17"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <button type="submit" class="checkout-submit-btn">
+                <span>Passer la commande</span>
+                <span class="checkout-btn-price">{{ selectedPackage ? formatPrice(selectedPackage.price) + ' FCFA' : '' }}</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="destinations-cta">
+        <a [routerLink]="['/travel']" class="destinations-btn">
+          Voir toutes les destinations
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Right Side - iPhone Mockup -->
+    <div class="iphone-mockup-wrapper">
+      <div class="iphone-device">
+        <div class="iphone-screen">
+          <!-- Status Bar -->
+          <div class="iphone-status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-icons-right">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="none">
+                <path d="M1 5.5L3 3.5L6 6.5L10 2.5L13 5.5L16 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
+                <rect x="0.5" y="0.5" width="14" height="10" rx="1.5" stroke="currentColor"/>
+                <path d="M3 5.5L6 2.5L9 5.5L12 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="battery-indicator"></div>
+            </div>
+          </div>
+          
+          <!-- App Content -->
+          <div class="iphone-app-content">
+            <!-- Header -->
+            <div class="app-header-section">
+              <div class="app-greeting">
+                <span class="greeting-emoji">👋</span>
+                <div>
+                  <div class="greeting-text">Bonjour !</div>
+                  <div class="app-slogan">Sa elleg leegi le</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="app-search-bar">
+              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <span class="search-placeholder">Où voyagez-vous ?</span>
+            </div>
+            
+            <!-- Destinations List -->
+            <div class="app-destinations-list">
+              <div class="app-dest-item" *ngFor="let dest of pays.slice(0, 5)">
+                <img [src]="dest.drapeau" [alt]="dest.nom" class="app-dest-flag" />
+                <div class="app-dest-info">
+                  <div class="app-dest-name">{{ 'COUNTRIES.' + dest.nom | translate }}</div>
+                  <div class="app-dest-badge">eSIM disponible</div>
+                </div>
+                <div class="app-dest-price">À partir de</div>
+              </div>
+            </div>
+            
+            <!-- Active Plan Card -->
+            <div class="app-active-plan">
+              <div class="plan-header">
+                <div class="plan-location">
+                  <span class="plan-flag">🇫🇷</span>
+                  <span>France</span>
+                </div>
+                <div class="plan-status">Actif</div>
+              </div>
+              <div class="plan-body">
+                <div class="plan-name">WAW Flex</div>
+                <div class="plan-balance">
+                  <div class="balance-amount">15 000 FCFA</div>
+                  <div class="balance-data">5.2 GB restants</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Bottom Navigation Menu -->
+            <div class="iphone-bottom-nav">
+              <div class="nav-item-phone active">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Accueil</span>
+              </div>
+              <div class="nav-item-phone">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Destinations</span>
+              </div>
+              <div class="nav-item-phone">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Données</span>
+              </div>
+              <div class="nav-item-phone">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M22 16.92V19.92C22.0011 20.1985 21.9441 20.4742 21.8325 20.7292C21.7209 20.9841 21.5573 21.2126 21.3523 21.3992C21.1474 21.5857 20.9059 21.7261 20.6446 21.8108C20.3832 21.8955 20.108 21.9224 19.8363 21.8899C16.7432 21.5324 13.7468 20.4586 11.07 18.7599C8.60844 17.2239 6.52097 15.1376 4.985 12.6779C3.28907 10.0086 2.21682 7.02123 1.86 3.9369C1.82748 3.66516 1.85439 3.38999 1.93905 3.12862C2.02372 2.86725 2.16409 2.62573 2.35064 2.42078C2.53719 2.21583 2.76573 2.05224 3.02067 1.94061C3.27561 1.82899 3.55135 1.77198 3.83 1.7729H6.83C7.37857 1.76869 7.91507 1.93897 8.35897 2.25944C8.80286 2.57991 9.13032 3.0347 9.293 3.5569C9.53261 4.36362 9.85564 5.14091 10.256 5.8769C10.4092 6.15263 10.4984 6.46118 10.5172 6.77854C10.536 7.0959 10.4838 7.41379 10.3647 7.70567C10.2456 7.99754 10.063 8.25583 9.831 8.4599L8.091 10.1999C9.51355 12.9651 11.5366 15.2512 14.001 16.8599L15.731 15.1299C15.9351 14.8979 16.1934 14.7153 16.4853 14.5962C16.7772 14.4771 17.0951 14.4249 17.4124 14.4437C17.7298 14.4625 18.0383 14.5517 18.314 14.7049C19.0501 15.1058 19.8275 15.4293 20.635 15.6699C21.1613 15.8376 21.6208 16.1692 21.9435 16.6156C22.2662 17.0621 22.4349 17.5996 22.425 18.1499L22.425 18.1499Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Support</span>
+              </div>
+              <div class="nav-item-phone">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Profil</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- <section class=" choix my-3">
   <h3 class="text-center fw-bold">{{ 'countries.title' | translate }}  {{ 'countries.home' | translate }}</h3>
 
@@ -613,29 +872,268 @@
   
 </section> -->
 
-<section class="contact-section">
-  <div class="contact-container">
-      <div class="contact-info">
-          <h2 id="contact-title">{{'contact.CONTACT_TITLE' | translate}}</h2>
-          <p><span class="icon">📍</span><span id="contact-address">{{'contact.CONTACT_ADDRESS' | translate}}</span></p>
-          <p><span class="icon">📞</span><a id="contact-phone" href="tel:+221338601929" class="btn-secondary">{{'contact.CONTACT_PHONE' | translate}}</a></p>
-          <p><span class="icon">📞</span><a id="contact-phone" href="tel:+221769291717" class="btn-secondary">Téléphone : + (221) 76 929 17 17</a></p>
-          <p><span class="icon">✉️</span><a id="contact-email" href="mailto:contact@wawtelecom.com" class="btn-secondary">{{'contact.CONTACT_EMAIL' | translate}}</a></p>
+<section class="contact-section-modern">
+  <div class="contact-container-modern">
+    <!-- Left Side - Contact Form -->
+    <div class="contact-form-modern">
+      <div class="contact-form-header">
+        <h2 class="contact-form-title">Nous contacter</h2>
+        <p class="contact-form-subtitle">Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
       </div>
-      <div class="contact-form">
-        <form method="POST">
-          <label for="name" id="form-name">{{'contact.FORM_NAME' | translate}}</label>
-          <input type="text" id="name" name="name" required [(ngModel)]="name">
-
-          <label for="email" id="form-email">{{'contact.FORM_EMAIL' | translate}}</label>
-          <input type="email" id="email" name="email" required [(ngModel)]="email">
-
-          <label for="message" id="form-message">{{'contact.FORM_MESSAGE' | translate}}</label>
-          <textarea id="message" name="message" rows="4" required [(ngModel)]="message"></textarea>
-
-          <button type="submit" id="form-submit" (click)="contacter()">{{'contact.FORM_SUBMIT' | translate}}</button>
+      
+      <form class="contact-form-content" (ngSubmit)="contacter()">
+        <div class="form-row">
+          <div class="form-group-modern">
+            <label for="contactFirstName" class="form-label-modern">
+              Prénom <span class="required-star">*</span>
+            </label>
+            <div class="form-input-wrapper">
+              <input 
+                type="text" 
+                id="contactFirstName" 
+                name="contactFirstName" 
+                class="form-input-modern" 
+                placeholder="Votre prénom" 
+                required 
+                [(ngModel)]="contactFirstName"
+              />
+              <svg class="form-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="form-group-modern">
+            <label for="contactLastName" class="form-label-modern">
+              Nom <span class="required-star">*</span>
+            </label>
+            <div class="form-input-wrapper">
+              <input 
+                type="text" 
+                id="contactLastName" 
+                name="contactLastName" 
+                class="form-input-modern" 
+                placeholder="Votre nom" 
+                required 
+                [(ngModel)]="contactLastName"
+              />
+              <svg class="form-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group-modern">
+            <label for="contactEmail" class="form-label-modern">
+              Email <span class="required-star">*</span>
+            </label>
+            <div class="form-input-wrapper">
+              <input 
+                type="email" 
+                id="contactEmail" 
+                name="contactEmail" 
+                class="form-input-modern" 
+                placeholder="votre@email.com" 
+                required 
+                [(ngModel)]="contactEmail"
+              />
+              <svg class="form-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="form-group-modern">
+            <label for="contactPhone" class="form-label-modern">
+              Téléphone <span class="required-star">*</span>
+            </label>
+            <div class="form-input-wrapper phone-input-wrapper-modern">
+              <ng-select 
+                [(ngModel)]="selectedContactIndicatif" 
+                [clearable]="false"
+                [searchable]="false"
+                class="phone-indicatif-select-modern"
+                name="contactIndicatif"
+                [ngModelOptions]="{standalone: true}"
+              >
+                <ng-option *ngFor="let indicatif of indicatifs" [value]="indicatif.ind">
+                  <div class="indicatif-option">
+                    <img [src]="indicatif.drapeau" class="indicatif-flag" width="20" height="15" />
+                    <span>{{ indicatif.ind }}</span>
+                  </div>
+                </ng-option>
+              </ng-select>
+              <input 
+                type="tel" 
+                id="contactPhone" 
+                name="contactPhone" 
+                class="form-input-modern phone-number-input-modern" 
+                placeholder="XX XXX XX XX" 
+                required 
+                [(ngModel)]="contactPhone"
+              />
+              <svg class="form-input-icon phone-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group-modern">
+          <label for="contactCompany" class="form-label-modern">
+            Entreprise
+          </label>
+          <div class="form-input-wrapper">
+            <input 
+              type="text" 
+              id="contactCompany" 
+              name="contactCompany" 
+              class="form-input-modern" 
+              placeholder="Nom de votre entreprise" 
+              [(ngModel)]="contactCompany"
+            />
+            <svg class="form-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M3 21h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5 21V7l8-4v18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M19 21V11l-6-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 9v0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 12v0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 15v0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 18v0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        
+        <div class="form-group-modern">
+          <label for="contactSubject" class="form-label-modern">
+            Sujet <span class="required-star">*</span>
+          </label>
+          <div class="form-input-wrapper">
+            <input 
+              type="text" 
+              id="contactSubject" 
+              name="contactSubject" 
+              class="form-input-modern" 
+              placeholder="Objet de votre demande" 
+              required 
+              [(ngModel)]="contactSubject"
+            />
+          </div>
+        </div>
+        
+        <div class="form-group-modern">
+          <label for="contactMessage" class="form-label-modern">
+            Message <span class="required-star">*</span>
+          </label>
+          <div class="form-textarea-wrapper">
+            <textarea 
+              id="contactMessage" 
+              name="contactMessage" 
+              class="form-textarea-modern" 
+              rows="5" 
+              placeholder="Détaillez votre demande..." 
+              required 
+              [(ngModel)]="message"
+            ></textarea>
+            <svg class="form-textarea-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        
+        <div class="form-checkboxes">
+          <label class="checkbox-label-modern">
+            <input type="checkbox" class="checkbox-modern" required />
+            <span class="checkbox-text">
+              J'accepte les <a href="/conditions-generales" class="checkbox-link">conditions générales</a> et la <a href="/politique-confidentialite" class="checkbox-link">politique de confidentialité</a> <span class="required-star">*</span>
+            </span>
+          </label>
+          
+          <label class="checkbox-label-modern">
+            <input type="checkbox" class="checkbox-modern" [(ngModel)]="newsletterSubscribed" [ngModelOptions]="{standalone: true}" />
+            <span class="checkbox-text">
+              Je souhaite recevoir la newsletter WAW TELECOM avec les dernières actualités et offres
+            </span>
+          </label>
+        </div>
+        
+        <button type="submit" class="contact-submit-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Envoyer le message</span>
+        </button>
       </form>
+    </div>
+    
+    <!-- Right Side - Contact Information -->
+    <div class="contact-info-modern">
+      <div class="contact-info-overlay"></div>
+      <div class="contact-info-content">
+        <h2 class="contact-info-title">Comment nous contacter</h2>
+        <p class="contact-info-subtitle">Plusieurs moyens de nous contacter selon vos préférences et l'urgence de votre demande.</p>
+        
+        <div class="contact-cards-grid">
+          <!-- Téléphone principal -->
+          <div class="contact-card-modern">
+            <div class="contact-card-icon phone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="contact-card-title">Téléphone principal</h3>
+            <a href="tel:+221338601929" class="contact-card-link">+221 33 860 19 29</a>
+            <p class="contact-card-hours">Lun-Ven: 8h-18h, Sam: 9h-13h</p>
+          </div>
+          
+          <!-- Mobile / WhatsApp -->
+          <div class="contact-card-modern">
+            <div class="contact-card-icon whatsapp-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="contact-card-title">Mobile / WhatsApp</h3>
+            <a href="tel:+221769291717" class="contact-card-link">+221 76 929 17 17</a>
+            <p class="contact-card-note">Support urgence 24h/24</p>
+          </div>
+          
+          <!-- Email professionnel -->
+          <div class="contact-card-modern">
+            <div class="contact-card-icon email-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="contact-card-title">Email professionnel</h3>
+            <a href="mailto:contact@wawtelecom.com" class="contact-card-link">contact&#64;wawtelecom.com</a>
+            <p class="contact-card-note">Réponse sous 1h en moyenne</p>
+          </div>
+          
+          <!-- Adresse physique -->
+          <div class="contact-card-modern">
+            <div class="contact-card-icon location-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="contact-card-title">Adresse physique</h3>
+            <p class="contact-card-address">Ngor Almadies</p>
+            <a href="https://www.google.com/maps/place/Siège+Social+WAW+TELECOM/@14.7496095,-17.5082828,17z" target="_blank" class="contact-card-link">
+              56 Route de Ngor - Dakar, Sénégal
+            </a>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
 </section>
 

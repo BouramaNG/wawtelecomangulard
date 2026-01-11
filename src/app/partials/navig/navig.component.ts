@@ -33,17 +33,34 @@ isHisActive() {
   constructor(private loginService:LoginService, private route:Router, private encryptionService: EncryptionService){}
   user:any;
   ngOnInit(): void {
-  const donneesChiffrees =JSON.parse(localStorage.getItem('userInfo') || '{}');
-  if (donneesChiffrees) {
-  this.user = this.encryptionService.decryptData(donneesChiffrees);
-  console.log('Forfait déchiffré:', this.user);
-}
+    try {
+      // userInfo est stocké avec JSON.stringify(userChiffrees) dans login.component.ts
+      const userInfoStored = localStorage.getItem('userInfo');
+      if (userInfoStored) {
+        try {
+          // Essayer de parser si c'est une string JSON
+          let userInfoEncrypted = userInfoStored;
+          try {
+            userInfoEncrypted = JSON.parse(userInfoStored);
+          } catch (e) {
+            // Si ce n'est pas du JSON, utiliser directement
+          }
+          
+          this.user = this.encryptionService.decryptData(userInfoEncrypted);
+          console.log('Utilisateur déchiffré:', this.user);
+        } catch (e) {
+          console.warn('Erreur lors du déchiffrement userInfo:', e);
+        }
+      }
 
-const tokenChiffre = localStorage.getItem('token');
-if (tokenChiffre) {
-  this.token = this.encryptionService.decryptData(tokenChiffre);
-  console.log('Token déchiffré:', this.token);
-}
+      const tokenChiffre = localStorage.getItem('token');
+      if (tokenChiffre) {
+        this.token = this.encryptionService.getDecryptedToken();
+        console.log('Token déchiffré:', this.token);
+      }
+    } catch (e) {
+      console.error('Erreur dans ngOnInit navig:', e);
+    }
 
 // ✅ Vérification du token après le déchiffrement
 if (this.token && this.token !== 'null' && this.token !== 'undefined' && this.token.trim() !== '') {

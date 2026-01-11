@@ -1,271 +1,275 @@
 <app-stat></app-stat>
-<main>
-  <h2 class="text-center">Packages eSIM synchronisés</h2>
-  <div class="search-container mb-3">
-    <div class="input-group">
+
+<div class="packages-container">
+  <!-- Header Section -->
+  <div class="packages-header">
+    <div class="header-content">
+      <div class="header-title-section">
+        <h1 class="page-title">📦 Templates de Packages</h1>
+        <p class="page-subtitle">Gérez et surveillez vos {{ filteredEsims.length || 0 }} templates de packages eSIM</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn-view-toggle" [class.active]="viewMode === 'grid'" (click)="viewMode = 'grid'" title="Vue grille">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+        </button>
+        <button class="btn-view-toggle" [class.active]="viewMode === 'table'" (click)="viewMode = 'table'" title="Vue tableau">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-wrapper">
+      <div class="search-icon">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
       <input 
         type="text" 
-        class="form-control" 
-        name="assi"
-        placeholder="Rechercher par nom, pays, code..."
+        class="search-input"
+        name="search"
+        placeholder="Rechercher par nom, pays, code pays, données..."
         [(ngModel)]="searchText"
         (input)="filterEsims()"
       >
+      <button *ngIf="searchText" class="search-clear" (click)="searchText = ''; filterEsims()" title="Effacer">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
   </div>
-  <div class="table-responsive">
-    <table class="table table-striped align-middle text-center">
-      <thead class="table-dark">
+
+  <!-- Vue Grille (Grid) -->
+  <div *ngIf="viewMode === 'grid'" class="packages-grid">
+    <div *ngFor="let pkg of filteredEsims | paginate: { itemsPerPage: itemsPerPage, currentPage: page }" class="package-card">
+      <div class="package-card-header">
+        <div class="package-id-badge">{{ pkg.id }}</div>
+        <span [ngClass]="'status-badge ' + getStatusBadgeClass(pkg.status)">
+          {{ getStatusLabel(pkg.status) }}
+        </span>
+      </div>
+      
+      <div class="package-card-body">
+        <h3 class="package-name">{{ pkg.name || pkg.plan_name || 'Package #' + pkg.id }}</h3>
+        
+        <div class="package-country">
+          <span class="country-flag">🌍</span>
+          <span class="country-name">{{ getCountryName(pkg) }}</span>
+          <span class="country-code" *ngIf="pkg.country_code && pkg.country_code !== 'UNK'">({{ pkg.country_code }})</span>
+        </div>
+
+        <div class="package-details">
+          <div class="detail-item">
+            <div class="detail-icon data-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Données</span>
+              <span class="detail-value">{{ formatData(pkg.data_mb) }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon validity-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Validité</span>
+              <span class="detail-value">{{ pkg.duration_days || pkg.validity_days ? (pkg.duration_days || pkg.validity_days) + ' jours' : '-' }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item" *ngIf="pkg.telna_id">
+            <div class="detail-icon telna-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+              </svg>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Telna ID</span>
+              <span class="detail-value">{{ pkg.telna_id }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="package-footer">
+          <span class="package-date">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            {{ formatDate(pkg.created_at) }}
+          </span>
+        </div>
+      </div>
+
+      <div class="package-card-actions">
+        <button class="btn-action btn-edit" (click)="openEditModal(pkg)" title="Modifier">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          Modifier
+        </button>
+        <button 
+          class="btn-action btn-toggle" 
+          [class.btn-activate]="!isStatusActive(pkg.status)"
+          [class.btn-deactivate]="isStatusActive(pkg.status)"
+          (click)="toggleStatus(pkg)" 
+          [title]="isStatusActive(pkg.status) ? 'Désactiver' : 'Activer'"
+        >
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          {{ isStatusActive(pkg.status) ? 'Désactiver' : 'Activer' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Message vide -->
+    <div *ngIf="!filteredEsims || filteredEsims.length === 0" class="empty-state">
+      <div class="empty-icon">📦</div>
+      <h3>Aucun template trouvé</h3>
+      <p>{{ searchText ? 'Aucun résultat pour votre recherche.' : 'Aucun template de package disponible.' }}</p>
+    </div>
+  </div>
+
+  <!-- Vue Tableau (Table) -->
+  <div *ngIf="viewMode === 'table'" class="packages-table-wrapper">
+    <table class="packages-table">
+      <thead>
         <tr>
-          <th>Nom du package</th>
+          <th>ID</th>
+          <th>Nom</th>
           <th>Pays</th>
-          <th>Code pays</th>
-          <th>Data (Go)</th>
-          <th>ID Telna</th>
+          <th>Code</th>
+          <th>Données</th>
+          <th>Validité</th>
+          <th>Telna ID</th>
           <th>Statut</th>
-          <th>Date de création</th>
+          <th>Créé le</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let pkg of filteredEsims | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
-          <td class="fw-bold">{{ pkg.name }}</td>
-          <td>{{ pkg.country }}</td>
-          <td>{{ pkg.country_code }}</td>
-          <td>{{ pkg.data_mb | number:'1.0-0' }}</td>
-          <td><span class="badge bg-secondary">{{ pkg.telna_id }}</span></td>
+          <td class="package-id">{{ pkg.id }}</td>
+          <td class="package-name-cell">
+            <strong>{{ pkg.name || pkg.plan_name || '-' }}</strong>
+          </td>
+          <td class="country-cell">
+            <span class="country-flag-small">🌍</span>
+            {{ getCountryName(pkg) }}
+          </td>
           <td>
-            <span [ngClass]="{
-              'badge bg-success': pkg.status === 'active',
-              'badge bg-danger': pkg.status !== 'active'
-            }">
-              {{ pkg.status === 'active' ? 'Actif' : 'Inactif' }}
+            <span class="code-badge" *ngIf="pkg.country_code && pkg.country_code !== 'UNK'">{{ pkg.country_code }}</span>
+            <span *ngIf="!pkg.country_code || pkg.country_code === 'UNK'">-</span>
+          </td>
+          <td>
+            <span class="data-badge">{{ formatData(pkg.data_mb) }}</span>
+          </td>
+          <td>
+            <span class="validity-badge">{{ pkg.duration_days || pkg.validity_days ? (pkg.duration_days || pkg.validity_days) + 'j' : '-' }}</span>
+          </td>
+          <td>
+            <span class="telna-badge" *ngIf="pkg.telna_id">{{ pkg.telna_id }}</span>
+            <span *ngIf="!pkg.telna_id">-</span>
+          </td>
+          <td>
+            <span [ngClass]="'status-badge ' + getStatusBadgeClass(pkg.status)">
+              {{ getStatusLabel(pkg.status) }}
             </span>
           </td>
-          <td>{{ pkg.created_at | date:'short' }}</td>
-          <td>
-            <button class="btn btn-primary btn-sm me-2" (click)="openEditModal(pkg)">Modifier</button>
-            <button class="btn btn-outline-warning btn-sm" (click)="toggleStatus(pkg)">
-              {{ pkg.status === 'active' ? 'Désactiver' : 'Activer' }}
+          <td class="date-cell">{{ formatDate(pkg.created_at) }}</td>
+          <td class="actions-cell">
+            <button class="btn-action-small btn-edit" (click)="openEditModal(pkg)" title="Modifier">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </button>
+            <button 
+              class="btn-action-small btn-toggle" 
+              [class.btn-activate]="!isStatusActive(pkg.status)"
+              [class.btn-deactivate]="isStatusActive(pkg.status)"
+              (click)="toggleStatus(pkg)"
+              [title]="isStatusActive(pkg.status) ? 'Désactiver' : 'Activer'"
+            >
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
             </button>
           </td>
         </tr>
       </tbody>
     </table>
-    <pagination-controls class="pagination" (pageChange)="page = $event"></pagination-controls>
-    <div *ngIf="filteredEsims.length==0">
-      <p class="text-center text-danger">😔 Aucun package eSIM disponible</p>
+
+    <!-- Message vide pour vue tableau -->
+    <div *ngIf="!filteredEsims || filteredEsims.length === 0" class="empty-state">
+      <div class="empty-icon">📦</div>
+      <h3>Aucun template trouvé</h3>
+      <p>{{ searchText ? 'Aucun résultat pour votre recherche.' : 'Aucun template de package disponible.' }}</p>
     </div>
   </div>
 
-  <!-- Modal d'édition -->
-  <div class="modal fade show" tabindex="-1" [ngStyle]="{display: showEditModal ? 'block' : 'none', background: 'rgba(0,0,0,0.5)'}" *ngIf="showEditModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modifier le package</h5>
-          <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+  <!-- Pagination -->
+  <div *ngIf="filteredEsims && filteredEsims.length > 0" class="pagination-wrapper">
+    <pagination-controls 
+      class="pagination-controls" 
+      (pageChange)="page = $event"
+      previousLabel="Précédent"
+      nextLabel="Suivant"
+      [maxSize]="5"
+      [directionLinks]="true"
+    ></pagination-controls>
+  </div>
+</div>
+
+<!-- Modal d'édition -->
+<div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">Modifier le template</h2>
+      <button class="modal-close" (click)="closeEditModal()">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="submitEdit()">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nom du package</label>
+            <input type="text" class="form-input" [(ngModel)]="packageEdit.name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pays</label>
+            <input type="text" class="form-input" [(ngModel)]="packageEdit.country" name="country" required>
+          </div>
         </div>
-        <div class="modal-body">
-          <form (ngSubmit)="submitEdit()">
-            <div class="mb-3">
-              <label class="form-label">Nom du package</label>
-              <input type="text" class="form-control" [(ngModel)]="packageEdit.name" name="name" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Pays</label>
-              <input type="text" class="form-control" [(ngModel)]="packageEdit.country" name="country" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Code pays</label>
-              <input type="text" class="form-control" [(ngModel)]="packageEdit.country_code" name="country_code" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Data (Go)</label>
-              <input type="number" class="form-control" [(ngModel)]="packageEdit.data_mb" name="data_mb" min="1" required>
-            </div>
-            <div class="d-flex justify-content-end">
-              <button type="button" class="btn btn-secondary me-2" (click)="closeEditModal()">Annuler</button>
-              <button type="submit" class="btn btn-success">Enregistrer</button>
-            </div>
-          </form>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Code pays</label>
+            <input type="text" class="form-input" [(ngModel)]="packageEdit.country_code" name="country_code" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Data (MB)</label>
+            <input type="number" class="form-input" [(ngModel)]="packageEdit.data_mb" name="data_mb" min="1" required>
+          </div>
         </div>
-      </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="closeEditModal()">Annuler</button>
+          <button type="submit" class="btn-primary">Enregistrer</button>
+        </div>
+      </form>
     </div>
   </div>
-</main>
-
-    <!-- <div class="form mt-4 ">
-        <h2 class="text-center">Formulaire d'ajout de packages eSim</h2>
-        <form action="">
-            <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Nom pays :</label>
-                  <input type="text" class="form-control" name="pays" [(ngModel)]="name" placeholder="Nom pays" aria-label="First name">
-                </div>
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1"> Code du pays :</label>
-                  <input type="text" class="form-control" name="code" [(ngModel)]="code" placeholder="Code du pays" aria-label="Last name">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">Plan :</label>
-                  <input type="text" class="form-control" name="plan" [(ngModel)]="plan"  placeholder="Plan" aria-label="First name">
-                </div>
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">Prix :</label>
-                  <input type="text" class="form-control" name="prix" [(ngModel)]="prix" placeholder="Prix" aria-label="Last name">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">Durée de validité :</label>
-                  <input type="text" class="form-control" name="duree" [(ngModel)]="duree" placeholder="Durée de validité" aria-label="First name">
-                </div>
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">Fournisseur de réseau :</label>
-                  <input type="text" class="form-control" name="net" [(ngModel)]="net" placeholder="Fournisseur de réseau" aria-label="Last name">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">Lpa :</label>
-                  <input type="text" class="form-control" name="lpa" [(ngModel)]="lpa" placeholder="Lpa" aria-label="First name">
-                </div>
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">Identificateur eSIM :</label>
-                  <input type="text" class="form-control" name="esim" [(ngModel)]="esim_ident" placeholder="Identificateur eSIM" aria-label="Last name">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">Image : </label>
-                    <input type="file" class="form-control" name="image" accept="image/*" (change)="getFiles($event)" >
-                </div>
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">Informations reseaux</label>
-                  <input type="text" class="form-control" name="info" [(ngModel)]="net_inf" placeholder="Informations reseaux" aria-label="Last name">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">Politique d'expiration :</label>
-                  <input type="text" class="form-control" name="Politique" [(ngModel)]="expolicy" placeholder="Politique d'expiration" aria-label="First name">
-                </div>
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">Point d'accès autorisé :</label>
-                  <input type="text" class="form-control" name="Point" [(ngModel)]="hotspot" placeholder="Point d'accès autorisé" aria-label="Last name">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col mb-3">
-                    <label for="" class="fw-bold mb-1">limitation de vitesse :</label>
-                  <input type="text" class="form-control"  name="speedLimit" [(ngModel)]="speed" placeholder="First name" aria-label="First name">
-                </div>
-                </div>
-
-        </form>
-
-          <div class="bouton mt-2 d-flex justify-content-center align-items-center">
-              <button class="btn btnAjout" (click)="addPack()">Ajouter</button>
-          </div>
-    </div> -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Formulaire de modification de package</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form action="">
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Code du pays :</label>
-                  <input type="text" class="form-control" name="country_code" placeholder="Code du pays" aria-label="Code du pays" [(ngModel)]="code">
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Nom du pays :</label>
-                  <input type="text" class="form-control" name="country_name" placeholder="Nom du pays" aria-label="Nom du pays" [(ngModel)]="name">
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Nom du plan :</label>
-                  <input type="text" class="form-control" name="plan_name" placeholder="Nom du plan" aria-label="Nom du plan" [(ngModel)]="plan">
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Prix :</label>
-                  <input type="number" min="0" step="0.01" class="form-control" name="price" placeholder="Prix" aria-label="Prix" [(ngModel)]="prix">
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Validité (jours) :</label>
-                  <input type="number" min="1" class="form-control" name="validity_days" placeholder="Validité en jours" aria-label="Validité en jours" [(ngModel)]="duree">
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Fournisseur réseau :</label>
-                  <input type="text" class="form-control" name="network_provider" placeholder="Fournisseur réseau" aria-label="Fournisseur réseau" [(ngModel)]="net">
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Image (URL) :</label>
-                  <input type="text" class="form-control" name="image" placeholder="URL de l'image" aria-label="URL de l'image" [(ngModel)]="image">
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Informations réseau :</label>
-                  <textarea class="form-control" name="network_info" placeholder="Informations réseau" aria-label="Informations réseau" [(ngModel)]="net_inf"></textarea>
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Politique d'expiration :</label>
-                  <input type="text" class="form-control" name="expiration_policy" placeholder="Politique d'expiration" aria-label="Politique d'expiration" [(ngModel)]="expolicy">
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Hotspot autorisé :</label>
-                  <select class="form-select" name="hotspot_allowed" aria-label="Hotspot autorisé" [(ngModel)]="hotspot">
-                    <option value="">Sélectionner...</option>
-                    <option value="1">Oui</option>
-                    <option value="0">Non</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="" class="fw-bold mb-1">Limite de vitesse :</label>
-                  <input type="text" class="form-control" name="speed_limit" placeholder="Limite de vitesse" aria-label="Limite de vitesse" [(ngModel)]="speed">
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btnAjout" data-bs-dismiss="modal" (click)="updatePack()">Modifier</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          </div>
-        </div>
-      </div>
-    </div>
+</div>

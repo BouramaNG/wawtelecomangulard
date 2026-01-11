@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { url as API_URL } from '../shared/api_url';
+import { EncryptionService } from './encryption.service';
 
 export interface ConsoleConnectEsim {
   id: string;
@@ -61,27 +62,52 @@ export interface ConsoleConnectResponse {
 })
 export class ConsoleConnectAdminService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private encryptionService: EncryptionService
+  ) { }
+
+  private getAuthHeaders(): HttpHeaders | null {
+    const token = this.encryptionService.getDecryptedToken();
+    if (!token) {
+      return null;
+    }
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
 
   /**
    * Récupère toutes les eSIMs depuis Console Connect
    */
   getEsimsFromConsoleConnect(): Observable<ConsoleConnectResponse> {
-    return this.http.get<ConsoleConnectResponse>(`${API_URL}admin/console-connect/esims`);
+    const headers = this.getAuthHeaders();
+    if (!headers) {
+      return of({ success: false, error: 'Token non disponible' });
+    }
+    return this.http.get<ConsoleConnectResponse>(`${API_URL}admin/console-connect/esims`, { headers });
   }
 
   /**
    * Récupère les détails d'une eSIM spécifique depuis Console Connect
    */
   getEsimDetails(esimId: string): Observable<ConsoleConnectResponse> {
-    return this.http.get<ConsoleConnectResponse>(`${API_URL}admin/console-connect/esims/${esimId}/details`);
+    const headers = this.getAuthHeaders();
+    if (!headers) {
+      return of({ success: false, error: 'Token non disponible' });
+    }
+    return this.http.get<ConsoleConnectResponse>(`${API_URL}admin/console-connect/esims/${esimId}/details`, { headers });
   }
 
   /**
    * Récupère les détails d'un package spécifique depuis Console Connect
    */
   getPackageDetails(packageId: string): Observable<ConsoleConnectResponse> {
-    return this.http.get<ConsoleConnectResponse>(`${API_URL}admin/console-connect/packages/${packageId}/details`);
+    const headers = this.getAuthHeaders();
+    if (!headers) {
+      return of({ success: false, error: 'Token non disponible' });
+    }
+    return this.http.get<ConsoleConnectResponse>(`${API_URL}admin/console-connect/packages/${packageId}/details`, { headers });
   }
 
   /**

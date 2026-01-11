@@ -1,239 +1,546 @@
-<style>
- .country-card {
-    position: relative;
-    height: 150px; /* Réduit la hauteur de la carte */
-    background-size: cover;
-    background-position: center;
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-.card-text{
-  color: #fff;
-}
-
-.overlay {
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(5px); /* Floute l'image pour rendre le texte lisible */
-    background: rgba(0, 0, 0, 0.4); /* Ajoute un léger voile noir transparent */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white; /* Texte en blanc */
-    font-weight: bold;
-    text-align: center;
-    padding: 10px;
-}
-
-.btn-secondary{
-  padding: 15px;
-}
-
-
-</style>
 <app-header></app-header>
 <main>
-    <section class="hero-section" style="margin-top: 20px;margin-bottom: 30px;">
-        <div class="hero-background">
-          <div class="background-overlay"></div>
-          <div class="background-image" style="background-image: url('https://wawtelecom.com/passager.jpg');"></div>
+  <!-- Hero Section - Ultra Premium avec Téléphone -->
+  <section class="hero-premium-section">
+    <div class="hero-premium-bg">
+      <div class="bg-mesh-gradient"></div>
+      <div class="floating-elements">
+        <div class="float-element float-1"></div>
+        <div class="float-element float-2"></div>
+        <div class="float-element float-3"></div>
+      </div>
+    </div>
+    
+    <div class="hero-premium-container">
+      <!-- Left Side - Content -->
+      <div class="hero-premium-left">
+        <div class="hero-premium-badge animate-fade-in">
+          <span class="badge-star">⭐</span>
+          <span>eSIM Global - Restez connecté partout</span>
         </div>
         
-        <div class="hero-content">
-          <div class="content-wrapper">
-            <div class="hero-text">
-              <span class="hero-eyebrow">{{ 'hero.eyebrow' | translate }}</span>
-              <h2 class="hero-title">{{ 'hero.title' | translate }}</h2>
-              <p class="hero-description">{{ 'hero.price' | translate }}</p>
-            </div>
-      
-            <div class="cta-buttons">
-                <!-- <a [routerLink]="['/contact']" class="custom-btn" >
-                    {{ 'hero.contact' | translate }}
-                </a> -->
-                <a  href="tel:+221769291717" class="btn-secondary">{{ 'hero.phone' | translate }} +221 76 929 17 17</a>
-              <a href="tel:+221338601929" class="btn-secondary">{{ 'hero.phone' | translate }} +221 33 860 19 29</a>
-
-            </div>
-            <br>
-           <a [routerLink]="['/contact']" class="custom-btn" >
-                    {{ 'hero.contact' | translate }}
-                </a>
-          </div>
-      
-          <div class="hero-image">
-            <img src="https://wawtelecom.com/passage.jpg" alt="wawtelecom" class="image-responsive">
-          </div>
-        </div>
-      </section>
-      <section class=" choix">
-        <h3 class="text-center fw-bold">{{ 'countries.title' | translate }}</h3>
-
-        <div class="search ms-4">
-            <input type="search" name="search" [(ngModel)]="searchText" id=""   placeholder="{{ 'countries.search' | translate }}" (input)="filterEsims()">
-        </div>
-        <div class="filtre">
-          <p class="zone" [class.selected]="selectedContinent === 'All'" (click)="filtrerPays('All')">{{ 'countries.continents.all' | translate }}</p>
-          <p class="zone" [class.selected]="selectedContinent === 'Afrique'" (click)="filtrerPays('Afrique')">{{ 'countries.continents.africa' | translate }}</p>
-          <p class="zone" [class.selected]="selectedContinent === 'Amerique du Nord'" (click)="filtrerPays('Amerique du Nord')">{{ 'countries.continents.northAmerica' | translate }}</p>
-          <p class="zone" [class.selected]="selectedContinent === 'Amerique du Sud'" (click)="filtrerPays('Amerique du Sud')">{{ 'countries.continents.southAmerica' | translate }}</p>
-          <p class="zone" [class.selected]="selectedContinent === 'Asie'" (click)="filtrerPays('Asie')">{{ 'countries.continents.asia' | translate }}</p>
-          <p class="zone" [class.selected]="selectedContinent === 'Europe'" (click)="filtrerPays('Europe')">{{ 'countries.continents.europe' | translate }}</p>
-          <p class="zone" [class.selected]="selectedContinent === 'Oceanie'"  (click)="filtrerPays('Oceanie')">{{ 'countries.continents.oceania' | translate }}</p>
-        </div>
-       
-            <div class="row pays">
-                <!-- <div class="col-md-3"  [routerLink]="['/eSim',item.id]" *ngFor="let item of getPaysFiltres() | paginate: { itemsPerPage: 8, currentPage: page }">
-                  <div class="card" id="ens">
-                    <div class="card-body" >
-                      <div id="carte">
-                        <img class="mt-3" [src]="item.drapeau" alt="" id="image">
-                      <p class="card-text">{{ 'COUNTRIES.' + item.nom | translate }}</p>
-
-                      </div>
-
-                    </div>
-                  </div>
-                </div> -->
-
-                <div class="col-md-3" [routerLink]="['/eSim', item.id]" *ngFor="let item of getPaysFiltres() | paginate: { itemsPerPage: 8, currentPage: page }">
-  <div class="country-list-item d-flex align-items-center p-2 mb-3 shadow-sm rounded" style="background: #fff; cursor: pointer; min-height: 60px;">
-    <img [src]="item.drapeau" alt="Drapeau {{item.nom}}" class="country-flag me-3" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-    <span class="country-name fw-bold" style="font-size: 1.1rem; color: #222;">{{ item.nom }}</span>
-  </div>
-</div>
-                
-                    <div *ngIf="filteredEsims.length==0"><p class="text-center text-danger"> 😔 Aucun esim disponible pour ce pays ou continent</p></div>
-                    <pagination-controls class="pagination" (pageChange)="page = $event"></pagination-controls>
-              </div>
+        <h1 class="hero-premium-title animate-slide-up">
+          Connectez-vous au monde
+          <br>
+          <span class="title-highlight">où que vous soyez</span>
+        </h1>
         
-      </section>
+        <p class="hero-premium-subtitle animate-slide-up-delay">
+          Restez connecté comme chez vous—configuration instantanée, données flexibles et couverture mondiale dans <strong>150+ pays</strong>
+        </p>
+        
+        <!-- Travel Search Input -->
+        <div class="travel-search-wrapper animate-fade-in-delay">
+          <div class="travel-search-box">
+            <svg class="search-icon-premium" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input 
+              type="text" 
+              placeholder="Où voyagez-vous ?" 
+              class="travel-search-input"
+              [(ngModel)]="searchText"
+              (focus)="scrollToDestinations()"
+              (keyup.enter)="scrollToDestinations()"
+            />
+            <button class="travel-search-btn" (click)="scrollToDestinations()">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Popular Destinations Pills -->
+        <div class="popular-destinations-section animate-fade-in-delay-2">
+          <p class="popular-dest-label">Destinations populaires :</p>
+          <div class="destinations-pills-container">
+            <a 
+              class="destination-pill-item" 
+              *ngFor="let dest of popularDestinations"
+              [routerLink]="['/eSim', dest.id]"
+            >
+              <img [src]="dest.drapeau" [alt]="dest.nom" class="pill-flag-img" />
+              <span class="pill-country-name">{{ dest.nom }}</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Features Grid -->
+        <div class="hero-features-grid animate-fade-in-delay-3">
+          <div class="feature-item-hero">
+            <div class="feature-icon-hero">📱</div>
+            <div class="feature-text-hero">
+              <div class="feature-title-hero">eSIM Unique</div>
+              <div class="feature-desc-hero">Configuration unique pour 150+ pays</div>
+            </div>
+          </div>
+          <div class="feature-item-hero">
+            <div class="feature-icon-hero">⚡</div>
+            <div class="feature-text-hero">
+              <div class="feature-title-hero">Activation Instantanée</div>
+              <div class="feature-desc-hero">Reçu en quelques secondes</div>
+            </div>
+          </div>
+          <div class="feature-item-hero">
+            <div class="feature-icon-hero">💰</div>
+            <div class="feature-text-hero">
+              <div class="feature-title-hero">À partir de 3.000 FCFA</div>
+              <div class="feature-desc-hero">Prix transparents</div>
+            </div>
+          </div>
+        </div>
+      </div>
       
-
-      <section class="section1">
-        <div class="container">
-          <div class="page-padding is--footer">
-            <div class="wrapper_footer">
-              <!-- Logo section -->
-              <div id="w-node-_956d022f-1588-c453-227f-5564ee79f01d-ee79f019" class="column_footer">
-                <a href="/" aria-current="page" class="w-nav-brand w--current">
-                  <img src="https://wawtelecom.com/waw.png" loading="lazy" 
-                       [alt]="'footer.logo.alt' | translate" 
-                       class="img_brande" 
-                       style="width: 150px; height: 100px;border-radius: 10px;"/>
-                </a>
-              </div>
-      
-              <!-- Contact details section -->
-              <div id="w-node-_956d022f-1588-c453-227f-5564ee79f020-ee79f019" class="column_footer">
-                <div class="wrapper_contact-details">
-                  <p class="text-size-body-xsm is--bold" style="font-size: 18px;">
-                    {{ 'footer.address.title' | translate }}
-                  </p>
-                  <p class="text-size-body-sm">
-                    <a href="https://www.google.com/maps/place/Si%C3%A8ge+Social+WAW+TELECOM/@14.7496095,-17.5082828,17z" 
-                       target="_blank" 
-                       class="link_footer">
-                      {{ 'footer.address.content' | translate }}
-                    </a>
-                  </p>
-                  
-                  <p class="text-size-body-xsm is--bold">
-                    {{ 'footer.contacts.title' | translate }}
-                  </p>
-                  <p class="text-size-body-sm">
-                    <a href="tel:+221338601929" class="link_footer">+221 33 860 19 29</a>
-                  </p>
-                  <p class="text-size-body-sm">
-                    <a href="tel:+221769291717" class="link_footer">+221 76 929 17 17</a>
-                  </p>
-                  <p class="text-size-body-sm">
-                    <a href="mailto:contact@wawtelecom.com" class="link_footer">contact&#64;wawtelecom.com</a>
-                  </p>
-      
-                  <p class="text-size-body-xsm is--bold" style="font-size: 18px;">
-                    {{ 'footer.social.title' | translate }}
-                  </p>
-                  
-                  <!-- Social media links -->
-                  <div class="wrapper_socials">
-                    <!-- LinkedIn -->
-                    <a href="https://www.linkedin.com/company/wawtelecom" 
-                       target="_blank" 
-                       class="link_socials w-inline-block"
-                       [attr.aria-label]="'footer.social.linkedin' | translate">
-                      <div class="svg_social w-embed">
-                        <!-- LinkedIn SVG remains unchanged -->
-                        <svg width="32" height="auto" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 0.242676C0.67157 0.242676 0 0.914246 0 1.74268V16.7427C0 17.5711 0.67157 18.2427 1.5 18.2427H16.5C17.3284 18.2427 18 17.5711 18 16.7427V1.74268C18 0.914246 17.3284 0.242676 16.5 0.242676H1.5ZM5.52076 4.2454C5.52639 5.20165 4.81061 5.79087 3.96123 5.78665C3.16107 5.78243 2.46357 5.1454 2.46779 4.24681C2.47201 3.40165 3.13998 2.72243 4.00764 2.74212C4.88795 2.76181 5.52639 3.40728 5.52076 4.2454ZM9.2797 7.00444H6.75971H6.7583V15.5643H9.4217V15.3646C9.4217 14.9847 9.4214 14.6047 9.4211 14.2246C9.4203 13.2108 9.4194 12.1959 9.4246 11.1824C9.426 10.9363 9.4372 10.6804 9.5005 10.4455C9.7381 9.56798 10.5271 9.00128 11.4074 9.14058C11.9727 9.22908 12.3467 9.55678 12.5042 10.0898C12.6013 10.423 12.6449 10.7816 12.6491 11.129C12.6605 12.1766 12.6589 13.2242 12.6573 14.2719C12.6567 14.6417 12.6561 15.0117 12.6561 15.3815V15.5629H15.328V15.3576C15.328 14.9056 15.3278 14.4537 15.3275 14.0018C15.327 12.8723 15.3264 11.7428 15.3294 10.6129C15.3308 10.1024 15.276 9.59898 15.1508 9.10538C14.9638 8.37128 14.5771 7.76378 13.9485 7.32508C13.5027 7.01287 13.0133 6.81178 12.4663 6.78928C12.404 6.78669 12.3412 6.7833 12.2781 6.77989C11.9984 6.76477 11.7141 6.74941 11.4467 6.80334C10.6817 6.95662 10.0096 7.30678 9.5019 7.92408C9.4429 7.99488 9.3852 8.06678 9.2991 8.17408L9.2797 8.19838V7.00444ZM2.68164 15.5671H5.33242V7.01001H2.68164V15.5671Z" fill="CurrentColor"/>
-                        </svg>
-                      </div>
-                    </a>
-      
-                    <!-- Instagram -->
-                    <a href="https://www.instagram.com/wawtelecom" 
-                       class="link_socials w-inline-block"
-                       [attr.aria-label]="'footer.social.instagram' | translate">
-                      <div class="svg_social w-embed">
-                        <!-- Instagram SVG remains unchanged -->
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                          <path fill="#ffffff" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
-                        </svg>
-                      </div>
-                    </a>
-      
-                    <!-- Facebook -->
-                    <a href="https://www.facebook.com/wawtelecom" 
-                       class="link_socials w-inline-block"
-                       [attr.aria-label]="'footer.social.facebook' | translate">
-                      <div class="svg_social w-embed">
-                        <!-- Facebook SVG remains unchanged -->
-                        <svg width="32" height="auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M22.675 0H1.325C0.593 0 0 0.593 0 1.325v21.351C0 23.407 0.593 24 1.325 24h11.495v-9.294h-3.13v-3.62h3.13v-2.67c0-4.073 2.485-6.363 6.202-6.363 1.804 0 3.649.354 3.649.354v4h-2.052c-2.014 0-2.64 1.508-2.64 3.062v3.348h4.318l-0.689 3.62h-3.629V24h7.271c.732 0 1.325-.593 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z" fill="CurrentColor"/>
-                        </svg>
-                      </div>
-                    </a>
-                  </div>
+      <!-- Right Side - Phone Mockup Premium -->
+      <div class="hero-premium-right animate-fade-in-delay-3">
+        <div class="phone-mockup-container">
+          <div class="phone-device">
+            <!-- Phone Screen -->
+            <div class="phone-screen">
+              <!-- Status Bar -->
+              <div class="phone-status-bar">
+                <span class="status-time">9:41</span>
+                <div class="status-icons">
+                  <svg width="17" height="11" viewBox="0 0 17 11" fill="none">
+                    <path d="M1 5.5L3 3.5L6 6.5L10 2.5L13 5.5L16 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
+                    <rect x="0.5" y="0.5" width="14" height="10" rx="1.5" stroke="currentColor"/>
+                    <path d="M3 5.5L6 2.5L9 5.5L12 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="battery-icon"></div>
                 </div>
               </div>
-      
-              <!-- Quick Links section -->
-              <div id="w-node-_956d022f-1588-c453-227f-5564ee79f02f-ee79f019" class="column_footer">
-                <p class="text-size-body-xsm is--bold" style="font-size: 18px;">
-                  {{ 'footer.quickLinks.title' | translate }}
-                </p>
-                <a [routerLink]="['/']" class="link_footer hide-for-now">
-                  {{ 'footer.quickLinks.home' | translate }}
-                </a>
-                <a [routerLink]="['/service']" class="link_footer hide-for-now">
-                  {{ 'footer.quickLinks.esim' | translate }}
-                </a>
-                <a [routerLink]="['/a_propos']" class="link_footer">
-                  {{ 'footer.quickLinks.about' | translate }}
-                </a>
-                <a [routerLink]="['/contact']" class="link_footer">
-                  {{ 'footer.quickLinks.contact' | translate }}
-                </a>
-                <a [routerLink]="['/login']" class="link_footer">
-                  {{ 'footer.quickLinks.login' | translate }}
-                </a>
+              
+              <!-- App Content -->
+              <div class="phone-app-content">
+                <!-- Header -->
+                <div class="app-header">
+                  <div class="app-greeting">Bonjour ! 👋</div>
+                  <button class="app-support-btn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M10 14C10.5523 14 11 13.5523 11 13C11 12.4477 10.5523 12 10 12C9.44772 12 9 12.4477 9 13C9 13.5523 9.44772 14 10 14Z" fill="currentColor"/>
+                      <path d="M10 10V9C10 8.44772 10.4477 8 11 8C11.5523 8 12 7.55228 12 7C12 6.44772 11.5523 6 11 6C10.4477 6 10 6.44772 10 7V8C9.44772 8 9 8.44772 9 9V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  </button>
+                </div>
+                
+                <!-- Slogan Section -->
+                <div class="app-slogan-section">
+                  <div class="slogan-text">Sa elleg leegi le</div>
+                  <div class="slogan-subtitle">Votre monde, connecté</div>
+                </div>
+                
+                <!-- Travel Input in App -->
+                <div class="app-travel-input">
+                  <svg class="app-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                  <span class="app-input-text">Où voyagez-vous ?</span>
+                  <svg class="app-input-arrow" width="16" height="16" viewBox="0 0 20 20" fill="none">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                
+                <!-- Popular Destinations in App -->
+                <div class="app-popular-dest">
+                  <div class="app-dest-item" *ngFor="let dest of popularDestinations.slice(0, 3)">
+                    <img [src]="dest.drapeau" [alt]="dest.nom" class="app-dest-flag" />
+                    <span class="app-dest-name">{{ dest.nom }}</span>
+                  </div>
+                </div>
+                
+                <!-- Active Plan Card -->
+                <div class="app-plan-card">
+                  <div class="plan-card-header">
+                    <div class="plan-location">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                      <span>France</span>
+                    </div>
+                    <div class="plan-status">WAW en cours</div>
+                  </div>
+                  <div class="plan-card-body">
+                    <div class="plan-name">FLEX</div>
+                    <div class="plan-active-badge">Actif</div>
+                    <div class="plan-balance">
+                      <div class="balance-amount">Solde 15 000 FCFA</div>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <div class="balance-data">Données 5.2 GB</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="app-quick-actions">
+                  <button class="quick-action-btn">20 000 FCFA</button>
+                  <button class="quick-action-btn">25 000 FCFA</button>
+                  <button class="quick-action-btn">50 000 FCFA</button>
+                </div>
               </div>
-      
-              <!-- Footer row -->
-              <div id="w-node-_956d022f-1588-c453-227f-5564ee79f045-ee79f019" class="footer_row">
-                <p class="text-size-body-xsm">
-                  © {{ 'footer.copyright' | translate }}
-                </p>
-                <p class="text-size-body-xsm">
-                  {{ 'footer.developedBy' | translate }}
-                  <a href="https://www.wawtelecom.com/" target="_blank" class="link_legals">WAW TELECOM</a>
-                </p>
+              
+              <!-- Bottom Navigation -->
+              <div class="phone-nav-bar">
+                <div class="nav-item active">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Accueil</span>
+                </div>
+                <div class="nav-item">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 16V8C20.9996 7.64928 20.9071 7.30481 20.7315 7.00116C20.556 6.69751 20.3037 6.44536 20 6.27L13 2.27C12.696 2.09446 12.3511 2.00205 12 2.00205C11.6489 2.00205 11.304 2.09446 11 2.27L4 6.27C3.69626 6.44536 3.44398 6.69751 3.26846 7.00116C3.09294 7.30481 3.00036 7.64928 3 8V16C3.00036 16.3507 3.09294 16.6952 3.26846 16.9988C3.44398 17.3025 3.69626 17.5546 4 17.73L11 21.73C11.304 21.9055 11.6489 21.9979 12 21.9979C12.3511 21.9979 12.696 21.9055 13 21.73L20 17.73C20.3037 17.5546 20.556 17.3025 20.7315 16.9988C20.9071 16.6952 20.9996 16.3507 21 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3.27002 6.96L12 12.01L20.73 6.96" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 22.08V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Données</span>
+                </div>
+                <div class="nav-item">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M22 16.92V19.92C22.0011 20.1985 21.9441 20.4742 21.8325 20.7292C21.7209 20.9842 21.5573 21.2128 21.3523 21.3998C21.1473 21.5868 20.9053 21.7282 20.6399 21.8152C20.3746 21.9022 20.0922 21.9327 19.8125 21.9045L4.8125 20.4045C4.29219 20.3549 3.79526 20.1446 3.38781 19.8001C2.98037 19.4556 2.68125 18.9917 2.53125 18.4717C2.38125 17.9517 2.38719 17.3992 2.54812 16.8837C2.70906 16.3682 3.01809 15.9129 3.4375 15.5745L8.4375 11.5745C8.61563 11.4301 8.76219 11.2526 8.86906 11.0526C8.97594 10.8526 9.04125 10.6342 9.06125 10.4095C9.08125 10.1848 9.05562 9.95801 8.98594 9.74171C8.91625 9.52542 8.80375 9.32376 8.655 9.14771L6.155 6.14771" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 16.92L19.5 13.92" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 16.92L18 17.42" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Appels</span>
+                </div>
+                <div class="nav-item">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Profil</span>
+                </div>
               </div>
             </div>
           </div>
+          
+          <!-- Decorative Elements -->
+          <div class="phone-decoration deco-1"></div>
+          <div class="phone-decoration deco-2"></div>
         </div>
-      </section>
+        
+        <!-- Rating Badge -->
+        <div class="rating-badge">
+          <div class="rating-stars">
+            <span class="star">⭐</span>
+            <span class="star">⭐</span>
+            <span class="star">⭐</span>
+            <span class="star">⭐</span>
+            <span class="star">⭐</span>
+          </div>
+          <div class="rating-text">4.8/5 de 500+ avis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Countries Section - Design Moderne -->
+  <section class="countries-section">
+    <div class="container-modern">
+      <!-- Section Header -->
+      <div class="section-header animate-fade-in">
+        <h2 class="section-title">
+          {{ 'countries.title' | translate }}
+          <span class="title-accent"></span>
+        </h2>
+        <p class="section-description">
+          Découvrez nos destinations disponibles dans le monde entier
+        </p>
+      </div>
+
+      <!-- Search Bar Moderne -->
+      <div class="search-container-modern animate-fade-in-delay">
+        <div class="search-wrapper">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input 
+            type="search" 
+            [(ngModel)]="searchText" 
+            (input)="filterEsims()"
+            placeholder="{{ 'countries.search' | translate }}"
+            class="search-input-modern"
+          />
+          <div class="search-results-count" *ngIf="filteredEsims.length > 0">
+            {{ filteredEsims.length }} {{ filteredEsims.length === 1 ? 'destination' : 'destinations' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters Moderne -->
+      <div class="filters-container-modern animate-fade-in-delay">
+        <div class="filter-pills">
+          <button 
+            class="filter-pill" 
+            [class.active]="selectedContinent === 'All'"
+            (click)="filtrerPays('All')"
+          >
+            <span class="pill-icon">🌍</span>
+            <span>{{ 'countries.continents.all' | translate }}</span>
+          </button>
+          <button 
+            class="filter-pill" 
+            [class.active]="selectedContinent === 'Afrique'"
+            (click)="filtrerPays('Afrique')"
+          >
+            <span class="pill-icon">🌍</span>
+            <span>{{ 'countries.continents.africa' | translate }}</span>
+          </button>
+          <button 
+            class="filter-pill" 
+            [class.active]="selectedContinent === 'Amerique du Nord'"
+            (click)="filtrerPays('Amerique du Nord')"
+          >
+            <span class="pill-icon">🌎</span>
+            <span>{{ 'countries.continents.northAmerica' | translate }}</span>
+          </button>
+          <button 
+            class="filter-pill" 
+            [class.active]="selectedContinent === 'Amerique du Sud'"
+            (click)="filtrerPays('Amerique du Sud')"
+          >
+            <span class="pill-icon">🌎</span>
+            <span>{{ 'countries.continents.southAmerica' | translate }}</span>
+          </button>
+          <button 
+            class="filter-pill" 
+            [class.active]="selectedContinent === 'Asie'"
+            (click)="filtrerPays('Asie')"
+          >
+            <span class="pill-icon">🌏</span>
+            <span>{{ 'countries.continents.asia' | translate }}</span>
+          </button>
+          <button 
+            class="filter-pill" 
+            [class.active]="selectedContinent === 'Europe'"
+            (click)="filtrerPays('Europe')"
+          >
+            <span class="pill-icon">🌍</span>
+            <span>{{ 'countries.continents.europe' | translate }}</span>
+          </button>
+          <button 
+            class="filter-pill" 
+            [class.active]="selectedContinent === 'Oceanie'"
+            (click)="filtrerPays('Oceanie')"
+          >
+            <span class="pill-icon">🌏</span>
+            <span>{{ 'countries.continents.oceania' | translate }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Countries Grid - Ultra Moderne -->
+      <div class="countries-grid-modern" *ngIf="filteredEsims.length > 0">
+        <div 
+          class="country-card-modern" 
+          *ngFor="let item of getPaysFiltres() | paginate: { itemsPerPage: 12, currentPage: page }"
+          [routerLink]="['/eSim', item.id]"
+        >
+          <div class="card-background" [style.background-image]="'url(' + getCountryImage(item.country_code) + ')'"></div>
+          <div class="card-overlay"></div>
+          
+          <div class="card-content">
+            <div class="card-flag-wrapper">
+              <img [src]="item.drapeau" [alt]="item.nom" class="card-flag" />
+            </div>
+            
+            <div class="card-info">
+              <h3 class="card-country-name">{{ item.nom }}</h3>
+              <div class="card-continent">{{ item.continent }}</div>
+            </div>
+            
+            <div class="card-action">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="card-shine"></div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="filteredEsims.length === 0">
+        <div class="empty-icon">🌍</div>
+        <h3 class="empty-title">Aucune destination trouvée</h3>
+        <p class="empty-description">
+          Essayez de modifier vos filtres ou votre recherche pour trouver d'autres destinations.
+        </p>
+        <button class="btn-reset-filters" (click)="resetFilters()">
+          Réinitialiser les filtres
+        </button>
+      </div>
+
+      <!-- Pagination Moderne -->
+      <div class="pagination-modern" *ngIf="filteredEsims.length > 0">
+        <pagination-controls 
+          (pageChange)="page = $event"
+          previousLabel=""
+          nextLabel=""
+          [maxSize]="5"
+        ></pagination-controls>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container-modern">
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">Activation Instantanée</h3>
+          <p class="feature-description">Recevez votre eSIM en quelques secondes après l'achat</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌍</div>
+          <h3 class="feature-title">150+ Destinations</h3>
+          <p class="feature-description">Connectez-vous dans plus de 150 pays à travers le monde</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3 class="feature-title">Prix Transparents</h3>
+          <p class="feature-description">Pas de frais cachés, prix clairs et compétitifs</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3 class="feature-title">Support 24/7</h3>
+          <p class="feature-description">Notre équipe est disponible à tout moment pour vous aider</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (garder le footer existant) -->
+  <section class="section1">
+    <div class="container">
+      <div class="page-padding is--footer">
+        <div class="wrapper_footer">
+          <!-- Logo section -->
+          <div id="w-node-_956d022f-1588-c453-227f-5564ee79f01d-ee79f019" class="column_footer">
+            <a href="/" aria-current="page" class="w-nav-brand w--current">
+              <img src="https://wawtelecom.com/waw.png" loading="lazy" 
+                   [alt]="'footer.logo.alt' | translate" 
+                   class="img_brande" 
+                   style="width: 150px; height: 100px;border-radius: 10px;"/>
+            </a>
+          </div>
+    
+          <!-- Contact details section -->
+          <div id="w-node-_956d022f-1588-c453-227f-5564ee79f020-ee79f019" class="column_footer">
+            <div class="wrapper_contact-details">
+              <p class="text-size-body-xsm is--bold" style="font-size: 18px;">
+                {{ 'footer.address.title' | translate }}
+              </p>
+              <p class="text-size-body-sm">
+                <a href="https://www.google.com/maps/place/Si%C3%A8ge+Social+WAW+TELECOM/@14.7496095,-17.5082828,17z" 
+                   target="_blank" 
+                   class="link_footer">
+                  {{ 'footer.address.content' | translate }}
+                </a>
+              </p>
+              
+              <p class="text-size-body-xsm is--bold">
+                {{ 'footer.contacts.title' | translate }}
+              </p>
+              <p class="text-size-body-sm">
+                <a href="tel:+221338601929" class="link_footer">+221 33 860 19 29</a>
+              </p>
+              <p class="text-size-body-sm">
+                <a href="tel:+221769291717" class="link_footer">+221 76 929 17 17</a>
+              </p>
+              <p class="text-size-body-sm">
+                <a href="mailto:contact@wawtelecom.com" class="link_footer">contact&#64;wawtelecom.com</a>
+              </p>
+    
+              <p class="text-size-body-xsm is--bold" style="font-size: 18px;">
+                {{ 'footer.social.title' | translate }}
+              </p>
+              
+              <!-- Social media links -->
+              <div class="wrapper_socials">
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/company/wawtelecom" 
+                   target="_blank" 
+                   class="link_socials w-inline-block"
+                   [attr.aria-label]="'footer.social.linkedin' | translate">
+                  <div class="svg_social w-embed">
+                    <svg width="32" height="auto" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 0.242676C0.67157 0.242676 0 0.914246 0 1.74268V16.7427C0 17.5711 0.67157 18.2427 1.5 18.2427H16.5C17.3284 18.2427 18 17.5711 18 16.7427V1.74268C18 0.914246 17.3284 0.242676 16.5 0.242676H1.5ZM5.52076 4.2454C5.52639 5.20165 4.81061 5.79087 3.96123 5.78665C3.16107 5.78243 2.46357 5.1454 2.46779 4.24681C2.47201 3.40165 3.13998 2.72243 4.00764 2.74212C4.88795 2.76181 5.52639 3.40728 5.52076 4.2454ZM9.2797 7.00444H6.75971H6.7583V15.5643H9.4217V15.3646C9.4217 14.9847 9.4214 14.6047 9.4211 14.2246C9.4203 13.2108 9.4194 12.1959 9.4246 11.1824C9.426 10.9363 9.4372 10.6804 9.5005 10.4455C9.7381 9.56798 10.5271 9.00128 11.4074 9.14058C11.9727 9.22908 12.3467 9.55678 12.5042 10.0898C12.6013 10.423 12.6449 10.7816 12.6491 11.129C12.6605 12.1766 12.6589 13.2242 12.6573 14.2719C12.6567 14.6417 12.6561 15.0117 12.6561 15.3815V15.5629H15.328V15.3576C15.328 14.9056 15.3278 14.4537 15.3275 14.0018C15.327 12.8723 15.3264 11.7428 15.3294 10.6129C15.3308 10.1024 15.276 9.59898 15.1508 9.10538C14.9638 8.37128 14.5771 7.76378 13.9485 7.32508C13.5027 7.01287 13.0133 6.81178 12.4663 6.78928C12.404 6.78669 12.3412 6.7833 12.2781 6.77989C11.9984 6.76477 11.7141 6.74941 11.4467 6.80334C10.6817 6.95662 10.0096 7.30678 9.5019 7.92408C9.4429 7.99488 9.3852 8.06678 9.2991 8.17408L9.2797 8.19838V7.00444ZM2.68164 15.5671H5.33242V7.01001H2.68164V15.5671Z" fill="CurrentColor"/>
+                    </svg>
+                  </div>
+                </a>
+      
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/wawtelecom" 
+                   class="link_socials w-inline-block"
+                   [attr.aria-label]="'footer.social.instagram' | translate">
+                  <div class="svg_social w-embed">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path fill="#ffffff" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+                    </svg>
+                  </div>
+                </a>
+      
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/wawtelecom" 
+                   class="link_socials w-inline-block"
+                   [attr.aria-label]="'footer.social.facebook' | translate">
+                  <div class="svg_social w-embed">
+                    <svg width="32" height="auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22.675 0H1.325C0.593 0 0 0.593 0 1.325v21.351C0 23.407 0.593 24 1.325 24h11.495v-9.294h-3.13v-3.62h3.13v-2.67c0-4.073 2.485-6.363 6.202-6.363 1.804 0 3.649.354 3.649.354v4h-2.052c-2.014 0-2.64 1.508-2.64 3.062v3.348h4.318l-0.689 3.62h-3.629V24h7.271c.732 0 1.325-.593 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z" fill="CurrentColor"/>
+                    </svg>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+    
+          <!-- Quick Links section -->
+          <div id="w-node-_956d022f-1588-c453-227f-5564ee79f02f-ee79f019" class="column_footer">
+            <p class="text-size-body-xsm is--bold" style="font-size: 18px;">
+              {{ 'footer.quickLinks.title' | translate }}
+            </p>
+            <a [routerLink]="['/']" class="link_footer hide-for-now">
+              {{ 'footer.quickLinks.home' | translate }}
+            </a>
+            <a [routerLink]="['/service']" class="link_footer hide-for-now">
+              {{ 'footer.quickLinks.esim' | translate }}
+            </a>
+            <a [routerLink]="['/a_propos']" class="link_footer">
+              {{ 'footer.quickLinks.about' | translate }}
+            </a>
+            <a [routerLink]="['/contact']" class="link_footer">
+              {{ 'footer.quickLinks.contact' | translate }}
+            </a>
+            <a [routerLink]="['/login']" class="link_footer">
+              {{ 'footer.quickLinks.login' | translate }}
+            </a>
+          </div>
+    
+          <!-- Footer row -->
+          <div id="w-node-_956d022f-1588-c453-227f-5564ee79f045-ee79f019" class="footer_row">
+            <p class="text-size-body-xsm">
+              © {{ 'footer.copyright' | translate }}
+            </p>
+            <p class="text-size-body-xsm">
+              {{ 'footer.developedBy' | translate }}
+              <a href="https://www.wawtelecom.com/" target="_blank" class="link_legals">WAW TELECOM</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>

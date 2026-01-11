@@ -7,7 +7,11 @@
         <h1 class="header-title">Gestion des Destinations</h1>
       </div>
       <div class="header-actions">
-        <button (click)="openSyncModal()" class="btn btn-primary">
+        <button routerLink="/admin/destinations/create" class="btn btn-primary">
+          <i class="fas fa-plus"></i>
+          Nouvelle Destination
+        </button>
+        <button (click)="openSyncModal()" class="btn btn-secondary">
           <i class="fas fa-sync-alt"></i>
           Synchroniser
         </button>
@@ -124,6 +128,14 @@
           <i class="fas fa-eye"></i>
           Voir les détails
         </button>
+        <button 
+          (click)="toggleDestinationVisibility(destination)" 
+          [class]="destination.is_published ? 'btn btn-warning' : 'btn btn-success'"
+          [title]="destination.is_published ? 'Retirer du site web' : 'Publier sur le site web'"
+        >
+          <i [class]="destination.is_published ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+          {{ destination.is_published ? 'Retirer du site' : 'Publier' }}
+        </button>
       </div>
     </div>
   </div>
@@ -138,7 +150,7 @@
       <div class="modal-body">
         <div class="form-group">
           <label>Nombre d'eSIMs à traiter</label>
-          <input type="number" [(ngModel)]="syncLimit" min="1" max="100" class="form-input">
+          <input type="number" name="syncLimit" [(ngModel)]="syncLimit" min="1" max="100" class="form-input">
         </div>
       </div>
       <div class="modal-footer">

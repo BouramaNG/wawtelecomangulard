@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { DestinationsService, Destination, DestinationStats, Package } from '../../services/destinations.service';
 
 @Component({
   selector: 'app-destinations',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './destinations.component.html',
   styleUrl: './destinations.component.css'
 })
@@ -147,5 +148,31 @@ export class DestinationsComponent implements OnInit {
     } else {
       return { class: 'stock-high', text: 'En stock', color: 'text-green-500' };
     }
+  }
+
+  toggleDestinationVisibility(destination: Destination): void {
+    if (!confirm(`Êtes-vous sûr de vouloir ${destination.is_published ? 'retirer' : 'publier'} cette destination du site web ?`)) {
+      return;
+    }
+
+    this.destinationsService.toggleDestinationVisibility(destination.country_code).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.successMessage = response.message;
+          // Mettre à jour le statut localement
+          destination.is_published = response.is_published;
+          // Recharger les données après 1 seconde
+          setTimeout(() => {
+            this.loadData();
+          }, 1000);
+        } else {
+          this.errorMessage = response.message || 'Erreur lors de la mise à jour';
+        }
+      },
+      error: (error) => {
+        console.error('Erreur toggle visibility:', error);
+        this.errorMessage = 'Erreur de connexion lors de la mise à jour';
+      }
+    });
   }
 }

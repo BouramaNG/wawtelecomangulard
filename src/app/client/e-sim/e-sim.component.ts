@@ -5,11 +5,17 @@ import { EsimService } from '../../services/esim.service';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { SpaceNumberPipe } from '../../shared/pipes/space-number.pipe';
+import { DataSizePipe } from '../../shared/pipes/data-size.pipe';
+import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { OrderService } from '../../services/order.service';
+import { EncryptionService } from '../../services/encryption.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-e-sim',
   standalone: true,
-  imports: [HeaderComponent, RouterLink, CommonModule, TranslateModule, SpaceNumberPipe],
+  imports: [HeaderComponent, RouterLink, CommonModule, TranslateModule, SpaceNumberPipe, DataSizePipe, FormsModule, NgSelectModule],
   templateUrl: './e-sim.component.html',
   styleUrl: './e-sim.component.css'
 })
@@ -17,7 +23,35 @@ export class ESimComponent  implements OnInit{
   paysChoisi: { id: number; nom: string; drapeau: string; continent: string; code:string} | undefined;
   selectedEsim: any;
   showOumrahModal = false;
-  constructor(private route:ActivatedRoute, private esimService:EsimService, private router:Router){}
+  loadingPackages = false;
+  showCheckoutModal = false;
+  email: any;
+  phone: any;
+  user: any;
+  selectedIndicatif: any = '+221';
+  comande: any;
+  idOrder: any;
+  
+  indicatifs = [
+    { "ind": "+33", "drapeau": "https://flagcdn.com/w320/fr.png" },
+    { "ind": "+221", "drapeau": "https://flagcdn.com/w320/sn.png" },
+    { "ind": "+212", "drapeau": "https://flagcdn.com/w320/ma.png" },
+    { "ind": "+1", "drapeau": "https://flagcdn.com/w320/us.png" },
+    { "ind": "+34", "drapeau": "https://flagcdn.com/w320/es.png" },
+    { "ind": "+39", "drapeau": "https://flagcdn.com/w320/it.png" },
+    { "ind": "+44", "drapeau": "https://flagcdn.com/w320/gb.png" },
+    { "ind": "+225", "drapeau": "https://flagcdn.com/w320/ci.png" },
+    { "ind": "+254", "drapeau": "https://flagcdn.com/w320/ke.png" },
+    { "ind": "+27", "drapeau": "https://flagcdn.com/w320/za.png" },
+  ];
+  
+  constructor(
+    private route:ActivatedRoute, 
+    private esimService:EsimService, 
+    private router:Router,
+    private orderService: OrderService,
+    private encryptionService: EncryptionService
+  ){}
   pays=[
     {
       "id": 0,
@@ -1387,41 +1421,22 @@ export class ESimComponent  implements OnInit{
   ]
   idPays:any;
   eSimPack:any;
-  packPays:any;
+  packPays: any[] = [];
   active:Boolean=false;
   ngOnInit(): void {
-    console.log('e-sim.component chargé');
-    this.idPays=this.route.snapshot.params['id'];
-    console.log(this.idPays)
-    document.addEventListener("DOMContentLoaded", () => {
-      const plans: NodeListOf<HTMLElement> = document.querySelectorAll(".plan");
-      const checkoutBtn: HTMLElement | null = document.querySelector(".checkout");
-  
-      if (checkoutBtn) {
-       
-          plans.forEach((plan) => {
-              plan.addEventListener("click", () => {
-                  const selectedPlan = document.querySelector(".selected");
-                  if (selectedPlan) {
-                      selectedPlan.classList.remove("selected");
-                  }
-  
-                  plan.classList.add("selected");
-                  const price = plan.getAttribute("data-price");
-                  if (price) {
-                      checkoutBtn.textContent = `Aller à la caisse sécurisée - ${price} $`;
-                  }
-              });
-          });
-      }
-  });
-  this.getPays();
-  this.getPack();
-
-  // Afficher la modale Oumrah après 5 secondes
-  setTimeout(() => {
-    this.showOumrahModal = true;
-  }, 5000);
+    this.idPays = this.route.snapshot.params['id'];
+    this.getPays();
+    
+    // Récupérer les infos utilisateur si connecté
+    const donneesChiffrees = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    if (donneesChiffrees && Object.keys(donneesChiffrees).length > 0) {
+      this.user = this.encryptionService.decryptData(donneesChiffrees);
+    }
+    
+    // Afficher la modale Oumrah après 5 secondes
+    setTimeout(() => {
+      this.showOumrahModal = true;
+    }, 5000);
   }
 
   closeOumrahModal(): void {
@@ -1430,47 +1445,60 @@ export class ESimComponent  implements OnInit{
 
 
   getPays(){
-    console.log('[DEBUG] ID du pays recherché:', this.idPays);
-    console.log('[DEBUG] Liste complète des pays:', this.pays);
     this.paysChoisi = this.pays.find((elt) => elt.id === Number(this.idPays));
     if (this.paysChoisi) {
-      console.log('[DEBUG] Pays trouvé:', this.paysChoisi);
+      // Une fois le pays trouvé, charger les packages
+      this.getPack();
     } else {
       console.error('[DEBUG] Aucun pays trouvé avec l\'ID:', this.idPays);
       // Recherche directe du Japon par code
       this.paysChoisi = this.pays.find((elt) => elt.code === 'JP');
       if (this.paysChoisi) {
-        console.log('[DEBUG] Pays Japon trouvé par code:', this.paysChoisi);
+        this.getPack();
       }
     }
   }
   getPack(){
     if (!this.paysChoisi) {
-      console.log('[DEBUG] Aucun pays choisi');
+      this.packPays = [];
       return;
     }
-    console.log('[DEBUG] getPack appelé avec pays:', this.paysChoisi);
-    console.log('[DEBUG] Code pays:', this.paysChoisi.code);
-    console.log('[DEBUG] URL API:', `esim-packages/${this.paysChoisi.code}/with-price`);
     
+    this.loadingPackages = true;
     this.esimService.getEsimPackagesWithPrice(this.paysChoisi.code).subscribe({
       next: (response: any) => {
-        console.log('[DEBUG] Réponse API complète:', response);
-        if (response && response.success) {
-          console.log('[DEBUG] Packages reçus:', response.packages);
-          this.packPays = response.packages;
-          console.log('[DEBUG] packPays après assignation:', this.packPays);
+        this.loadingPackages = false;
+        if (response && response.success && response.packages && Array.isArray(response.packages)) {
+          // Filtrer les packages de test et ceux sans nom valide
+          let filtered = response.packages.filter((pack: any) => {
+            const name = (pack.name || '').toUpperCase();
+            // Exclure les packages avec "TEST" dans le nom
+            // Exclure "TURKY" dans le nom
+            // Exclure les packages sans nom ou avec des noms suspects
+            return name && 
+                   !name.includes('TEST') && 
+                   !name.includes('TURKY') &&
+                   name.trim().length > 0 &&
+                   pack.price && 
+                   pack.price > 0;
+          });
           
-          // Vérification supplémentaire
-          if (!this.packPays || this.packPays.length === 0) {
-            console.warn('[DEBUG] Aucun package trouvé pour ce pays');
-          }
+          // Dédupliquer les packages : garder seulement le premier pour chaque combinaison nom + data_mb
+          const seen = new Map<string, boolean>();
+          this.packPays = filtered.filter((pack: any) => {
+            const key = `${(pack.name || '').toUpperCase().trim()}_${pack.data_mb || 0}`;
+            if (seen.has(key)) {
+              return false; // Déjà vu, on l'exclut
+            }
+            seen.set(key, true);
+            return true;
+          });
         } else {
-          console.warn('[DEBUG] Réponse API sans succès:', response);
           this.packPays = [];
         }
       },
       error: (error) => {
+        this.loadingPackages = false;
         console.error('[DEBUG] Erreur lors de la récupération des forfaits:', error);
         this.packPays = [];
       }
@@ -1479,14 +1507,105 @@ export class ESimComponent  implements OnInit{
 
   selectedEsimId: number | null = null;
 
-  selectEsim(pack: number, packId:number) {
+  selectEsim(pack: any, packId: number) {
     this.selectedEsimId = packId;
     this.selectedEsim = pack;
-    console.log(this.selectedEsimId)
   }
+  
   acheterEsim(){
+    if (!this.selectedEsim) {
+      Swal.fire({
+        icon: "warning",
+        title: "Sélection requise",
+        text: "Veuillez sélectionner un forfait avant de continuer.",
+        confirmButtonColor: '#FFDD33'
+      });
+      return;
+    }
     localStorage.setItem('eSim', JSON.stringify(this.selectedEsim));
-    this.router.navigate(['checkout'])
+    this.showCheckoutModal = true;
+  }
+  
+  closeCheckoutModal() {
+    this.showCheckoutModal = false;
+  }
+  
+  order() {
+    if (!this.email || !this.phone || !this.selectedEsim?.id || !this.selectedEsim?.price) {
+      Swal.fire({
+        icon: "error",
+        title: "Erreur",
+        text: "Veuillez remplir tous les champs obligatoires !",
+        confirmButtonColor: '#FFDD33'
+      });
+      return;
+    }
+    
+    const com = {
+      email: this.email,
+      phone_number: this.selectedIndicatif + this.phone,
+      user_id: this.user?.id,
+      esim_package_template_id: this.selectedEsim.id,
+      amount: this.selectedEsim.price,
+    };
+    
+    this.orderService.commande(com).subscribe({
+      next: (response: any) => {
+        this.comande = response;
+        this.idOrder = this.comande.order.id;
+        
+        // Fermer le modal
+        this.closeCheckoutModal();
+        
+        // Afficher un message de chargement
+        Swal.fire({
+          title: "Redirection en cours...",
+          text: "Préparation de votre paiement sécurisé",
+          icon: "info",
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        
+        // Initier directement le paiement
+        this.orderService.payer(this.idOrder).subscribe({
+          next: (reponse: any) => {
+            if (reponse && reponse.redirect_url) {
+              // Rediriger directement vers PayTech
+              window.location.href = reponse.redirect_url;
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Erreur",
+                text: "URL de redirection non disponible",
+                confirmButtonColor: '#FFDD33'
+              });
+            }
+          },
+          error: (error) => {
+            console.error('[FRONT][Checkout] Erreur paiement', error);
+            Swal.fire({
+              icon: "error",
+              title: "Erreur",
+              text: error.error?.message || "Une erreur est survenue lors du paiement.",
+              confirmButtonColor: '#FFDD33'
+            });
+          }
+        });
+      },
+      error: (error) => {
+        console.error('[FRONT][Checkout] Erreur commande', error);
+        Swal.fire({
+          icon: "error",
+          title: "Erreur",
+          text: error.error?.message || "Une erreur est survenue lors de la création de la commande.",
+          confirmButtonColor: '#FFDD33'
+        });
+      }
+    });
   }
 
 }

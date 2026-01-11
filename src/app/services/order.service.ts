@@ -1,15 +1,19 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { url } from '../shared/api_url';
 import { tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
+import { EncryptionService } from './encryption.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
 
-  constructor( private http:HttpClient) { }
+  constructor(
+    private http:HttpClient,
+    private encryptionService: EncryptionService
+  ) { }
   commande(com:any){
     console.log('[FRONT][OrderService] Appel POST /orders', com);
     return this.http.post(`${url}orders`,com)
@@ -42,10 +46,13 @@ export class OrderService {
       );
   }
   listOrder(){
-    return this.http.get(`${url}orders`)
-
+    const token = this.encryptionService.getDecryptedToken();
+    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+    return this.http.get(`${url}orders`, headers ? { headers } : {})
   }
   listePaiement(){
-    return this.http.get(`${url}payments`)
+    const token = this.encryptionService.getDecryptedToken();
+    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
+    return this.http.get(`${url}payments`, headers ? { headers } : {})
   }
 }

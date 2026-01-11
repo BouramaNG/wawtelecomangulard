@@ -2,13 +2,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { url } from '../shared/api_url';
 import { of } from 'rxjs';
+import { EncryptionService } from './encryption.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http:HttpClient) { }
+  constructor(
+    private http:HttpClient,
+    private encryptionService: EncryptionService
+  ) { }
    // methode pour l'inscription
    register(user:any){
     return this.http.post(`${url}register`, user)
@@ -20,8 +24,7 @@ export class LoginService {
   }
 
   logout() {
-    const token = localStorage.getItem('token');
-    console.log(token);
+    const token = this.encryptionService.getDecryptedToken();
   
     if (token) {
       // Faire la requête de déconnexion

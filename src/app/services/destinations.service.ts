@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { url } from '../shared/api_url';
+import { EncryptionService } from './encryption.service';
 
 export interface Destination {
   country_code: string;
   country_name: string;
   network_provider: string;
+  is_published?: boolean;
+  is_active?: boolean;
   packages: Package[];
 }
 
@@ -46,7 +49,10 @@ export class DestinationsService {
 
   private apiUrl = url;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private encryptionService: EncryptionService
+  ) { }
 
   // Récupérer les données pour l'admin (avec plus de détails)
   getAdminData(): Observable<{success: boolean, destinations: Destination[], stats: DestinationStats}> {
@@ -107,5 +113,24 @@ export class DestinationsService {
       sync_type: 'destinations',
       limit: limit
     });
+  }
+
+  // Désactiver/Activer une destination (retirer du site web)
+  toggleDestinationVisibility(countryCode: string): Observable<{success: boolean, message: string, is_published: boolean}> {
+    const endpoint = `${this.apiUrl}admin/destinations/${countryCode}/toggle-visibility`;
+    console.log('🔄 DestinationsService: Appel API toggleDestinationVisibility');
+    console.log('📍 URL appelée:', endpoint);
+    
+    const token = this.encryptionService.getDecryptedToken();
+    if (!token) {
+      console.error('❌ DestinationsService: Token non disponible');
+      return of({ success: false, message: 'Token non disponible', is_published: false });
+    }
+    
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    
+    return this.http.patch<{success: boolean, message: string, is_published: boolean}>(endpoint, {}, { headers });
   }
 } 

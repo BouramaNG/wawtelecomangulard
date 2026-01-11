@@ -19,7 +19,8 @@ import { EncryptionService } from '../../services/encryption.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit{
-  isDropdownOpen: boolean =false;
+  isDropdownOpen: boolean = false;
+  activeDropdown: string | null = null;
 
   token: any;
   deconnexion() {
@@ -76,10 +77,15 @@ if (this.token && this.token !== 'null' && this.token !== 'undefined' && this.to
   }
  
   isMenuOpen = false;
+  isScrolled = false;
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    this.isScrolled = window.scrollY > 50;
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
-    
   }
 
   // isServicesActive(): boolean {
