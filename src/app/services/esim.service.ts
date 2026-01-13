@@ -305,44 +305,24 @@ export class EsimService {
     return this.http.get<any>(`${url}esim-purchase/destinations`);
   }
   getEsimPackagesWithPrice(countryCode: string): Observable<any> {
-    console.log('[EsimService] Appel de getEsimPackagesWithPrice avec countryCode:', countryCode);
-    
     if (!countryCode) {
-      console.error('[EsimService] Erreur: Aucun code pays fourni');
       return of({ success: false, message: 'Code pays manquant' });
     }
     
     return new Observable(observer => {
       const apiUrl = `${url}esim-packages/${countryCode}/with-price`;
-      console.log(`[EsimService] Envoi de la requête à ${apiUrl}`);
       
       this.http.get<any>(apiUrl).subscribe({
         next: (response) => {
-          console.log('[EsimService] Réponse reçue:', response);
-          
           if (!response) {
-            console.error('[EsimService] Réponse vide du serveur');
-            observer.error('Réserve vide du serveur');
+            observer.error('Réponse vide du serveur');
             return;
-          }
-          
-          if (!response.success) {
-            console.error('[EsimService] Erreur dans la réponse:', response.message || 'Erreur inconnue');
-          } else {
-            console.log(`[EsimService] ${response.packages?.length || 0} forfaits reçus`);
           }
           
           observer.next(response);
           observer.complete();
         },
         error: (error) => {
-          console.error('[EsimService] Erreur lors de la récupération des forfaits:', error);
-          console.error('Détails de l\'erreur:', {
-            status: error.status,
-            statusText: error.statusText,
-            error: error.error,
-            url: error.url
-          });
           observer.error(error);
         }
       });

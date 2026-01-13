@@ -27,6 +27,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 0;
+  position: relative;
 }
 
 .brand {
@@ -234,8 +235,26 @@
     display: none !important;
   }
 
+  /* Centrer le sélecteur de langue sur mobile */
+  app-language-selector {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 10;
+  }
+
+  /* S'assurer que le logo ne gêne pas le centrage */
+  .brand {
+    position: relative;
+    z-index: 10;
+  }
+
   .menu-button {
     display: flex;
+    margin-left: auto;
+    position: relative;
+    z-index: 10;
   }
 
   .menu-overlay {

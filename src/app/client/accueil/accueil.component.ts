@@ -177,23 +177,16 @@ constructor(
   loadDestinationsFromAPI() {
     this.destinationsService.getDestinations().pipe(
       catchError(error => {
-        console.error('❌ Erreur chargement destinations API:', error);
         return of({ success: false, destinations: [] });
       })
     ).subscribe((response: any) => {
-      console.log('🔄 DestinationsService: Réponse API reçue', response);
-      
       if (response && response.success && response.destinations && response.destinations.length > 0) {
-        console.log('✅ Destinations API trouvées:', response.destinations.length);
-        
         // Créer un map des codes pays statiques pour recherche rapide
         const staticMap = new Map(this.pays.map((p: any) => [p.country_code, p]));
         const newDestinations: any[] = [];
         
         // Traiter chaque destination de l'API
         response.destinations.forEach((dest: any, index: number) => {
-          console.log('🔄 Traitement destination API:', dest.country_code, dest.country_name);
-          
           const existingDest = staticMap.get(dest.country_code);
           
           if (existingDest) {
@@ -206,7 +199,6 @@ constructor(
               duration_days: pkg.validity_days,
               image: pkg.image
             }));
-            console.log('✅ Destination statique mise à jour:', dest.country_code, existingDest.packages.length, 'packages');
           } else {
             // Ajouter une nouvelle destination depuis l'API (non présente dans statique)
             const newDest = {
@@ -229,22 +221,16 @@ constructor(
             
             newDestinations.push(newDest);
             staticMap.set(dest.country_code, newDest);
-            console.log('✅ Nouvelle destination API ajoutée:', dest.country_code, newDest.packages.length, 'packages');
           }
         });
         
         // Ajouter les nouvelles destinations AU DÉBUT du tableau pour qu'elles soient visibles
         if (newDestinations.length > 0) {
           this.pays = [...newDestinations, ...this.pays];
-          console.log('✅ Nouvelles destinations ajoutées au début:', newDestinations.length);
         }
         
         // Mettre à jour filteredEsims
         this.filteredEsims = this.pays;
-        console.log('✅ Destinations finales (statiques + API):', this.pays.length);
-        console.log('📋 Premières 8 destinations:', this.pays.slice(0, 8).map((p: any) => p.country_code));
-      } else {
-        console.log('⚠️ Aucune destination API trouvée ou réponse invalide');
       }
     });
   }
@@ -280,7 +266,7 @@ constructor(
       
       this.esimService.getEsimPackagesWithPrice(destination.country_code).pipe(
         catchError(error => {
-          console.error(`Erreur pour ${destination.nom}:`, error);
+          // Erreur silencieuse pour le chargement des packages
           return of({ success: false, packages: [] });
         })
       ).subscribe((response: any) => {
@@ -351,7 +337,7 @@ constructor(
         const decoded = this.encryptionService.decryptData(token);
         this.user = decoded;
       } catch (e) {
-        console.error('Erreur de décryptage:', e);
+        // Erreur silencieuse de décryptage
       }
     }
     
@@ -422,7 +408,7 @@ constructor(
             }
           },
           error: (error: any) => {
-            console.error('Erreur lors du paiement:', error);
+            // Erreur silencieuse lors du paiement
             Swal.fire({
               icon: "error",
               title: "Erreur",
@@ -433,7 +419,7 @@ constructor(
         });
       },
       error: (error: any) => {
-        console.error('Erreur lors de la commande:', error);
+        // Erreur silencieuse lors de la commande
         Swal.fire({
           icon: "error",
           title: "Erreur",
@@ -475,7 +461,7 @@ constructor(
       newsletter: this.newsletterSubscribed
     };
     this.contactService.contact(mess).subscribe((response:any)=>{
-      console.log(response);
+      // Réponse reçue silencieusement
       this.showMessage('success', 'Félicitations', `${response.message}`);
       // Réinitialiser le formulaire
       this.contactFirstName = '';
@@ -490,7 +476,7 @@ constructor(
     },
     (error: any) => {
       // Gestion des erreurs lors de l'inscription
-      console.error('Erreur de contact :', error);
+      // Erreur silencieuse de contact
   
       if (error.status === 400) {
         this.showMessage('error', 'Erreur de validation', 'Veuillez vérifier les informations saisies.');

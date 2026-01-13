@@ -1,0 +1,350 @@
+<!-- Widget Chatbot Flottant -->
+<div class="chatbot-widget" [class.open]="isOpen">
+  <!-- Bouton Flottant -->
+  <button class="chatbot-toggle" 
+          (click)="toggleChat()" 
+          [attr.aria-label]="isOpen ? 'Fermer le chat' : 'Ouvrir le chat'"
+          [title]="isOpen ? '' : 'Achetez votre eSIM en quelques clics'">
+    <!-- Badge eSIM animé -->
+    <span class="chatbot-badge" *ngIf="!isOpen">eSIM Achetez ici</span>
+    
+    <svg *ngIf="!isOpen" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4 17.17V4H20V16Z" fill="currentColor"/>
+      <path d="M7 9H17V11H7V9ZM7 12H14V14H7V12Z" fill="currentColor"/>
+    </svg>
+    <svg *ngIf="isOpen" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="currentColor"/>
+    </svg>
+    
+    <!-- Tooltip -->
+    <div class="chatbot-tooltip" *ngIf="!isOpen">Achetez votre eSIM en quelques clics</div>
+  </button>
+
+  <!-- Fenêtre de Chat -->
+  <div class="chatbot-window" *ngIf="isOpen">
+    <!-- Header -->
+    <div class="chatbot-header">
+      <div class="chatbot-header-content">
+        <div class="chatbot-avatar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="chatbot-info">
+          <h3 class="chatbot-title">WAW <span class="chatbot-title-accent">TELECOM</span></h3>
+          <p class="chatbot-subtitle">En ligne • Répond généralement en quelques secondes</p>
+        </div>
+        <div class="chatbot-header-actions">
+          <button class="chatbot-action-btn" (click)="goBack()" [disabled]="!canGoBack()" title="Revenir en arrière">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M15.41 7.41L14 6L8 12L14 18L15.41 16.59L10.83 12L15.41 7.41Z" fill="currentColor"/>
+            </svg>
+          </button>
+          <button class="chatbot-action-btn" (click)="resetConversation()" title="Recommencer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C15.73 20 18.84 17.45 19.73 14H17.65C16.83 16.33 14.61 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C13.66 6 15.14 6.69 16.22 7.78L13 11H20V4L17.65 6.35Z" fill="currentColor"/>
+            </svg>
+          </button>
+          <!-- Bouton fermer (visible sur mobile) -->
+          <button class="chatbot-close-btn" (click)="toggleChat()" title="Fermer">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages Container -->
+    <div class="chatbot-messages" #messagesContainer>
+      <!-- Messages -->
+      <div *ngFor="let msg of messages" class="message" [class.message-user]="msg.sender === 'user'" [class.message-bot]="msg.sender === 'bot'">
+        <div class="message-content">
+          <div class="message-bubble">
+            <p class="message-text">{{ msg.message }}</p>
+          </div>
+          <span class="message-time" *ngIf="msg.created_at">{{ msg.created_at | date:'HH:mm' }}</span>
+        </div>
+      </div>
+
+      <!-- Quick Replies (si metadata contient quick_replies) -->
+      <div *ngIf="messages.length > 0 && messages[messages.length - 1].metadata?.quick_replies" class="quick-replies">
+        <button *ngFor="let reply of messages[messages.length - 1].metadata.quick_replies" 
+                class="quick-reply-btn"
+                (click)="sendMessage(reply.title, reply.payload)">
+          {{ reply.title }}
+        </button>
+      </div>
+
+      <!-- Destinations Cards -->
+      <div *ngIf="destinations.length > 0" class="destinations-container">
+        <p class="section-title">🌍 Sélectionnez une destination :</p>
+        <div class="destinations-grid">
+          <div *ngFor="let dest of destinations" class="destination-card" (click)="selectDestination(dest)">
+            <img *ngIf="dest.flag_image_url" [src]="dest.flag_image_url" [alt]="dest.country_name" class="destination-flag">
+            <div class="destination-info">
+              <h4 class="destination-name">{{ dest.country_name }}</h4>
+              <p class="destination-code">{{ dest.country_code }}</p>
+            </div>
+            <svg class="destination-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Packages Cards -->
+      <div *ngIf="packages.length > 0" class="packages-container">
+        <p class="section-title">📦 Forfaits disponibles pour {{ currentDestination }} :</p>
+        <div class="packages-grid">
+          <div 
+            *ngFor="let pkg of packages; let i = index" 
+            class="esim-plan-card-premium chatbot-plan-card"
+            [class.esim-plan-premium-selected]="pkg.id === selectedPackage?.id"
+            [style.animation-delay]="(i * 0.1) + 's'"
+            (click)="selectPackage(pkg)"
+          >
+            <!-- Card Background Gradient -->
+            <div class="plan-card-bg-gradient"></div>
+            
+            <!-- Card Content -->
+            <div class="plan-card-content">
+              <!-- Data Icon & Amount -->
+              <div class="plan-data-section">
+                <div class="plan-data-icon-wrapper">
+                  <div class="plan-data-icon">📶</div>
+                  <div class="plan-data-pulse"></div>
+                </div>
+                <div class="plan-data-info">
+                  <div class="plan-data-amount-premium">{{ formatDataGB(pkg.data_limit) }}</div>
+                </div>
+              </div>
+              
+              <!-- Price Section - Mise en évidence -->
+              <div class="plan-price-section-premium">
+                <div class="plan-price-badge">
+                  <div class="price-label">Prix</div>
+                  <div class="plan-price-wrapper">
+                    <span class="plan-price-amount-premium">{{ formatPriceValue(pkg.price || 0) }}</span>
+                    <span class="plan-price-currency-premium">FCFA</span>
+                  </div>
+                  <div class="plan-price-per-gb" *ngIf="pkg.data_limit && pkg.price && pkg.data_limit > 0">
+                    <span class="price-per-gb-text">{{ formatPricePerGBFromGB(pkg.price, pkg.data_limit) }} FCFA/GB</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Features List -->
+              <div class="plan-features-premium">
+                <div class="plan-feature-item-premium">
+                  <div class="feature-check-icon">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <span>{{ pkg.validity_days }} jours de validité</span>
+                </div>
+                <div class="plan-feature-item-premium">
+                  <div class="feature-check-icon">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <span>Activation instantanée</span>
+                </div>
+                <div class="plan-feature-item-premium">
+                  <div class="feature-check-icon">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <span>QR code par email</span>
+                </div>
+              </div>
+              
+              <!-- Select Indicator -->
+              <div class="plan-select-indicator">
+                <span *ngIf="pkg.id !== selectedPackage?.id">Sélectionner</span>
+                <span *ngIf="pkg.id === selectedPackage?.id" class="selected-text">Forfait sélectionné</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" *ngIf="pkg.id !== selectedPackage?.id">
+                  <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" *ngIf="pkg.id === selectedPackage?.id">
+                  <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill="currentColor"/>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Shine Effect -->
+            <div class="plan-card-shine"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email Input pour checkout -->
+      <div *ngIf="showEmailInput && selectedPackage" class="checkout-container">
+        <div class="checkout-header">
+          <div class="checkout-icon">✅</div>
+          <h4 class="checkout-title">Récapitulatif de votre commande</h4>
+        </div>
+        <div class="checkout-summary">
+          <div class="checkout-item-modern">
+            <div class="checkout-item-icon">🌍</div>
+            <div class="checkout-item-content">
+              <span class="checkout-label">Destination</span>
+              <span class="checkout-value">{{ currentDestination }}</span>
+            </div>
+          </div>
+          <div class="checkout-item-modern">
+            <div class="checkout-item-icon">📦</div>
+            <div class="checkout-item-content">
+              <span class="checkout-label">Forfait</span>
+              <span class="checkout-value">{{ selectedPackage.plan_name }}</span>
+            </div>
+          </div>
+          <div class="checkout-item-modern">
+            <div class="checkout-item-icon">💾</div>
+            <div class="checkout-item-content">
+              <span class="checkout-label">Données</span>
+              <span class="checkout-value">{{ formatDataGB(selectedPackage.data_limit) }}</span>
+            </div>
+          </div>
+          <div class="checkout-item-modern">
+            <div class="checkout-item-icon">⏱️</div>
+            <div class="checkout-item-content">
+              <span class="checkout-label">Validité</span>
+              <span class="checkout-value">{{ selectedPackage.validity_days }} jours</span>
+            </div>
+          </div>
+          <div class="checkout-item-modern checkout-total-modern">
+            <div class="checkout-item-icon">💰</div>
+            <div class="checkout-item-content">
+              <span class="checkout-label">Prix total</span>
+              <span class="checkout-value-total">{{ formatPriceValue(selectedPackage && selectedPackage.price ? selectedPackage.price : 0) }} FCFA</span>
+            </div>
+          </div>
+        </div>
+        <div class="email-input-container">
+          <label for="email-input" class="email-label">📧 Entrez votre email pour continuer :</label>
+          <input 
+            type="email" 
+            id="email-input"
+            [(ngModel)]="emailInput" 
+            placeholder="votre@email.com"
+            class="email-input"
+            (keyup.enter)="confirmPayment()"
+            #chatInput>
+          <button class="confirm-payment-btn" (click)="confirmPayment()" [disabled]="isLoading">
+            <span *ngIf="!isLoading">💳 Procéder au paiement</span>
+            <span *ngIf="isLoading">⏳ Traitement en cours...</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div *ngIf="isLoading" class="message message-bot">
+        <div class="message-content">
+          <div class="message-bubble">
+            <div class="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div *ngIf="showHelpModal" class="help-modal-overlay" (click)="closeHelpModal()">
+      <div class="help-modal" (click)="$event.stopPropagation()">
+        <div class="help-modal-header">
+          <h3 class="help-modal-title">❓ Besoin d'aide ?</h3>
+          <button class="help-modal-close" (click)="closeHelpModal()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="help-modal-content">
+          <!-- Debug -->
+          <div style="background: #f0f0f0; padding: 10px; margin-bottom: 10px; font-size: 12px; display: none;">
+            <p>Debug: helpQuestions.length = {{ helpQuestions.length }}</p>
+            <p>Debug: helpQuestions = {{ helpQuestions | json }}</p>
+          </div>
+          
+          <div *ngIf="helpQuestions.length === 0" class="help-loading">
+            <p>Chargement des questions...</p>
+          </div>
+          <div *ngFor="let question of helpQuestions; trackBy: trackByQuestion" class="help-question-item">
+            <div class="help-question-header">
+              <span class="help-question-icon">💬</span>
+              <h4 class="help-question-title">{{ question.question }}</h4>
+            </div>
+            <div class="help-question-answer">
+              <button *ngIf="question.type === 'support_call'" 
+                      class="help-call-btn" 
+                      (click)="callSupport(question.phone)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 5C3 3.89543 3.89543 3 5 3H8.27924C8.70967 3 9.09181 3.27543 9.22792 3.68377L10.7257 8.17721C10.8831 8.64932 10.6694 9.16531 10.2243 9.38787L7.96701 10.5165C9.06925 12.9612 11.0388 14.9308 13.4835 16.033L14.6121 13.7757C14.8347 13.3306 15.3507 13.1169 15.8228 13.2743L20.3162 14.7721C20.7246 14.9082 21 15.2903 21 15.7208V19C21 20.1046 20.1046 21 19 21H18C9.71573 21 3 14.2843 3 6V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Appeler le Support
+              </button>
+              <div *ngIf="question.type === 'activation_guide'" class="help-activation-guide">
+                <div class="activation-step">
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <h5>Recevez votre QR code</h5>
+                    <p>Après le paiement, vous recevrez un email avec votre QR code d'activation</p>
+                  </div>
+                </div>
+                <div class="activation-step">
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <h5>Ouvrez les paramètres</h5>
+                    <p>Allez dans Réglages > Données cellulaires > Ajouter un plan de données</p>
+                  </div>
+                </div>
+                <div class="activation-step">
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <h5>Scannez le QR code</h5>
+                    <p>Scannez le QR code reçu par email ou entrez le code d'activation manuellement</p>
+                  </div>
+                </div>
+                <div class="activation-step">
+                  <div class="step-number">4</div>
+                  <div class="step-content">
+                    <h5>Activez votre eSIM</h5>
+                    <p>Suivez les instructions à l'écran pour activer votre eSIM</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="chatbot-input-area">
+      <input 
+        type="text" 
+        [(ngModel)]="currentMessage"
+        (keyup.enter)="sendMessage()"
+        placeholder="Tapez votre message..."
+        class="chatbot-input"
+        [disabled]="isLoading || showEmailInput"
+        #chatInput>
+      <button 
+        class="chatbot-send-btn" 
+        (click)="sendMessage()"
+        [disabled]="isLoading || !currentMessage.trim() || showEmailInput">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+

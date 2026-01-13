@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { WhatsappButtonComponent } from './shared/components/whatsapp-button/whatsapp-button.component';
+import { ChatbotWidgetComponent } from './shared/components/chatbot-widget/chatbot-widget.component';
 
 
 
@@ -14,7 +14,7 @@ import { WhatsappButtonComponent } from './shared/components/whatsapp-button/wha
     CommonModule,
     RouterOutlet,
     TranslateModule,
-    WhatsappButtonComponent // Composant standalone
+    ChatbotWidgetComponent // Widget chatbot
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

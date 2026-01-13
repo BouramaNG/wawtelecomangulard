@@ -57,9 +57,6 @@ export class DestinationsService {
   // Récupérer les données pour l'admin (avec plus de détails)
   getAdminData(): Observable<{success: boolean, destinations: Destination[], stats: DestinationStats}> {
     const endpoint = `${this.apiUrl}admin/destinations/data`;
-    console.log('🔄 DestinationsService: Appel API getAdminData');
-    console.log('📍 URL appelée:', endpoint);
-    console.log('🔗 URL complète:', endpoint);
     
     return this.http.get<{success: boolean, destinations: Destination[], stats: DestinationStats}>(endpoint);
   }
@@ -67,8 +64,6 @@ export class DestinationsService {
   // Récupérer toutes les destinations
   getDestinations(): Observable<{success: boolean, destinations: Destination[]}> {
     const endpoint = `${this.apiUrl}destinations`;
-    console.log('🔄 DestinationsService: Appel API getDestinations');
-    console.log('📍 URL appelée:', endpoint);
     
     return this.http.get<{success: boolean, destinations: Destination[]}>(endpoint);
   }
@@ -76,8 +71,6 @@ export class DestinationsService {
   // Récupérer les statistiques
   getStats(): Observable<{success: boolean, stats: DestinationStats}> {
     const endpoint = `${this.apiUrl}destinations/stats`;
-    console.log('🔄 DestinationsService: Appel API getStats');
-    console.log('📍 URL appelée:', endpoint);
     
     return this.http.get<{success: boolean, stats: DestinationStats}>(endpoint);
   }
@@ -85,8 +78,6 @@ export class DestinationsService {
   // Récupérer une destination spécifique
   getDestination(countryCode: string): Observable<{success: boolean, destination: Destination}> {
     const endpoint = `${this.apiUrl}destinations/${countryCode}`;
-    console.log('🔄 DestinationsService: Appel API getDestination');
-    console.log('📍 URL appelée:', endpoint);
     
     return this.http.get<{success: boolean, destination: Destination}>(endpoint);
   }
@@ -94,8 +85,6 @@ export class DestinationsService {
   // Vérifier la disponibilité d'un package
   checkAvailability(packageId: number, quantity: number = 1): Observable<{success: boolean, available: boolean, available_quantity: number, requested_quantity: number}> {
     const endpoint = `${this.apiUrl}destinations/check-availability`;
-    console.log('🔄 DestinationsService: Appel API checkAvailability');
-    console.log('📍 URL appelée:', endpoint);
     
     return this.http.post<{success: boolean, available: boolean, available_quantity: number, requested_quantity: number}>(endpoint, {
       package_id: packageId,
@@ -106,8 +95,6 @@ export class DestinationsService {
   // Synchroniser les destinations avec Console Connect
   syncDestinations(limit: number = 20): Observable<SyncResponse> {
     const endpoint = `${this.apiUrl}console-connect/sync`;
-    console.log('🔄 DestinationsService: Appel API syncDestinations');
-    console.log('📍 URL appelée:', endpoint);
     
     return this.http.post<SyncResponse>(endpoint, {
       sync_type: 'destinations',
@@ -118,12 +105,9 @@ export class DestinationsService {
   // Désactiver/Activer une destination (retirer du site web)
   toggleDestinationVisibility(countryCode: string): Observable<{success: boolean, message: string, is_published: boolean}> {
     const endpoint = `${this.apiUrl}admin/destinations/${countryCode}/toggle-visibility`;
-    console.log('🔄 DestinationsService: Appel API toggleDestinationVisibility');
-    console.log('📍 URL appelée:', endpoint);
     
     const token = this.encryptionService.getDecryptedToken();
     if (!token) {
-      console.error('❌ DestinationsService: Token non disponible');
       return of({ success: false, message: 'Token non disponible', is_published: false });
     }
     

@@ -1469,44 +1469,65 @@
   }
 
   .travel-search-box {
-    padding: 3px 3px 3px 16px;
+    padding: 6px 6px 6px 20px;
+    width: 100%;
+    max-width: 100%;
   }
 
   .travel-search-input {
-    padding: 14px 10px;
-    font-size: 14px;
+    padding: 18px 14px;
+    font-size: 16px;
   }
 
   .travel-search-btn {
-    width: 44px;
-    height: 44px;
+    width: 52px;
+    height: 52px;
   }
 
   .destinations-pills-container {
     justify-content: center;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 14px;
     max-width: 100%;
+    width: 100%;
   }
 
   .destination-pill-item {
-    padding: 12px 16px;
-    font-size: 14px;
+    padding: 16px 20px;
+    font-size: 16px;
     width: 100%;
     justify-content: center;
   }
 
+  .pill-flag-img {
+    width: 28px;
+    height: 28px;
+  }
+
   .hero-features-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 14px;
     max-width: 100%;
+    width: 100%;
   }
 
   .feature-item-hero {
-    padding: 18px 16px;
+    padding: 20px 18px;
     width: 100%;
     min-width: 0;
+  }
+
+  .feature-icon-hero {
+    font-size: 28px;
+  }
+
+  .feature-title-hero {
+    font-size: 16px;
+  }
+
+  .feature-desc-hero {
+    font-size: 13px;
   }
 
   .phone-mockup-container {
@@ -1606,50 +1627,63 @@
 
   .travel-search-box {
     border-radius: 50px;
+    padding: 6px 6px 6px 20px;
+    width: 100%;
+    max-width: 100%;
   }
 
   .travel-search-input {
-    font-size: 13px;
-    padding: 12px 8px;
+    font-size: 16px;
+    padding: 18px 14px;
   }
 
   .travel-search-btn {
-    width: 40px;
-    height: 40px;
+    width: 52px;
+    height: 52px;
   }
 
   .destinations-pills-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 14px;
     max-width: 100%;
+    width: 100%;
   }
 
   .destination-pill-item {
-    padding: 12px 14px;
-    font-size: 13px;
+    padding: 16px 20px;
+    font-size: 16px;
     width: 100%;
     justify-content: center;
   }
 
   .pill-flag-img {
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
   }
 
   .hero-features-grid {
-    gap: 12px;
+    gap: 14px;
     max-width: 100%;
+    width: 100%;
   }
 
   .feature-item-hero {
-    padding: 16px 14px;
+    padding: 20px 18px;
     width: 100%;
     min-width: 0;
   }
 
   .feature-icon-hero {
-    font-size: 24px;
+    font-size: 28px;
+  }
+
+  .feature-title-hero {
+    font-size: 16px;
+  }
+
+  .feature-desc-hero {
+    font-size: 13px;
   }
 
   .feature-title-hero {
