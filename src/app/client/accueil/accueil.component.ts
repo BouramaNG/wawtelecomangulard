@@ -20,7 +20,7 @@ import { DestinationsService } from '../../services/destinations.service';
   standalone: true,
   imports: [HeaderComponent, RouterLink, NgxPaginationModule, CommonModule, TranslateModule, FormsModule, NgSelectModule],
   templateUrl: './accueil.component.html',
-  styleUrl: './accueil.component.css'
+  styleUrls: ['./accueil.component.css', './offer-section-modern.css']
 })
 export class AccueilComponent implements OnInit{
   searchText: any;

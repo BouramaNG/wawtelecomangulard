@@ -1445,18 +1445,41 @@ export class ESimComponent  implements OnInit{
 
 
   getPays(){
-    this.paysChoisi = this.pays.find((elt) => elt.id === Number(this.idPays));
+    // ✅ NOUVEAU : Chercher par country_code (pour API) ou code (pour hardcodés)
+    this.paysChoisi = this.pays.find((elt: any) => 
+      elt.code === this.idPays || 
+      elt.code === this.idPays.toUpperCase() ||
+      elt.country_code === this.idPays || 
+      elt.country_code === this.idPays.toUpperCase()
+    );
+    
+    // Si toujours pas trouvé, chercher par ID (pour compatibilité avec les anciens liens)
+    if (!this.paysChoisi) {
+      this.paysChoisi = this.pays.find((elt) => elt.id === Number(this.idPays));
+    }
+    
     if (this.paysChoisi) {
       // Une fois le pays trouvé, charger les packages
+      console.log('[DEBUG] Pays trouvé:', this.paysChoisi.nom, 'Code:', (this.paysChoisi as any).code || (this.paysChoisi as any).country_code);
       this.getPack();
     } else {
-      console.error('[DEBUG] Aucun pays trouvé avec l\'ID:', this.idPays);
-      // Recherche directe du Japon par code
-      this.paysChoisi = this.pays.find((elt) => elt.code === 'JP');
-      if (this.paysChoisi) {
-        this.getPack();
-      }
+      console.error('[DEBUG] Aucun pays trouvé avec l\'ID ou code:', this.idPays);
+      // Essayer de charger depuis l'API en utilisant le code pays
+      this.loadPaysByCode(this.idPays);
     }
+  }
+  
+  loadPaysByCode(code: string){
+    // Charger les packages directement depuis l'API en utilisant le country_code
+    console.log('[DEBUG] Tentative de chargement depuis API pour code:', code);
+    this.paysChoisi = {
+      id: 9999,
+      nom: code.toUpperCase(),
+      drapeau: `https://flagcdn.com/w320/${code.toLowerCase()}.png`,
+      continent: 'Unknown',
+      code: code.toUpperCase()
+    };
+    this.getPack();
   }
   getPack(){
     if (!this.paysChoisi) {

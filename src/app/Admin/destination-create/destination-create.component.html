@@ -54,16 +54,89 @@
 
     <div class="form-section">
       <h2 class="section-title">📦 Sélection des Templates & Prix</h2>
-      <p class="section-description">Sélectionnez les templates existants et définissez les prix (en FCFA)</p>
+      <p class="section-description">Sélectionnez les templates depuis Console Connect et définissez les prix (en FCFA)</p>
+      
+      <!-- Recherche par ID Console Connect -->
+      <div class="search-section">
+        <div class="search-id-container">
+          <label class="form-label">🔍 Recherche directe par ID Console Connect</label>
+          <div class="search-id-input-group">
+            <input 
+              type="text" 
+              class="form-control"
+              name="searchId"
+              [(ngModel)]="searchId"
+              placeholder="Ex: 21223788"
+            >
+            <button 
+              type="button" 
+              class="btn-search"
+              (click)="searchByConsoleConnectId()"
+              [disabled]="loadingTemplates || !searchId.trim()"
+            >
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              Rechercher
+            </button>
+            <button 
+              type="button" 
+              class="btn-reset"
+              (click)="searchId=''; loadAvailableTemplates()"
+              [disabled]="loadingTemplates"
+            >
+              ↻ Réinitialiser
+            </button>
+          </div>
+          <p class="help-text">💡 Tous les packages actifs de Console Connect sont affichés. Recherchez par ID, nom ou filtrez par statut.</p>
+        </div>
+
+        <!-- Recherche par nom/texte -->
+        <div class="search-text-container">
+          <label class="form-label">🔍 Recherche par nom, pays ou description</label>
+          <input 
+            type="text" 
+            class="form-control"
+            name="searchText"
+            [(ngModel)]="searchText"
+            (ngModelChange)="applyFilters()"
+            placeholder="Ex: Europe, 5GB, Premium..."
+          >
+        </div>
+
+        <!-- Filtres additionnels -->
+        <div class="filters-container">
+          <div class="filter-item">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                [(ngModel)]="showActiveOnly" 
+                (change)="onFiltersChange()"
+                name="showActiveOnly"
+              >
+              <span>Afficher uniquement les templates actifs</span>
+            </label>
+          </div>
+          
+          <div class="filter-stats">
+            <span class="stat-badge">
+              <strong>{{ getFilteredCount() }}</strong> templates affichés
+            </span>
+            <span class="stat-badge secondary" *ngIf="getTotalCount() !== getFilteredCount()">
+              sur <strong>{{ getTotalCount() }}</strong> au total
+            </span>
+          </div>
+        </div>
+      </div>
       
       <div *ngIf="loadingTemplates" class="loading-templates">
         <div class="spinner"></div>
-        <span>Chargement des templates...</span>
+        <span>Chargement depuis Console Connect...</span>
       </div>
 
       <div *ngIf="!loadingTemplates && availableTemplates.length === 0" class="no-templates">
-        <p *ngIf="!countryCode">⚠️ Veuillez d'abord sélectionner un pays pour voir les templates disponibles.</p>
-        <p *ngIf="countryCode">⚠️ Aucun template disponible pour <strong>{{ countryName }}</strong> ({{ countryCode }}).</p>
+        <p>⚠️ Aucun package actif trouvé sur Console Connect.</p>
+        <p style="color: #64748b; font-size: 0.9rem;">Vérifiez que des packages sont actifs sur Console Connect ou désactivez le filtre "Actifs uniquement".</p>
       </div>
 
       <div *ngIf="!loadingTemplates && availableTemplates.length > 0" class="templates-selection-grid">
@@ -79,7 +152,14 @@
                 <span class="template-name-large">{{ getTemplateDisplayName(template) }}</span>
                 <span class="template-details">
                   {{ getTemplateDataLimit(template) }}GB • 
-                  {{ template.duration_days || template.validity_days || 'N/A' }} jours
+                  {{ template.duration_days || template.validity_days || 'N/A' }} jours •
+                  ID: {{ getTemplateId(template) }}
+                </span>
+                <span class="template-countries" *ngIf="getSupportedCountriesCount(template) > 0">
+                  🌍 {{ getSupportedCountriesCount(template) }} pays supportés
+                  <span class="countries-preview">
+                    {{ getSupportedCountriesPreview(template) }}
+                  </span>
                 </span>
               </div>
             </label>

@@ -168,11 +168,26 @@ export class BoutiqueComponent implements OnInit {
         response.destinations.forEach((dest: any, index: number) => {
           console.log('🔄 BoutiqueComponent: Traitement destination API:', dest.country_code, dest.country_name);
           
+          // 🔍 LOG DÉTAILLÉ POUR CANADA
+          if (dest.country_code === 'CA') {
+            console.log('🇨🇦 CANADA - Données reçues de l\'API:', {
+              country_code: dest.country_code,
+              country_name: dest.country_name,
+              packages_count: dest.packages?.length || 0,
+              packages_raw: dest.packages
+            });
+          }
+          
           const existingDest = staticMap.get(dest.country_code);
+          
+          // 🔍 LOG DÉTAILLÉ POUR CANADA
+          if (dest.country_code === 'CA') {
+            console.log('🇨🇦 CANADA - Destination statique trouvée:', existingDest ? 'OUI' : 'NON', existingDest);
+          }
           
           if (existingDest) {
             // Mettre à jour la destination statique existante avec les packages de l'API
-            existingDest.packages = (dest.packages || []).map((pkg: any) => ({
+            const mappedPackages = (dest.packages || []).map((pkg: any) => ({
               id: pkg.id,
               name: pkg.plan_name,
               data_mb: (pkg.data_limit || 0) * 1024, // Convertir GB en MB
@@ -180,6 +195,18 @@ export class BoutiqueComponent implements OnInit {
               duration_days: pkg.validity_days,
               image: pkg.image
             }));
+            
+            existingDest.packages = mappedPackages;
+            
+            // 🔍 LOG DÉTAILLÉ POUR CANADA
+            if (dest.country_code === 'CA') {
+              console.log('🇨🇦 CANADA - Packages mappés et assignés:', {
+                mapped_count: mappedPackages.length,
+                mapped_packages: mappedPackages,
+                existingDest_after_update: existingDest
+              });
+            }
+            
             console.log('✅ BoutiqueComponent: Destination statique mise à jour:', dest.country_code, existingDest.packages.length, 'packages');
           } else {
             // Ajouter une nouvelle destination depuis l'API (non présente dans statique)
@@ -211,6 +238,24 @@ export class BoutiqueComponent implements OnInit {
         if (newDestinations.length > 0) {
           this.pays = [...newDestinations, ...this.pays];
           console.log('✅ BoutiqueComponent: Nouvelles destinations ajoutées au début:', newDestinations.length);
+        }
+        
+        // ✅ FORCER la détection de changements en recréant l'array
+        // Ceci est nécessaire car on a muté les objets existants (ajout de la propriété packages)
+        this.pays = [...this.pays];
+        
+        // 🔍 LOG DÉTAILLÉ POUR CANADA - ÉTAT FINAL
+        const canadaFinal: any = this.pays.find(p => p.country_code === 'CA');
+        if (canadaFinal) {
+          console.log('🇨🇦 CANADA - ÉTAT FINAL dans this.pays:', {
+            nom: canadaFinal.nom,
+            country_code: canadaFinal.country_code,
+            has_packages: !!canadaFinal.packages,
+            packages_count: canadaFinal.packages?.length || 0,
+            packages: canadaFinal.packages
+          });
+        } else {
+          console.log('🇨🇦 CANADA - NON TROUVÉ dans this.pays final!');
         }
         
         // Mettre à jour filteredEsims

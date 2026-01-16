@@ -1,45 +1,56 @@
 <style>
-  /* AJOUT DU BACKGROUND IMAGE AVEC SUPERPOSITION SOMBRE */
+/* 🎨 HERO SECTION - AVEC IMAGE DE FOND ANIMÉE */
 .hero-section {
-  margin-top: 20px;
-  margin-bottom: 30px;
   position: relative;
   width: 100%;
-  height: 80vh;
+  min-height: 90vh;
   overflow: hidden;
-  background: url('https://wawtelecom.com/Services-Synapsys-04.jpg') center/cover no-repeat;
+  margin-top: 0;
+  margin-bottom: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero-section::before {
-  content: "";
+/* 🎬 IMAGE DE FOND AVEC EFFET VIDÉO (KEN BURNS) */
+.hero-bg-video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Superposition sombre */
-  z-index: 1;
+  background-image: url('https://wawtelecom.com/Services-Synapsys-04.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: kenBurnsEffect 20s ease-in-out infinite alternate;
+  z-index: 0;
 }
 
-.hero-slider {
-  position: relative;
+/* 🎥 ANIMATION EFFET VIDÉO - ZOOM + PAN */
+@keyframes kenBurnsEffect {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.1) translate(-2%, -1%);
+  }
+}
+
+/* 🌑 OVERLAY SOMBRE POUR LISIBILITÉ */
+.hero-bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  z-index: 2; /* Assure que le contenu est au-dessus de la superposition */
-}
-
-  /* HERO SECTION */
-.hero-section {
-  margin-top: 20px;
-  margin-bottom: 30px;
-  position: relative;
-  width: 100%;
-  height: 80vh;
-  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(26, 26, 46, 0.7) 0%,
+    rgba(15, 52, 96, 0.6) 50%,
+    rgba(26, 26, 46, 0.7) 100%
+  );
+  z-index: 1;
 }
 
 /* SLIDER CONTAINER */
@@ -50,259 +61,489 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  z-index: 2;
+  padding: 40px 20px;
 }
 
 /* WRAPPER POUR LES SLIDES */
 .hero-wrapper {
   display: flex;
-  width: 300%; /* Largeur totale pour 3 slides */
+  width: 300%;
   height: 100%;
-  animation: slideAnimation 12s infinite;
+  animation: slideAnimation 15s ease-in-out infinite;
 }
 
+/* 💎 GLASSMORPHISM SLIDE */
 .hero-slide {
-  flex: 0 0 100%; /* Chaque slide prend 100% de la largeur */
+  flex: 0 0 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 50px;
+  justify-content: center;
+  padding: 0 40px;
+  gap: 60px;
+  position: relative;
+  z-index: 2;
 }
 
-/* TEXTE À GAUCHE */
+/* 🎯 SLIDE 1 - CARD À DROITE */
+.hero-slide-1 {
+  justify-content: flex-end;
+  padding-right: 8%;
+}
+
+.hero-slide-1 .content-wrapper {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* 🎭 GLASS CONTENT CARD */
 .content-wrapper {
   flex: 1;
-  max-width: 50%;
+  max-width: 600px;
+  background: rgba(26, 26, 46, 0.75);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255, 221, 51, 0.2);
+  border-radius: 24px;
+  padding: 35px 35px;
+  margin-top: 80px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 3;
+  transform: translateZ(0);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.content-wrapper:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 
+    0 20px 60px rgba(255, 221, 51, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 221, 51, 0.3);
+}
+
+/* TEXT STYLING */
 .hero-text {
   color: white;
 }
 
 .hero-title {
-  font-size: 2rem;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+.hero-title.yellow,
+.hero-title span {
+  background: linear-gradient(135deg, #FFDD33 0%, #FFB800 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+@keyframes titleGlow {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 221, 51, 0.3)); }
+  50% { filter: drop-shadow(0 0 20px rgba(255, 221, 51, 0.5)); }
 }
 
 .hero-description {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 25px;
+  font-weight: 300;
 }
 
-.custom-btn {
-  display: inline-block;
-  background: #FFDD33;
-  color: #000;
-  padding: 10px 20px;
-  font-size: 1rem;
-  text-decoration: none;
-  border-radius: 5px;
-  margin-top: 20px;
-}
-
-/* IMAGE À DROITE */
+/* 🖼️ HERO IMAGE (OPTIONAL) */
 .hero-image {
-  flex: 1;
-  max-width: 50%;
-  height: 100%;
-  display: flex;
-  justify-content: flex-end;
+  flex: 0 0 auto;
+  max-width: 450px;
+  position: relative;
+  margin-top: 80px;
 }
 
 .hero-image img {
-  height: 100%;
-  width: auto;
-  max-width: 100%;
+  width: 100%;
+  max-height: 400px;
   object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: transform 0.5s ease;
 }
 
-.hero-title.yellow {
-  color: #FFDD33;
+.hero-image:hover img {
+  transform: scale(1.05) rotate(2deg);
 }
+
+/* 📱 Collage Mobile - Caché par défaut pour ne pas impacter le Desktop */
+.modern-mobile-collage {
+  display: none;
+}
+
 /* ANIMATION */
 @keyframes slideAnimation {
-  0%, 33% { transform: translateX(0%); }
-  34%, 66% { transform: translateX(-100%); }
-  67%, 100% { transform: translateX(-200%); }
+  0%, 30% { transform: translateX(0%); }
+  33%, 63% { transform: translateX(-100%); }
+  66%, 96% { transform: translateX(-200%); }
+  100% { transform: translateX(0%); }
+}
+
+/* 🎭 FADE IN ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-wrapper {
+  animation: fadeIn 1s ease-out;
 }
 
 
 
 
 
-/* 📱 Ajustement pour les petits écrans (mobile) */
-@media screen and (max-width: 768px) {
+/* 📱 RESPONSIVE DESIGN */
+@media screen and (max-width: 1024px) {
   .hero-slide {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 15px;
-    width: 100%;
+    gap: 30px;
+    padding: 0 20px;
+  }
+
+  /* Slide 1 - recentrer sur tablette/mobile */
+  .hero-slide-1 {
+    justify-content: center;
+    padding-right: 20px;
+  }
+
+  .hero-slide-1 .content-wrapper {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .content-wrapper {
-    order: 1;
-    width: 90%; /* Empêche le texte de toucher les bords */
-    max-width: 350px; /* Ajuste la largeur maximale */
-    padding: 0 10px; /* Ajoute un peu d’espace */
-  }
-
-  .hero-title {
-    font-size: 18px; /* Taille adaptée */
-    margin-bottom: 8px;
-    word-break: break-word; /* Force la coupure des mots si nécessaire */
-  }
-
-  .hero-description {
-    font-size: 14px;
-    line-height: 1.4; /* Meilleure lisibilité */
-    text-align: center; /* Centre le texte */
+    max-width: 100%;
+    padding: 30px 25px;
+    margin-top: 60px;
   }
 
   .hero-image {
-    order: 2;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    max-width: 100%;
+    margin-top: 40px;
   }
 
   .hero-image img {
-    width: 80%; /* Ajuste automatiquement */
-    max-width: 200px;
-    height: auto;
+    max-height: 350px;
   }
 
-  .cta-buttons {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+}
+
+/* 💻 DESKTOP - DESIGN ÉPURÉ (Card à droite) */
+@media screen and (min-width: 769px) {
+  .modern-mobile-collage {
+    display: none !important;
+  }
+
+  .iphone-mockup-mobile {
+    height: 250px !important; /* Hauteur très réduite sur desktop */
+    margin-top: 10px !important;
+  }
+
+  .iphone-mockup-mobile .iphone-device {
+    transform: scale(0.4) !important; /* Téléphone beaucoup plus petit sur desktop */
+    transform-origin: top center !important;
+  }
+  
+  .hero-slide-1 {
+    justify-content: flex-end;
+    padding-right: 8%;
+  }
+
+  .hero-slide-1 .content-wrapper {
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+
+/* 📱 MOBILE - DESIGN MODERNE FLUIDE XXL */
+@media screen and (max-width: 768px) {
+  .hero-section {
+    min-height: 100vh;
+    padding: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+  }
+
+  .hero-slide {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 120px 20px 40px !important;
+    min-height: 100vh !important;
+    width: 100vw !important;
+  }
+
+  /* Force la card au centre sur mobile pour TOUS les slides */
+  .hero-slide-1, .hero-slide-2, .hero-slide-3 {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 120px 20px 40px !important;
+  }
+
+  .content-wrapper {
+    width: 90% !important;
+    max-width: 480px;
+    padding: 35px 25px;
+    margin: 0 auto !important;
+    background: rgba(26, 26, 46, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 221, 51, 0.2);
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-title {
+    font-size: 1.35rem !important; /* Forcé avec !important */
+    line-height: 1.2 !important;
+    margin-bottom: 15px !important;
+    text-align: center !important;
+    width: 100% !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .hero-description {
+    font-size: 0.85rem !important; /* Forcé avec !important */
+    line-height: 1.5 !important;
+    margin-bottom: 25px !important;
+    text-align: center !important;
+    width: 100% !important;
+    max-width: 95% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .cta-container {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .cta-buttons, .app-download {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 🖼️ Collage Mobile XXL - TOTALEMENT ISOLÉ ICI */
+  .modern-mobile-collage {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    height: 280px;
+    width: 100%;
+    margin-top: 35px;
+    position: relative;
+  }
+
+  .modern-mobile-collage img {
+    position: absolute;
+    width: 165px;
+    height: 165px;
+    object-fit: cover;
+    border-radius: 28px;
+    border: 3.5px solid #ffffff;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.45);
+  }
+
+  .mmc-1 { transform: translateX(-75px) rotate(-10deg); z-index: 1; }
+  .mmc-2 { width: 205px !important; height: 205px !important; z-index: 3; border-width: 6px !important; }
+  .mmc-3 { transform: translateX(75px) rotate(10deg); z-index: 2; }
+
+  /* 📱 iPhone Mockup Identique (Slide 2) */
+  .iphone-mockup-mobile {
     display: flex;
     justify-content: center;
     margin-top: 15px;
     width: 100%;
+    height: 480px; /* Augmenté de 400px à 480px pour plus de hauteur */
+    overflow: hidden;
+    position: relative;
   }
 
-  .cta-buttons a {
-    font-size: 14px;
-    padding: 10px 18px;
-    width: auto;
-    min-width: 140px;
-    text-align: center;
-  }
-  .cta-container {
-    flex-direction: row; /* Garde les boutons en ligne */
-    flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si nécessaire */
-    justify-content: center;
-    gap: 10px; /* Réduit l’espace entre eux */
+  .iphone-mockup-mobile .iphone-device {
+    transform: scale(0.75); /* Augmenté de 0.6 à 0.75 pour plus de largeur et hauteur */
+    transform-origin: top center;
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(0.75);
   }
 
-  .cta-buttons,
-  .app-download {
-    display: flex;
-    align-items: center; /* Aligne parfaitement */
-    justify-content: center;
+  .iphone-mockup-mobile .iphone-device {
+    margin: 0 auto;
+    position: relative;
+    z-index: 5;
   }
+
+  /* On s'assure que les styles internes du téléphone s'appliquent aussi ici */
+  .iphone-mockup-mobile .iphone-app-content {
+    background: #f8f9fa;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Cache l'image desktop sur mobile */
+  .hero-image {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* On harmonise pour que le rendu soit identique au 430*932 */
+  .hero-title { font-size: 1.25rem !important; } /* Légèrement diminué de 1.35rem à 1.25rem */
+  .hero-description { font-size: 0.8rem !important; } /* Ajusté aussi pour la cohérence */
+  
+  /* On garde les tailles XXL partout pour un effet maximum */
+  .modern-mobile-collage { height: 280px; }
+  .modern-mobile-collage img { width: 165px; height: 165px; }
+  .mmc-2 { width: 205px !important; height: 205px !important; }
 }
 
 
 
 
 
-
-
-
-
-
-
-
-
+/* 🎯 CTA BUTTONS - GLASSMORPHISM STYLE */
 .cta-container {
   display: flex;
   justify-content: center;
-  align-items: center; /* Alignement vertical des boutons */
+  align-items: center;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 30px;
+  flex-wrap: wrap;
 }
 
-.app-download{
-  margin-top: 20px;
-}
-
-
-.cta-buttons, .app-download {
-  display: flex;
-  align-items: center; /* Assure un alignement parfait */
-  
-}
-
-.custom-btn, .app-button {
+.cta-buttons, 
+.app-download {
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 50px; /* Uniformisation de la hauteur */
-  padding: 12px 24px;
-  border-radius: 40px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: all 0.6s ease;
-  font-size: 16px; /* S'assure que la taille de police est la même */
 }
 
-.custom-btn {
-  background-color: #FFDD33;
-  color: #333;
-}
-
-.custom-btn:hover {
-  background-color: #333;
-}
-
+/* ✨ MODERN GLASS BUTTON */
+.custom-btn, 
 .app-button {
-  background-color: #FFDD33;
-
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 32px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, #FFDD33 0%, #FFB800 100%);
+  color: #1a1a2e;
+  box-shadow: 
+    0 4px 15px rgba(255, 221, 51, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
+/* 💫 HOVER EFFECT WITH 3D */
+.custom-btn:hover,
 .app-button:hover {
-  background-color: #FFDD33;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 12px 35px rgba(255, 221, 51, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, #FFE866 0%, #FFDD33 100%);
+}
 
+.custom-btn:active,
+.app-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* 🌊 RIPPLE EFFECT */
+.custom-btn::before,
+.app-button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.custom-btn:hover::before,
+.app-button:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .button-text {
-  color: #333;
+  color: #1a1a2e;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 1;
+  z-index: 1;
+  position: relative;
 }
 
 .store-icons {
   display: flex;
-  align-items: center; /* Assure un alignement parfait des icônes */
+  align-items: center;
+  gap: 8px;
+  z-index: 1;
+  position: relative;
 }
 
 .store-icons img {
-  width: 24px;
-  height: 24px;
-  margin-left: 5px;
+  width: 26px;
+  height: 26px;
+  transition: transform 0.3s ease;
 }
 
-/* Correction spécifique si le décalage persiste */
-.app-button {
-  min-height: 50px; /* S'assure qu'il ne soit pas plus petit */
-}
-
-.app-button {
-  display: flex;
-  align-items: center;
-  background-color: #FFDD33;
-  border-radius: 40px;
-  padding: 10px 20px;
-  text-decoration: none;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Ajoute une transition fluide */
-}
-
-.app-button:hover {
-  background-color: #333; /* Fond gris foncé */
-  color: #FFDD33; /* Texte jaune */
-}
-
-.app-button:hover .button-text {
-  color: #FFDD33; /* Assure que le texte change bien */
+.app-button:hover .store-icons img {
+  transform: scale(1.1);
 }
 
 
@@ -434,11 +675,15 @@
 
 
 <section class="hero-section">
+  <!-- 🎬 IMAGE DE FOND FIXE POUR TOUTE LA SECTION -->
+  <div class="hero-bg-video"></div>
+  <div class="hero-bg-overlay"></div>
+
   <div class="hero-slider">
     <div class="hero-wrapper">
 
-      <!-- SLIDE 1 -->
-      <div class="hero-slide">
+      <!-- SLIDE 1 - CARD À DROITE -->
+      <div class="hero-slide hero-slide-1">
         <div class="content-wrapper">
           <div class="hero-text">
             <h2 class="hero-title">{{'accueil.HERO_TITLE' | translate}} <br> {{'accueil.HERO_TITLE_1' | translate}}
@@ -451,75 +696,147 @@
               <a [routerLink]="['/contact']" class="custom-btn">{{'accueil.HERO_BUTTON' | translate}}</a>
             </div>
            
+          <!-- 📱 Collage Mobile (Caché sur Desktop) -->
+          <div class="modern-mobile-collage">
+            <img src="https://wawtelecom.com/Services-Synapsys-04.jpg" class="mmc-1" alt="Waw">
+            <img src="https://wawtelecom.com/Image (3).jpeg" class="mmc-2" alt="eSIM">
+            <img src="https://wawtelecom.com/Image.jpeg" class="mmc-3" alt="IoT">
+          </div>
 
-
-          
-        </div>
-        <div class="hero-image">
-          <!-- <img src="https://wawtelecom.com/Services-Synapsys-04.jpg" alt="WAW TELECOM"> -->
         </div>
       </div>
 
       <!-- SLIDE 2 -->
-     <!-- SLIDE 2 -->
-<!-- SLIDE 2 -->
-<div class="hero-slide">
-  <div class="content-wrapper">
-    <div class="hero-text">
-      <h2 class="hero-title yellow">{{'accueil.SLIDE2_TITLE' | translate}}</h2>
-      <p class="hero-description">{{'accueil.SLIDE2_DESCRIPTION' | translate}}</p>
-    </div>
-    <div class="cta-container">
-    <div class="cta-buttons">
-      <a [routerLink]="['/travel']" class="custom-btn">{{'accueil.SLIDE2_BUTTON' | translate}}</a>
-    </div>
-
-    <div class="app-download">
-      <a href="https://play.google.com/store/apps/details?id=com.wawtravel.app&pcampaignid=web_share" class="app-button" id="openQR">
-        <span class="button-text">{{ 'accueil.APP_DOWNLOAD_BUTTON' | translate }}</span>
-        <div class="store-icons">
-          <img src="https://framerusercontent.com/images/yx5I6hjMu32t7L3E6b2mLP8.svg" alt="Apple Store">
-          <img src="https://framerusercontent.com/images/E8VrVr4yUvcF9QowXk3aFf8cW8k.svg" alt="Google Play">
+      <div class="hero-slide hero-slide-2">
+        <div class="content-wrapper">
+          <div class="hero-text">
+            <h2 class="hero-title yellow">{{'accueil.SLIDE2_TITLE' | translate}}</h2>
+            <p class="hero-description">{{'accueil.SLIDE2_DESCRIPTION' | translate}}</p>
+          </div>
+          <div class="cta-container">
+            <div class="cta-buttons">
+              <a [routerLink]="['/travel']" class="custom-btn">{{'accueil.SLIDE2_BUTTON' | translate}}</a>
+            </div>
+            <div class="app-download">
+              <a href="https://play.google.com/store/apps/details?id=com.wawtravel.app&pcampaignid=web_share" class="app-button" id="openQR">
+                <span class="button-text">{{ 'accueil.APP_DOWNLOAD_BUTTON' | translate }}</span>
+                <div class="store-icons">
+                  <img src="https://framerusercontent.com/images/yx5I6hjMu32t7L3E6b2mLP8.svg" alt="Apple Store">
+                  <img src="https://framerusercontent.com/images/E8VrVr4yUvcF9QowXk3aFf8cW8k.svg" alt="Google Play">
+                </div>
+              </a>
+            </div>
+          </div>
+          <!-- 📱 iPhone Mockup Identique (Slide 2) -->
+          <div class="iphone-mockup-mobile">
+            <div class="iphone-device">
+              <div class="iphone-screen">
+                <!-- Status Bar -->
+                <div class="iphone-status-bar">
+                  <span class="status-time">9:41</span>
+                  <div class="status-icons-right">
+                    <svg width="17" height="11" viewBox="0 0 17 11" fill="none">
+                      <path d="M1 5.5L3 3.5L6 6.5L10 2.5L13 5.5L16 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
+                      <rect x="0.5" y="0.5" width="14" height="10" rx="1.5" stroke="currentColor"/>
+                      <path d="M3 5.5L6 2.5L9 5.5L12 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="battery-indicator"></div>
+                  </div>
+                </div>
+                
+                <!-- App Content -->
+                <div class="iphone-app-content">
+                  <!-- Header -->
+                  <div class="app-header-section">
+                    <div class="app-greeting">
+                      <span class="greeting-emoji">👋</span>
+                      <div>
+                        <div class="greeting-text">Bonjour !</div>
+                        <div class="app-slogan">Sa elleg leegi le</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Search Bar -->
+                  <div class="app-search-bar">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="search-placeholder">Où voyagez-vous ?</span>
+                  </div>
+                  
+                  <!-- Destinations List -->
+                  <div class="app-destinations-list">
+                    <div class="app-dest-item" *ngFor="let dest of pays.slice(0, 3)">
+                      <img [src]="dest.drapeau" [alt]="dest.nom" class="app-dest-flag" />
+                      <div class="app-dest-info">
+                        <div class="app-dest-name">{{ 'COUNTRIES.' + dest.nom | translate }}</div>
+                        <div class="app-dest-badge">eSIM disponible</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Active Plan Card -->
+                  <div class="app-active-plan">
+                    <div class="plan-header">
+                      <div class="plan-location">
+                        <span class="plan-flag">🇫🇷</span>
+                        <span>France</span>
+                      </div>
+                      <div class="plan-status">Actif</div>
+                    </div>
+                    <div class="plan-body">
+                      <div class="plan-name">WAW Flex</div>
+                      <div class="plan-balance">
+                        <div class="balance-amount">15 000 FCFA</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </a>
-    </div>
-
-  </div>
-  </div>
-  <div class="hero-image">
-    <img src="https://wawtelecom.com/Image (3).jpeg" alt="wawtelecom esim Service eSIM">
-  </div>
-</div>
-
-<!-- SLIDE 3 -->
-<div class="hero-slide">
-  <div class="content-wrapper">
-    <div class="hero-text">
-      <h2 class="hero-title yellow">{{'accueil.SLIDE3_TITLE' | translate}}</h2>
-      <p class="hero-description">{{'accueil.SLIDE3_DESCRIPTION' | translate}}</p>
-    </div>
-    <div class="cta-container">
-    <div class="cta-buttons">
-      <a [routerLink]="['/travel']" class="custom-btn">{{'accueil.SLIDE3_BUTTON' | translate}}</a>
-    </div>
-
-
-    <div class="app-download">
-      <a href="https://play.google.com/store/apps/details?id=com.wawtravel.app&pcampaignid=web_share" class="app-button" id="openQR">
-        <span class="button-text">{{ 'accueil.APP_DOWNLOAD_BUTTON' | translate }}</span>
-        <div class="store-icons">
-          <img src="https://framerusercontent.com/images/yx5I6hjMu32t7L3E6b2mLP8.svg" alt="Apple Store">
-          <img src="https://framerusercontent.com/images/E8VrVr4yUvcF9QowXk3aFf8cW8k.svg" alt="Google Play">
+        <div class="hero-image">
+          <img src="https://wawtelecom.com/Image (3).jpeg" alt="wawtelecom esim Service eSIM">
         </div>
-      </a>
-    </div>
-  </div>
+      </div>
 
-  </div>
-  <div class="hero-image">
-    <img src="https://wawtelecom.com/esim3.jpg" alt="wawtelecom Connexion simplifiée">
-  </div>
-</div>
+      <!-- SLIDE 3 -->
+      <div class="hero-slide hero-slide-3">
+        <div class="content-wrapper">
+          <div class="hero-text">
+            <h2 class="hero-title yellow">{{'accueil.SLIDE3_TITLE' | translate}}</h2>
+            <p class="hero-description">{{'accueil.SLIDE3_DESCRIPTION' | translate}}</p>
+          </div>
+          <div class="cta-container">
+            <div class="cta-buttons">
+              <a [routerLink]="['/travel']" class="custom-btn">{{'accueil.SLIDE3_BUTTON' | translate}}</a>
+            </div>
+            <div class="app-download">
+              <a href="https://play.google.com/store/apps/details?id=com.wawtravel.app&pcampaignid=web_share" class="app-button" id="openQR">
+                <span class="button-text">{{ 'accueil.APP_DOWNLOAD_BUTTON' | translate }}</span>
+                <div class="store-icons">
+                  <img src="https://framerusercontent.com/images/yx5I6hjMu32t7L3E6b2mLP8.svg" alt="Apple Store">
+                  <img src="https://framerusercontent.com/images/E8VrVr4yUvcF9QowXk3aFf8cW8k.svg" alt="Google Play">
+                </div>
+              </a>
+            </div>
+          </div>
+          <!-- 📱 Collage Mobile (Caché sur Desktop) -->
+          <div class="modern-mobile-collage">
+            <img src="https://wawtelecom.com/esim3.jpg" class="mmc-1" alt="IoT">
+            <img src="https://wawtelecom.com/Image.jpeg" class="mmc-2" alt="Cloud">
+            <img src="https://wawtelecom.com/Services-Synapsys-04.jpg" class="mmc-3" alt="Waw">
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="https://wawtelecom.com/esim3.jpg" alt="wawtelecom Connexion simplifiée">
+        </div>
+      </div>
 
 
 
@@ -548,33 +865,107 @@
 
 
 
-<section class="offer-section">
-  <div class="offer-background">
-      <div class="container offer-content">
-          <div class="offer-row" >
-              
-              <!-- Image / Vidéo -->
-              <div class="offer-image">
-                  <img style="height: 550px;width: 500px;" src="https://wawtelecom.com/femmme.jpg" alt="WAW TELECOM®" class="image-responsive">
-              </div>
-              
-              <!-- Texte et Boutons -->
-              <div class="offer-text">
-                  <h2 class="offer-title">
-                      {{ 'OFFER_SECTION.TITLE' | translate }}
-                  </h2>
-                  <p class="offer-description">
-                      {{ 'OFFER_SECTION.DESCRIPTION' | translate }}
-                  </p>
-
-                  <div class="cta-buttons">
-                      <a [routerLink]="['/contact']" class="custom-btn">
-                          {{ 'OFFER_SECTION.CONTACT_BTN' | translate }}
-                      </a>
-                  </div>
-              </div>
-          </div>
+<section class="offer-section-modern">
+  <div class="offer-container-modern">
+    <!-- Left Side - Content -->
+    <div class="offer-content-modern">
+      <!-- Badge -->
+      <div class="offer-badge-wrapper">
+        <span class="offer-badge">✨ Nouveau</span>
       </div>
+      
+      <!-- Title -->
+      <h2 class="offer-title-modern">
+        {{ 'OFFER_SECTION.TITLE' | translate }}
+      </h2>
+      
+      <!-- Description -->
+      <p class="offer-description-modern">
+        {{ 'OFFER_SECTION.DESCRIPTION' | translate }}
+      </p>
+      
+      <!-- Features List -->
+      <div class="offer-features">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h4>Connectivité</h4>
+            <p>Solutions eSIM et IoT pour une connectivité mondiale instantanée et sans frontières</p>
+          </div>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h4>Cloud</h4>
+            <p>Infrastructure cloud sécurisée et évolutive pour héberger vos applications et données</p>
+          </div>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="2"/>
+              <circle cx="19" cy="5" r="2" stroke="currentColor" stroke-width="2"/>
+              <circle cx="5" cy="19" r="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M10.4 13.8L6.6 17.2M13.6 10.2L17.4 6.8" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h4>IoT</h4>
+            <p>Connectez et gérez vos objets connectés avec nos solutions IoT intelligentes et fiables</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- CTA Buttons -->
+      <div class="offer-cta-buttons">
+        <a [routerLink]="['/travel']" class="offer-btn-primary">
+          <span>Découvrir nos offres</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a [routerLink]="['/contact']" class="offer-btn-secondary">
+          {{ 'OFFER_SECTION.CONTACT_BTN' | translate }}
+        </a>
+      </div>
+    </div>
+    
+    <!-- Right Side - Visual -->
+    <div class="offer-visual-modern">
+      <div class="offer-image-wrapper">
+        <img src="https://wawtelecom.com/femmme.jpg" alt="WAW TELECOM®" class="offer-image-modern">
+        <div class="offer-image-overlay"></div>
+        
+        <!-- Floating Cards -->
+        <div class="floating-card floating-card-1">
+          <div class="floating-card-icon">📱</div>
+          <div class="floating-card-text">
+            <span class="floating-card-title">eSIM Instantané</span>
+            <span class="floating-card-subtitle">En 30 secondes</span>
+          </div>
+        </div>
+        
+        <div class="floating-card floating-card-2">
+          <div class="floating-card-icon">🌍</div>
+          <div class="floating-card-text">
+            <span class="floating-card-title">150+ Pays</span>
+            <span class="floating-card-subtitle">Couverture mondiale</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 

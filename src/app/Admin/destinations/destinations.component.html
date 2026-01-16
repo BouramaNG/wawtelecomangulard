@@ -44,180 +44,287 @@
     </div>
   </div>
 
+  <!-- 🔍 Recherche et Filtres MODERNES -->
+  <div class="search-filters-section">
+    <div class="search-box">
+      <i class="fas fa-search search-icon"></i>
+      <input 
+        type="text" 
+        [(ngModel)]="searchText" 
+        (input)="applyFilters()"
+        placeholder="Rechercher par pays, code ou opérateur..."
+        class="search-input"
+      />
+      <button *ngIf="searchText" (click)="searchText = ''; applyFilters()" class="clear-search">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="filters-group">
+      <button (click)="showFilters = !showFilters" class="btn-filter-toggle">
+        <i class="fas fa-filter"></i>
+        Filtres
+        <span *ngIf="filterStatus !== 'all' || filterActive !== 'all'" class="filter-badge">●</span>
+      </button>
+
+      <div *ngIf="showFilters" class="filters-dropdown">
+        <div class="filter-section">
+          <label class="filter-label">📋 Statut de publication</label>
+          <div class="filter-buttons">
+            <button 
+              [class.active]="filterStatus === 'all'"
+              (click)="filterStatus = 'all'; applyFilters()"
+              class="filter-btn">
+              Tous
+            </button>
+            <button 
+              [class.active]="filterStatus === 'draft'"
+              (click)="filterStatus = 'draft'; applyFilters()"
+              class="filter-btn filter-draft">
+              🟡 Brouillon
+            </button>
+            <button 
+              [class.active]="filterStatus === 'published'"
+              (click)="filterStatus = 'published'; applyFilters()"
+              class="filter-btn filter-published">
+              🟢 Publié
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <label class="filter-label">⚡ Statut actif</label>
+          <div class="filter-buttons">
+            <button 
+              [class.active]="filterActive === 'all'"
+              (click)="filterActive = 'all'; applyFilters()"
+              class="filter-btn">
+              Tous
+            </button>
+            <button 
+              [class.active]="filterActive === 'active'"
+              (click)="filterActive = 'active'; applyFilters()"
+              class="filter-btn filter-active">
+              ✅ Actif
+            </button>
+            <button 
+              [class.active]="filterActive === 'inactive'"
+              (click)="filterActive = 'inactive'; applyFilters()"
+              class="filter-btn filter-inactive">
+              ⛔ Inactif
+            </button>
+          </div>
+        </div>
+
+        <button (click)="resetFilters()" class="btn-reset-filters">
+          <i class="fas fa-undo"></i>
+          Réinitialiser
+        </button>
+      </div>
+    </div>
+
+    <div class="results-counter">
+      <span class="counter-text">
+        {{ filteredDestinations.length }} / {{ destinations.length }} destinations
+      </span>
+    </div>
+  </div>
+
   <!-- Statistics Cards -->
   <div *ngIf="stats" class="stats-grid">
-    <div class="stat-card">
+    <div class="stat-card stat-card-hover">
       <div class="stat-icon stat-icon-blue">
         <i class="fas fa-globe"></i>
       </div>
       <div class="stat-content">
-        <p class="stat-label">Destinations</p>
-        <p class="stat-value">{{ stats.total_destinations }}</p>
+        <p class="stat-label">Total Destinations</p>
+        <p class="stat-value">{{ getFilteredStats().total }}</p>
+        <p class="stat-sublabel">sur {{ stats.total_destinations }}</p>
       </div>
     </div>
 
-    <div class="stat-card">
-      <div class="stat-icon stat-icon-green">
-        <i class="fas fa-box"></i>
+    <div class="stat-card stat-card-hover">
+      <div class="stat-icon stat-icon-yellow">
+        <i class="fas fa-file-alt"></i>
       </div>
       <div class="stat-content">
-        <p class="stat-label">Packages</p>
-        <p class="stat-value">{{ stats.total_packages }}</p>
+        <p class="stat-label">Brouillons</p>
+        <p class="stat-value">{{ getFilteredStats().draft }}</p>
+        <p class="stat-sublabel">non publiées</p>
       </div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card stat-card-hover">
+      <div class="stat-icon stat-icon-green">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="stat-content">
+        <p class="stat-label">Publiées</p>
+        <p class="stat-value">{{ getFilteredStats().published }}</p>
+        <p class="stat-sublabel">sur le site</p>
+      </div>
+    </div>
+
+    <div class="stat-card stat-card-hover">
       <div class="stat-icon stat-icon-purple">
         <i class="fas fa-sim-card"></i>
       </div>
       <div class="stat-content">
         <p class="stat-label">eSIMs Disponibles</p>
         <p class="stat-value">{{ stats.available_esims }}</p>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon stat-icon-red">
-        <i class="fas fa-exclamation-triangle"></i>
-      </div>
-      <div class="stat-content">
-        <p class="stat-label">Ruptures</p>
-        <p class="stat-value">{{ stats.out_of_stock_packages }}</p>
+        <p class="stat-sublabel">sur {{ stats.total_esims }}</p>
       </div>
     </div>
   </div>
 
-  <!-- Destinations Grid -->
-  <div class="destinations-grid">
-    <div *ngFor="let destination of destinations" class="destination-card">
-      <div class="card-header">
-        <div class="destination-info">
-          <div class="destination-flag">
-            <span class="flag-code">{{ destination.country_code }}</span>
-          </div>
-          <div class="destination-details">
-            <h3 class="destination-name">{{ destination.country_name }}</h3>
-            <p class="destination-provider">{{ destination.network_provider }}</p>
-          </div>
+  <!-- Destinations Grid MODERNE -->
+  <div class="destinations-grid-modern">
+    <div *ngFor="let destination of filteredDestinations" class="destination-card-modern">
+      <!-- Badges en haut -->
+      <div class="card-badges">
+        <span class="badge" [ngClass]="getPublishBadge(destination).class">
+          <i class="fas" [ngClass]="getPublishBadge(destination).icon"></i>
+          {{ getPublishBadge(destination).text }}
+        </span>
+        <span class="badge" [ngClass]="getActiveBadge(destination).class">
+          {{ getActiveBadge(destination).text }}
+        </span>
+      </div>
+
+      <!-- Header avec drapeau -->
+      <div class="card-header-modern">
+        <div class="destination-flag-large">
+          <img 
+            [src]="'https://flagcdn.com/w80/' + destination.country_code.toLowerCase() + '.png'"
+            [alt]="destination.country_name"
+            class="flag-img"
+            (error)="$any($event.target).src='https://flagcdn.com/w320/' + destination.country_code.toLowerCase() + '.png'"
+          />
         </div>
-        <div class="destination-status">
-          <span class="status-indicator" [class]="getOverallStatus(destination).class"></span>
-          <span class="status-text" [class]="getOverallStatus(destination).color">
-            {{ getOverallStatus(destination).text }}
-          </span>
+        <div class="destination-info-modern">
+          <h3 class="destination-name-modern">{{ destination.country_name }}</h3>
+          <p class="destination-code">{{ destination.country_code }}</p>
+          <p class="destination-provider-modern">
+            <i class="fas fa-network-wired"></i>
+            {{ destination.network_provider || 'Non spécifié' }}
+          </p>
         </div>
       </div>
 
-      <div class="packages-list">
-        <div *ngFor="let pkg of destination.packages" class="package-item">
-          <div class="package-info">
-            <h4 class="package-name">{{ pkg.plan_name }}</h4>
-            <p class="package-details">{{ pkg.data_limit }}GB - {{ pkg.validity_days }} jours</p>
-          </div>
-          <div class="package-pricing">
-            <p class="package-price">{{ formatPrice(pkg.price) }}</p>
-            <p class="package-stock">
-              {{ pkg.available_esims }}/{{ pkg.total_esims }} disponibles
-            </p>
-          </div>
+      <!-- Stats rapides -->
+      <div class="card-stats">
+        <div class="stat-item">
+          <i class="fas fa-box"></i>
+          <span>{{ getPackagesCount(destination) }} packages</span>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-sim-card"></i>
+          <span>{{ getTotalAvailableEsims(destination) }} eSIMs</span>
         </div>
       </div>
 
-      <div class="card-actions">
-        <button (click)="viewDestinationDetails(destination)" class="btn btn-outline">
-          <i class="fas fa-eye"></i>
-          Voir les détails
-        </button>
+      <!-- Packages (aperçu) -->
+      <div class="packages-preview" *ngIf="destination.packages.length > 0">
+        <div *ngFor="let pkg of destination.packages.slice(0, 3)" class="package-preview-item">
+          <div class="package-preview-info">
+            <span class="package-preview-data">{{ pkg.data_limit }}GB</span>
+            <span class="package-preview-days">{{ pkg.validity_days }}j</span>
+          </div>
+          <div class="package-preview-stock">
+            <span [ngClass]="getStockStatus(pkg).class">
+              {{ pkg.available_esims }}/{{ pkg.total_esims }}
+            </span>
+          </div>
+        </div>
+        <div *ngIf="destination.packages.length > 3" class="package-more">
+          +{{ destination.packages.length - 3 }} autres
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="card-actions-modern">
+        <!-- Bouton PUBLIER pour brouillons -->
         <button 
-          (click)="toggleDestinationVisibility(destination)" 
-          [class]="destination.is_published ? 'btn btn-warning' : 'btn btn-success'"
-          [title]="destination.is_published ? 'Retirer du site web' : 'Publier sur le site web'"
-        >
-          <i [class]="destination.is_published ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-          {{ destination.is_published ? 'Retirer du site' : 'Publier' }}
+          *ngIf="!destination.is_published"
+          (click)="publishDestination(destination)" 
+          class="btn-action btn-publish">
+          <i class="fas fa-rocket"></i>
+          Publier
         </button>
+
+        <!-- Boutons classiques -->
+        <button 
+          (click)="viewDestinationDetails(destination)" 
+          class="btn-action btn-view">
+          <i class="fas fa-eye"></i>
+          Détails
+        </button>
+
+        <!-- 🔑 Bouton "Retirer" SEULEMENT pour les destinations créées par l'admin -->
+        <button 
+          *ngIf="destination.is_published && destination.from_admin"
+          (click)="toggleDestinationVisibility(destination)" 
+          class="btn-action btn-unpublish"
+          title="Retirer cette destination du site">
+          <i class="fas fa-eye-slash"></i>
+          Retirer
+        </button>
+        
+        <!-- 📌 Message pour les destinations hardcodées -->
+        <span 
+          *ngIf="!destination.from_admin" 
+          class="badge-hardcoded"
+          title="Cette destination est hardcodée et ne peut pas être retirée">
+          <i class="fas fa-lock"></i> Toujours visible
+        </span>
       </div>
+    </div>
+
+    <!-- Message si aucun résultat -->
+    <div *ngIf="filteredDestinations.length === 0 && !loading" class="no-results">
+      <i class="fas fa-search fa-3x"></i>
+      <h3>Aucune destination trouvée</h3>
+      <p *ngIf="searchText || filterStatus !== 'all' || filterActive !== 'all'">
+        Essayez d'ajuster vos filtres ou votre recherche
+      </p>
+      <button (click)="resetFilters()" class="btn btn-primary">
+        Réinitialiser les filtres
+      </button>
     </div>
   </div>
 
-  <!-- Sync Modal -->
-  <div *ngIf="showSyncModal" class="modal-overlay" (click)="closeSyncModal()">
+  <!-- Modal Détails (existant) -->
+  <div *ngIf="showDetailsModal" class="modal-overlay" (click)="closeDetailsModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>Synchronisation des Destinations</h3>
-        <button (click)="closeSyncModal()" class="modal-close">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Nombre d'eSIMs à traiter</label>
-          <input type="number" name="syncLimit" [(ngModel)]="syncLimit" min="1" max="100" class="form-input">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button (click)="closeSyncModal()" class="btn btn-secondary">Annuler</button>
-        <button (click)="syncDestinations()" [disabled]="syncLoading" class="btn btn-primary">
-          <i *ngIf="syncLoading" class="fas fa-spinner fa-spin"></i>
-          <i *ngIf="!syncLoading" class="fas fa-sync-alt"></i>
-          {{ syncLoading ? 'Synchronisation...' : 'Synchroniser' }}
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Details Modal -->
-  <div *ngIf="showDetailsModal && selectedDestination" class="modal-overlay" (click)="closeDetailsModal()">
-    <div class="modal-content modal-large" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h3>Détails - {{ selectedDestination.country_name }}</h3>
+        <h2>{{ selectedDestination?.country_name }}</h2>
         <button (click)="closeDetailsModal()" class="modal-close">×</button>
       </div>
       <div class="modal-body">
-        <div class="destination-details-full">
-          <div class="detail-section">
-            <h4>Informations générales</h4>
-            <div class="detail-grid">
-              <div class="detail-item">
-                <span class="detail-label">Pays:</span>
-                <span class="detail-value">{{ selectedDestination.country_name }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Code:</span>
-                <span class="detail-value">{{ selectedDestination.country_code }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Opérateur:</span>
-                <span class="detail-value">{{ selectedDestination.network_provider }}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="detail-section">
-            <h4>Packages disponibles</h4>
-            <div class="packages-detail-grid">
-              <div *ngFor="let pkg of selectedDestination.packages" class="package-detail-card">
-                <div class="package-detail-header">
-                  <h5>{{ pkg.plan_name }}</h5>
-                  <span class="stock-badge" [class]="getStockStatus(pkg).class">
-                    {{ getStockStatus(pkg).text }}
-                  </span>
-                </div>
-                <div class="package-detail-content">
-                  <div class="package-specs">
-                    <p><strong>Données:</strong> {{ pkg.data_limit }}GB</p>
-                    <p><strong>Validité:</strong> {{ pkg.validity_days }} jours</p>
-                    <p><strong>Prix:</strong> {{ formatPrice(pkg.price) }}</p>
-                  </div>
-                  <div class="package-stock-info">
-                    <p><strong>Stock:</strong> {{ pkg.available_esims }}/{{ pkg.total_esims }}</p>
-                    <div class="stock-bar">
-                      <div class="stock-fill" [style.width.%]="pkg.stock_percentage"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div *ngFor="let pkg of selectedDestination?.packages" class="package-details">
+          <h4>{{ pkg.plan_name }}</h4>
+          <p>{{ pkg.data_limit }}GB - {{ pkg.validity_days }} jours</p>
+          <p>Prix: {{ formatPrice(pkg.price) }}</p>
+          <p>eSIMs: {{ pkg.available_esims }}/{{ pkg.total_esims }}</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Sync (existant) -->
+  <div *ngIf="showSyncModal" class="modal-overlay" (click)="closeSyncModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Synchroniser les destinations</h2>
+        <button (click)="closeSyncModal()" class="modal-close">×</button>
+      </div>
+      <div class="modal-body">
+        <label>Nombre limite de SIMs à synchroniser:</label>
+        <input type="number" [(ngModel)]="syncLimit" min="1" max="1000" />
+        <button (click)="syncDestinations()" [disabled]="syncLoading" class="btn btn-primary">
+          <span *ngIf="!syncLoading">Lancer la synchronisation</span>
+          <span *ngIf="syncLoading">Synchronisation en cours...</span>
+        </button>
       </div>
     </div>
   </div>

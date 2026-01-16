@@ -10,6 +10,7 @@ export interface Destination {
   network_provider: string;
   is_published?: boolean;
   is_active?: boolean;
+  from_admin?: boolean; // 🔑 Indique si la destination est créée par l'admin
   packages: Package[];
 }
 

@@ -341,11 +341,11 @@
 
       <!-- Countries Grid - Ultra Moderne -->
       <div class="countries-grid-modern" *ngIf="filteredEsims.length > 0">
-        <div 
-          class="country-card-modern" 
-          *ngFor="let item of getPaysFiltres() | paginate: { itemsPerPage: 12, currentPage: page }"
-          [routerLink]="['/eSim', item.id]"
-        >
+      <div
+        class="country-card-modern"
+        *ngFor="let item of getPaysFiltres() | paginate: { itemsPerPage: 12, currentPage: page }"
+        [routerLink]="['/eSim', item.country_code]"
+      >
           <div class="card-background" [style.background-image]="'url(' + getCountryImage(item.country_code) + ')'"></div>
           <div class="card-overlay"></div>
           
@@ -357,6 +357,22 @@
             <div class="card-info">
               <h3 class="card-country-name">{{ item.nom }}</h3>
               <div class="card-continent">{{ item.continent }}</div>
+              
+              <!-- ✅ BADGE NOMBRE D'OFFRES SEULEMENT -->
+              <div class="card-offers-count" *ngIf="item.packages && item.packages.length > 0">
+                <span class="offers-count-badge">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-right: 4px;">
+                    <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                  {{ item.packages.length }} {{ item.packages.length === 1 ? 'offre' : 'offres' }} disponibles
+                </span>
+              </div>
+              
+              <!-- ⚠️ PAS D'OFFRES -->
+              <div class="card-no-offers" *ngIf="!item.packages || item.packages.length === 0">
+                <span class="no-offers-badge">Bientôt disponible</span>
+              </div>
             </div>
             
             <div class="card-action">

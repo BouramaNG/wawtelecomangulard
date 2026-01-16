@@ -5501,9 +5501,10 @@ section.offer-section::after {
       left: 16px;
     }
   }
+}
 
-  /* Fix spacing for Destinations title on mobile */
-  @media (max-width: 768px) {
+/* Fix spacing for Destinations title on mobile */
+@media (max-width: 768px) {
     .destinations-section {
       padding-top: 80px !important;
     }
